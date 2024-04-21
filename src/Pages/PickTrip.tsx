@@ -31,7 +31,7 @@ const PickTrip = () => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Box>
+      <Box sx={{ width: "100%" }}>
         <NavBar textColor="rgb(0,0,0)" />
       </Box>
       <Box
