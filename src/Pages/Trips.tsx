@@ -81,7 +81,7 @@ const Trips = () => {
                         <Marker key={index} position={{ lat: marker.lat, lng: marker.lng }} />
                       ))}
                     </GoogleMap>
-                    <Box sx={{ position: 'absolute', top: '20px', left: '20px' }}>
+                    <Box sx={{ position: 'absolute', bottom: '20px', left: '10px' }}>
                       <Button variant="contained" onClick={handleDay1ButtonClick}>Day 1</Button>
                       <Button variant="contained" onClick={handleCancelTripButtonClick} sx={{ marginLeft: '10px' }} color="error">Cancel Trip</Button>
                     </Box>

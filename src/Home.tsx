@@ -4,7 +4,7 @@ import backgroundImage from "./images/Home/Towerbg.png";
 import NavBar from "./Pages/SharedComponents/NavBar";
 import Welcome from "./Pages/HomeComponents/Welcome";
 import PopularPlacesCards from "./Pages/HomeComponents/PopularPlacesCards";
-import RoadMap from "./Pages/HomeComponents/Roadmap";
+/* import RoadMap from "./Pages/HomeComponents/Roadmap"; */
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Trips from "./Pages/Trips";
@@ -47,17 +47,13 @@ function App() {
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                   width: "100%",
-                  height: "auto",
-                  paddingBottom: "5%",
+                  height: "941px",
                 }}
               >
-                <Box sx={{ mb: 20, maxWidth: 1280, margin: "auto" }}>
+                <Box sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}>
                   <NavBar textColor="rgb(255,255,255)" />
                 </Box>
-                <Box
-                  display={"flex"}
-                  sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}
-                >
+                <Box sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}>
                   <Welcome />
                 </Box>
               </Box>
@@ -77,8 +73,7 @@ function App() {
                   <PopularPlacesCards />
                 </Box>
               </Box>
-
-              <RoadMap />
+              {/* <RoadMap /> this is for bashir profile */}
               <Footer />
             </Box>
           }
