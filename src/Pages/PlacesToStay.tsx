@@ -6,7 +6,7 @@ import Cards from "./PlacesToStayComponents/Cards";
 import Directions from "./PlacesToStayComponents/Directions";
 import TopReviews from "./PlacesToStayComponents/TopReviews";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import Background from "../images/ThingsToDo/Background.png";
+import Background from "../images/PlaceToStay/Background.jpg";
 
 const PlacesToStay = () => {
   const theme = useTheme();
@@ -15,6 +15,23 @@ const PlacesToStay = () => {
   return (
     <>
       <Box
+        style={{
+          backgroundColor: "teal",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          paddingBottom: "10px",
+          width: "100%",
+        }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ width: "100%" }}>
+          <NavBar textColor="rgb(255,255,255)" />
+        </Box>
+      </Box>
+      <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -22,29 +39,25 @@ const PlacesToStay = () => {
           width: "100%",
           maxWidth: 1280,
           margin: "auto",
-          backgroundImage: `url(${Background})`,
         }}
       >
         <Box
-          style={{
-            backgroundColor: "teal",
+          sx={{
+            backgroundImage: `url(${Background})`,
+            backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            backgroundPosition: "center",
-            paddingBottom: "10px",
-            width: "100%",
+            position: "absolute",
+            zIndex: -1,
+            left: { md: -60, xs: 10 },
+            right: { md: 0 },
+            top: 400,
+            width: "250px",
+            height: "250px",
           }}
-          sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}
-        >
-          <NavBar textColor="rgb(255,255,255)" />
-        </Box>
+        ></Box>
+        <Introduction />
 
-        <Box>
-          {" "}
-          <Introduction />{" "}
-        </Box>
-        <Box>
-          <Cards />
-        </Box>
+        <Cards />
 
         <Box
           sx={{
@@ -56,12 +69,11 @@ const PlacesToStay = () => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ margin: 2 }}>
-            <Directions />{" "}
+          <Box sx={{ padding: "25px" }}>
+            <Directions />
           </Box>
-          <Box>
-            {" "}
-            <TopReviews />{" "}
+          <Box sx={{ padding: "25px" }}>
+            <TopReviews />
           </Box>
         </Box>
       </Box>
@@ -72,8 +84,7 @@ const PlacesToStay = () => {
           margin: "auto",
           marginTop: "50px",
         }}
-      >
-      </Box>
+      ></Box>
       <Footer />
     </>
   );
