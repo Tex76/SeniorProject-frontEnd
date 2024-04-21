@@ -16,6 +16,23 @@ const ThingsToEat = () => {
   return (
     <>
       <Box
+        style={{
+          backgroundColor: "teal",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          paddingBottom: "10px",
+          width: "100%",
+        }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ maxWidth: 1280, width: "100%" }}>
+          <NavBar textColor="rgb(255,255,255)" />
+        </Box>
+      </Box>
+      <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -23,29 +40,26 @@ const ThingsToEat = () => {
           width: "100%",
           maxWidth: 1280,
           margin: "auto",
-          backgroundImage: `url(${Background})`,
+          postion: "realative",
         }}
       >
         <Box
-          style={{
-            backgroundColor: "teal",
+          sx={{
+            backgroundImage: `url(${Background})`,
+            backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            backgroundPosition: "center",
-            paddingBottom: "10px",
-            width: "100%",
+            position: "absolute",
+            zIndex: 12,
+            left: { md: -100, xs: 10 },
+            right: { md: 0 },
+            top: 350,
+            width: "250px",
+            height: "250px",
           }}
-          sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}
-        >
-          <NavBar textColor="rgb(255,255,255)" />
-        </Box>
+        ></Box>
+        <Introduction />
 
-        <Box>
-          {" "}
-          <Introduction />{" "}
-        </Box>
-        <Box>
-          <Cards />
-        </Box>
+        <Cards />
 
         <Box
           sx={{
@@ -57,12 +71,11 @@ const ThingsToEat = () => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ margin: 2 }}>
-            <Directions />{" "}
+          <Box sx={{ padding: "25px" }}>
+            <Directions />
           </Box>
-          <Box>
-            {" "}
-            <TopReviews />{" "}
+          <Box sx={{ padding: "25px" }}>
+            <TopReviews />
           </Box>
         </Box>
 
@@ -73,8 +86,7 @@ const ThingsToEat = () => {
             margin: "auto",
             marginTop: "50px",
           }}
-        >
-        </Box>
+        ></Box>
       </Box>
       <Footer />
     </>

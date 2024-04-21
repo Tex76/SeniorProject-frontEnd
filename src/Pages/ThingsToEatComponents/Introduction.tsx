@@ -26,13 +26,12 @@ import "@fontsource/roboto/700.css";
 
 const Introduction = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <div
       style={{
-        width: isMobile ? "90%" : "90%",
-        maxWidth: 1280,
+        width: "100%",
         marginTop: "120px",
         padding: "20px",
         display: "flex",
@@ -46,7 +45,7 @@ const Introduction = () => {
         </Typography>
         <Button style={{ color: "black" }}>Save</Button>
       </Box>
-      <Grid container spacing={3}>
+      <Grid container spacing={2} sx={{ p: { xs: 2 } }}>
         <Grid item xs={isMobile ? 12 : 6}>
           <Typography variant="h4" component="div">
             Bushido by Buddha-Bar
@@ -79,24 +78,34 @@ const Introduction = () => {
           </Typography>
         </Grid>
         <Grid item xs={isMobile ? 12 : 6}>
-          <Grid container direction="row" spacing={0.5}>
+          <Grid container direction="row">
             <Grid item xs={6}>
               <img
                 src={Cardimage1}
                 alt="Card Image 1"
-                style={{ width: "100%", height: "100%", margin: "1px" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "6px 0px 0px 6px",
+                }}
               />
             </Grid>
             <Grid item xs={6}>
               <img
                 src={Cardimage2}
                 alt="Card Image 2"
-                style={{ width: "100%", height: "50%" }}
+                style={{ width: "100%", height: "50%", objectFit: "cover" }}
               />
               <img
                 src={Cardimage3}
                 alt="Card Image 3"
-                style={{ width: "100%", height: "50%" }}
+                style={{
+                  width: "100%",
+                  height: "50%",
+                  objectFit: "cover",
+                  marginTop: "-4px",
+                }}
               />
             </Grid>
           </Grid>
