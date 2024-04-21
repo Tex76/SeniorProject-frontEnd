@@ -17,24 +17,18 @@ const Footer = () => {
 
   return (
     <Box sx={{ backgroundColor: "teal", color: "white", width: "100%" }}>
-      <Grid container style={{ margin: "auto" }}>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={3}
-          style={{ textAlign: "center", padding: "20px", marginRight: "0px" }}
-        >
+      <Grid
+        container
+        spacing={0}
+        style={{ maxWidth: "1280px", margin: "auto" }}
+      >
+        <Grid item xs={12} sm={6} md={3} style={{ textAlign: "center" }}>
           <img
             src={Logo}
             alt="Logo"
-            style={{
-              width: "150px",
-              marginBottom: "1px",
-              margin: "0px auto",
-            }}
+            style={{ width: "200px", marginBottom: "10px" }}
           />
-          <Typography sx={{ width: "80%", margin: "0px auto" }}>
+          <Typography>
             Your sole resource for exploring Bahrain and crafting your own
             personalized trips.
           </Typography>
@@ -84,11 +78,10 @@ const Footer = () => {
           item
           xs={12}
           sm={6}
-          md={2}
+          md={3}
           style={{
             textAlign: isMobile ? "center" : "start",
             marginTop: "50px",
-            padding: "20px",
           }}
         >
           <Typography variant="h6">Quick Menu</Typography>
@@ -134,7 +127,6 @@ const Footer = () => {
           style={{
             textAlign: isMobile ? "center" : "start",
             marginTop: "50px",
-            padding: "20px",
           }}
         >
           <Typography variant="h6">Captions</Typography>
@@ -180,7 +172,6 @@ const Footer = () => {
           style={{
             textAlign: isMobile ? "center" : "start",
             marginTop: "50px",
-            padding: "20px",
           }}
         >
           <Typography variant="h6">Contact Us</Typography>

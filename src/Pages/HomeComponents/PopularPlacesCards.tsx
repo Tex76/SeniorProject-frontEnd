@@ -26,7 +26,7 @@ const PopularPlacesCards = () => {
   const [isAtEnd, setIsAtEnd] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const element = scrollContainerRef.current;
@@ -106,16 +106,8 @@ const PopularPlacesCards = () => {
       >
         Check Popular Places
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         {!isMobile && (
-          /* remove scroll arrows tablet or mobile */
           <Box
             sx={{
               borderRadius: "50%",
