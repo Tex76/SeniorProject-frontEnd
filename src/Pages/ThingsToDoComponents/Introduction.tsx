@@ -16,8 +16,8 @@ import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import Cardimage1 from "../../images/ThingsToDo/Cardimage1.png";
-import Cardimage2 from "../../images/ThingsToDo/Cardimage2.png";
-import Cardimage3 from "../../images/ThingsToDo/Cardimage3.png";
+import Cardimage2 from "../../images/ThingsToDo/CardImage2.jpg";
+import Cardimage3 from "../../images/ThingsToDo/CardImage3.jpg";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -31,8 +31,7 @@ const Introduction = () => {
   return (
     <div
       style={{
-        width: isMobile ? "90%" : "90%",
-        maxWidth: 1280,
+        width: "100%",
         marginTop: "120px",
         padding: "20px",
         display: "flex",
@@ -47,7 +46,7 @@ const Introduction = () => {
         <Button style={{ color: "black" }}>Save</Button>
       </Box>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={2} sx={{ p: { xs: 2 } }}>
         <Grid item xs={isMobile ? 12 : 6}>
           <Typography variant="h4" component="div" sx={{ fontWeight: "bold" }}>
             International Circuit
@@ -82,24 +81,34 @@ const Introduction = () => {
         </Grid>
 
         <Grid item xs={isMobile ? 12 : 6}>
-          <Grid container direction="row" spacing={0.5}>
-            <Grid item xs={6}>
+          <Grid container direction="row">
+            <Grid item xs={7}>
               <img
                 src={Cardimage1}
                 alt="Card Image 1"
-                style={{ width: "100%", height: "100%", margin: "1px" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "6px 0px 0px 6px",
+                }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
               <img
-                src={Cardimage2}
+                src={Cardimage3}
                 alt="Card Image 2"
-                style={{ width: "100%", height: "50%" }}
+                style={{ width: "100%", height: "50%", objectFit: "cover" }}
               />
               <img
                 src={Cardimage3}
                 alt="Card Image 3"
-                style={{ width: "100%", height: "50%" }}
+                style={{
+                  width: "100%",
+                  height: "50%",
+                  objectFit: "cover",
+                  marginTop: "-4px",
+                }}
               />
             </Grid>
           </Grid>

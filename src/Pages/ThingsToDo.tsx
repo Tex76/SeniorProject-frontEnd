@@ -10,13 +10,30 @@ import TopReviews from "./ThingsToDoComponents/TopReviews";
 
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 
-import Background from "../images/ThingsToDo/Background.png";
+import Background from "../images/ThingsToDo/Background.jpg";
 
 const ThingsToDo = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
+      <Box
+        style={{
+          backgroundColor: "teal",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          paddingBottom: "10px",
+          width: "100%",
+        }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ maxWidth: 1280, width: "100%" }}>
+          <NavBar textColor="rgb(255,255,255)" />
+        </Box>
+      </Box>
       <Box
         display="flex"
         flexDirection="column"
@@ -25,29 +42,27 @@ const ThingsToDo = () => {
           width: "100%",
           maxWidth: 1280,
           margin: "auto",
-          backgroundImage: `url(${Background})`,
+          position: "relative",
         }}
       >
         <Box
-          style={{
-            backgroundColor: "teal",
+          sx={{
+            backgroundImage: `url(${Background})`,
+            backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            backgroundPosition: "center",
-            paddingBottom: "10px",
-            width: "100%",
+            position: "absolute",
+            zIndex: -1,
+            left: { md: -110, xs: 10 },
+            right: { md: 0 },
+            top: 350,
+            width: "250px",
+            height: "250px",
           }}
-          sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}
-        >
-          <NavBar textColor="rgb(255,255,255)" />
-        </Box>
+        ></Box>
 
-        <Box>
-          {" "}
-          <Introduction />{" "}
-        </Box>
-        <Box>
-          <Cards />
-        </Box>
+        <Introduction />
+
+        <Cards />
 
         <Box
           sx={{
@@ -59,12 +74,11 @@ const ThingsToDo = () => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ margin: 2 }}>
-            <Directions />{" "}
+          <Box sx={{ padding: "25px" }}>
+            <Directions />
           </Box>
-          <Box>
-            {" "}
-            <TopReviews />{" "}
+          <Box sx={{ padding: "25px" }}>
+            <TopReviews />
           </Box>
         </Box>
       </Box>
@@ -75,8 +89,7 @@ const ThingsToDo = () => {
           margin: "auto",
           marginTop: "200px",
         }}
-      >
-      </Box>
+      ></Box>
       <Footer />
     </>
   );

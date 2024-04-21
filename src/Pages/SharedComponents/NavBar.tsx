@@ -69,7 +69,6 @@ function NavBar({ textColor }: Props) {
       sx={{
         backgroundColor: "transparent",
         color: textColor || "inherit",
-        maxWidth: "100%",
       }}
       elevation={0}
     >
@@ -139,6 +138,7 @@ function NavBar({ textColor }: Props) {
             <MenuIcon />
           </IconButton>
           <Menu
+            sx={{ padding: "45px" }}
             id="menu-appbar"
             anchorEl={anchorElNav}
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -154,7 +154,7 @@ function NavBar({ textColor }: Props) {
                   to={`/${filename.toLowerCase()}`}
                   style={{
                     textDecoration: "none",
-                    color: textColor || "inherit",
+                    color: "black",
                   }}
                 >
                   {page}

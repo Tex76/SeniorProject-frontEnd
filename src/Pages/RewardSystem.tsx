@@ -18,81 +18,82 @@ const RewardSystem = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
-    <Box>
+    <div
+      style={{
+        width: "100%",
+      }}
+    >
+      <Box
+        style={{
+          backgroundColor: "teal",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          paddingBottom: "10px",
+          width: "100%",
+        }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ maxWidth: 1280, width: "100%" }}>
+          <NavBar textColor="rgb(255,255,255)" />
+        </Box>
+      </Box>
       <Box
         sx={{
-          width: "100%",
-          maxWidth: 1280,
-          margin: "auto",
-          backgroundImage: `url(${Back})`,
+          display: "flex",
+          justifyContent: "center",
         }}
       >
         <Box
-          style={{
-            backgroundColor: "teal",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            paddingBottom: "10px",
-            width: "100%",
-          }}
-          sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}
-        >
-          <NavBar textColor="rgb(255,255,255)" />
-        </Box>
-        <Box
           sx={{
+            width: "100%",
+            maxWidth: 1280,
+            margin: "20px",
+            padding: "20px",
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
+            position: "realative",
           }}
         >
+          <Box p={3} sx={{ marginTop: 10 }}>
+            <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+              Your Achievements
+            </Typography>
+            <Typography
+              variant="body1"
+              gutterBottom
+              sx={{ fontWeight: "bold" }}
+            >
+              Get rewarded for exploring, reviewing, and photographing places.
+              Your adventures earn you valuable perks with every step you take.
+            </Typography>
+          </Box>
+
+          <Box>
+            <Achivements />
+          </Box>
+
           <Box
             sx={{
-              width: "1240px",
-              maxWidth: 1280,
-              margin: "20px",
-              padding: "20px",
               display: "flex",
-              flexDirection: "column",
+              flexDirection: isMobile ? "column" : "row",
+              gap: "20px",
             }}
           >
-            <Box p={3} sx={{ marginTop: 10 }}>
-              <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-                Your Achievements
-              </Typography>
-              <Typography
-                variant="body1"
-                gutterBottom
-                sx={{ fontWeight: "bold" }}
-              >
-                Get rewarded for exploring, reviewing, and photographing places.
-                Your adventures earn you valuable perks with every step you
-                take.
-              </Typography>
+            <Box flex={1} pt={1}>
+              <Badges />
             </Box>
-
-            <Box>
-              <Achivements />
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: isMobile ? "column" : "row",
-                gap: "20px",
-              }}
-            >
-              <Box flex={1} pt={1}>
-                <Badges />
-              </Box>
-              <Box flex={1} pt={1}>
-                <Ranks />
-              </Box>
+            <Box flex={1} pt={1}>
+              <Ranks />
             </Box>
           </Box>
         </Box>
       </Box>
+
       <Footer />
-    </Box>
+    </div>
   );
 };
 
