@@ -27,7 +27,7 @@ const PlacesToStay = () => {
           justifyContent: "center",
         }}
       >
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", maxWidth: 1280 }}>
           <NavBar textColor="rgb(255,255,255)" />
         </Box>
       </Box>
