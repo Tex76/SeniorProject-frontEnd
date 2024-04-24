@@ -45,6 +45,7 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
     if (validateFields()) {
       console.log("Form is valid");
       // Handle form submission here
+      //route to
     } else {
       console.log("Validation failed");
     }

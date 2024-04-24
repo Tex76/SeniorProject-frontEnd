@@ -19,6 +19,7 @@ import GenerateTrip from "./Pages/GenerateTrip";
 import Reviews from "./Pages/Reviews";
 import ReviewPlace from "./Pages/ReviewPlace";
 import Footer from "./Pages/SharedComponents/Footer";
+import CreateTrip from "./Pages/CreateTrip";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/RewardSystem" element={<RewardSystem />} />
         <Route path="/Reviews" element={<Reviews />} />
         <Route path="/ReviewPlace" element={<ReviewPlace />} />
+        <Route path="/CreateTrip" element={<CreateTrip />} />
         <Route
           path="/"
           element={
