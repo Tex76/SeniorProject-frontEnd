@@ -24,7 +24,6 @@ import Rectangle2 from "../images/PickTrip/Rectangle2.png";
 import Background from "../images/PickTrip/Background.png";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
-import { Close } from "@mui/icons-material";
 
 const PickTrip = () => {
   const navigate = useNavigate();
@@ -40,11 +39,24 @@ const PickTrip = () => {
           height: "2135px",
           backgroundColor: "black",
           opacity: 0.5,
-          display: blackBox ? "block" : "none",
+          display: blackBox ? "flex" : "none",
           position: "absolute",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
           zIndex: 1000,
         }}
-      ></Box>
+      >
+        <Box
+          sx={{
+            width: "50%",
+            height: "50%",
+            backgroundColor: "white",
+            opacity: 1,
+            borderRaduis: "3px",
+          }}
+        ></Box>
+      </Box>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box sx={{ width: "100%", maxWidth: 1280 }}>
           <NavBar textColor="rgb(0,0,0)" />
