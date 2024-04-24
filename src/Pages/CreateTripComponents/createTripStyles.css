@@ -4,7 +4,5 @@ textarea {
 
 .error {
     border-color: red;
-    color: red; /* Custom color for error messages */
-    font-size: 0.75rem; /* Smaller font size */
-    font-style: italic; /* Italicize the helper text */
+
 }

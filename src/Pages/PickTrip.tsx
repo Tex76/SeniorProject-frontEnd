@@ -54,7 +54,7 @@ const PickTrip = () => {
       <Box
         sx={{
           width: { md: "40%", sm: "60%", xs: "80%" },
-          height: { md: "82%", sm: "82%", xs: "82%" },
+          height: { md: "82%", sm: "82%", xs: "80%" },
 
           backgroundColor: "white",
           zIndex: 1000,
