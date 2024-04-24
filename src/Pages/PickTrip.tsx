@@ -1,4 +1,5 @@
 import React from "react";
+import CreateTripForm from "./CreateTripComponents/CreateTripForm";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -8,11 +9,14 @@ import NavBar from "./SharedComponents/NavBar";
 import Footer from "./SharedComponents/Footer";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
+
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
+
 import "@fontsource/roboto/700.css";
 import "@fontsource/ubuntu";
 import Icon1 from "../images/PickTrip/Icon1.png";
@@ -36,27 +40,40 @@ const PickTrip = () => {
         onClick={(e) => setBlackBox(false)}
         sx={{
           width: "100%",
-          height: "2135px",
+          height: "100%",
           backgroundColor: "black",
           opacity: 0.5,
           display: blackBox ? "flex" : "none",
-          position: "absolute",
+          position: "fixed",
           justifyContent: "center",
           flexDirection: "column",
           alignItems: "center",
           zIndex: 1000,
         }}
+      ></Box>
+      <Box
+        sx={{
+          width: { md: "40%", sm: "60%", xs: "80%" },
+          height: { md: "82%", sm: "82%", xs: "82%" },
+
+          backgroundColor: "white",
+          zIndex: 1000,
+          opacity: 1,
+          borderRadius: "8px",
+          display: blackBox ? "flex" : "none",
+          position: "fixed", // Changed from 'absolute' to 'fixed'
+          top: "50%",
+          flexDirection: "column",
+          left: "50%",
+          padding: "15px",
+          transform: "translate(-50%, -50%)",
+          cursor: "pointer", // Optional: Changes cursor on hover to indicate it's clickable
+        }}
       >
-        <Box
-          sx={{
-            width: "50%",
-            height: "50%",
-            backgroundColor: "white",
-            opacity: 1,
-            borderRaduis: "3px",
-          }}
-        ></Box>
+        {/* create Trip form */}
+        <CreateTripForm passFunction={setBlackBox} />
       </Box>
+
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box sx={{ width: "100%", maxWidth: 1280 }}>
           <NavBar textColor="rgb(0,0,0)" />
@@ -64,7 +81,6 @@ const PickTrip = () => {
         <Box
           sx={{
             width: "100%",
-
             backgroundImage: `url(${Background})`,
             backgroundSize: "381px 736px",
             backgroundRepeat: "no-repeat",
