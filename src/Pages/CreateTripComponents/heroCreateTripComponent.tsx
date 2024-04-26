@@ -48,7 +48,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 // this accordion will return the accordion skeleton
 function Accordion(props: AccordionProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const { children, index, value } = props;
 
   return (

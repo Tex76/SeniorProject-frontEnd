@@ -64,9 +64,10 @@ export default function CreateTripPopUpContent({
       (place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         place.location.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-
   const [filterArray, setFilterArray] = useState(filteredData);
+
   console.log("filterArray: ", filterArray);
+
   return (
     <Box
       sx={{
@@ -173,7 +174,7 @@ export default function CreateTripPopUpContent({
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          mt: 4,
+          mt: 2,
           borderTop: "1px solid #E4E4E4",
           paddingY: "15px",
         }}
