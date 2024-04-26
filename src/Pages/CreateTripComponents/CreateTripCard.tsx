@@ -51,17 +51,20 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
     >
       {/* image box */}
       {/* make the image no-repate */}
-      <Box
-        sx={{
-          width: "45%",
-          height: "100%",
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          backgroundRepeat: "no-repeat",
-        }}
-      ></Box>
+      <Box>
+        <img
+          src={image}
+          style={{
+            width: "50%",
+            height: "100%",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            backgroundRepeat: "no-repeat",
+          }}
+          alt=""
+        />
+      </Box>
       {/* content box */}
       <Box sx={{ width: "45%", display: "flex", flexDirection: "column" }}>
         {/* location name */}
@@ -72,13 +75,17 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
             borderRadius: "3px",
             width: "auto",
             height: "auto",
+            marginRight: "auto",
+            paddingX: "6px",
+            paddingY: "3px",
+            marginBottom: "3px",
           }}
         >
           <Typography
             fontFamily={"Roboto"}
             sx={{
               fontWeight: "regular",
-              fontSize: "11px",
+              fontSize: "15px",
               textAlign: "center",
             }}
           >
@@ -91,45 +98,56 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
           sx={{
             fontFamily: "Roboto",
             fontWeight: "regualr",
-            fontSize: "24px",
+            margin: "3px 0px",
+            fontSize: "15px",
+            textAlign: "left",
             color: "#000000",
           }}
         >
           {placeName}
         </Typography>
 
-        <Rating name="read-only" value={rate} readOnly />
+        <Rating
+          sx={{ marginButton: "10px" }}
+          name="read-only"
+          value={rate}
+          readOnly
+        />
         {/* things to eat content */}
         {catogry === "things to eat" && (
           <Box sx={{ display: "flex" }}>
-            <DinnerDiningIcon />
+            <DinnerDiningIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
               {type}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
-            <MenuBookIcon />
+            <MenuBookIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
                 fontWeight: "regular",
               }}
             >
               {cuisine}
             </Typography>
+            <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
+            <MonetizationOnIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
@@ -141,36 +159,39 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
         {/* things to eat content */}
         {catogry === "things to do" && (
           <Box sx={{ display: "flex" }}>
-            <LocalActivityIcon />
+            <LocalActivityIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
               {type}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
-            <AccessTimeIcon />
+            <AccessTimeIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
               {duration} hours
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
-            <MonetizationOnIcon />
+            <MonetizationOnIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
@@ -186,19 +207,21 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
               {stars}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
-            <MonetizationOnIcon />
+            <MonetizationOnIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "16px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
@@ -207,12 +230,12 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
           </Box>
         )}
 
-        <Box sx={{ width: "100%", height: "30%" }}>
+        <Box sx={{ width: "100%", height: "30%", mt: 1 }}>
           <Typography
             sx={{
               width: "100%",
               fontFamily: "Roboto",
-              fontSize: "16px",
+              fontSize: "11px",
               fontWeight: "regular",
             }}
           >
@@ -220,20 +243,20 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
               ? description
               : description
                   .split(" ")
-                  .slice(0, countWords(description) / 2)
-                  .join(" ") && " ..."}
+                  .slice(0, countWords(description) / 2 / 2)
+                  .join(" ") + " ..."}
           </Typography>
           <Typography
             onClick={() => setReadMore(!readMore)}
             sx={{
-              fontSize: "7px",
+              fontSize: "8px",
               fontFamily: "Roboto",
               color: "#000000",
               textDecoration: "underline",
               cursor: "pointer",
             }}
           >
-            Read More
+            {readMore ? "Read Less" : "Read More"}
           </Typography>
         </Box>
       </Box>

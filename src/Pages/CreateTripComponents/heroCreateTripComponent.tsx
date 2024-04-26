@@ -8,12 +8,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import CreateTripCard from "./CreateTripCard";
-import Rest from "../images/CreateTrip/Rest.jpg";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-
+import Rest from "./Rest.jpg";
 // interfaces for the functions
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -82,7 +81,6 @@ function Accordion(props: AccordionProps) {
         <Box
           sx={{
             width: "100%",
-            p: 3,
             display: "flex",
             flexDirection: "column",
           }}
@@ -110,6 +108,7 @@ export default function HeroCreateTripComponent() {
         display: "flex",
         justifyContent: "center",
         mt: 3,
+        height: "100%",
         flexDirection: "column",
       }}
     >
@@ -149,7 +148,7 @@ export default function HeroCreateTripComponent() {
                 catogry="things to eat"
                 image={Rest}
                 placeName="Restaurant Sufra"
-                rate={5}
+                rate={4}
                 location="Capital"
                 type="Restuant"
                 description="Welcome to Restaurant Sufra, where every dish tells a story of tradition and taste. Inspired by the rich culinary heritage of the Mediterranean, Sufra invites you on a journey of flavor exploration. From sizzling kebabs to aromatic tagines, our menu is a celebration of authentic flavors and fresh ingredients meticulously crafted to delight your senses. Whether you're seeking a cozy dinner with loved ones or a vibrant gathering with friends, let Restaurant Sufra be your culinary sanctuary, where every meal is a cherished memory in the making."

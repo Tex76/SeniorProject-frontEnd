@@ -29,7 +29,7 @@ export default function CreateTrip() {
         <NavBar textColor="rgb(0,0,0)" />
       </Box>
       <Box
-        sx={{ display: "flex", width: "100%", height: "100%", maxWidth: 1280 }}
+        sx={{ display: "flex", width: "100%", height: "auto", maxWidth: 1280 }}
       >
         {/* Trip information */}
         <Box
