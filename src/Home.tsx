@@ -20,8 +20,13 @@ import Reviews from "./Pages/Reviews";
 import ReviewPlace from "./Pages/ReviewPlace";
 import Footer from "./Pages/SharedComponents/Footer";
 import CreateTrip from "./Pages/CreateTrip";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function App() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('lg'));
+
   return (
     <Router>
       <Routes>
@@ -56,10 +61,7 @@ function App() {
                 <Box sx={{ mb: 20, maxWidth: 1280, margin: "auto" }}>
                   <NavBar textColor="rgb(255,255,255)" />
                 </Box>
-                <Box
-                  display={"flex"}
-                  sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}
-                >
+                <Box sx={{ maxWidth: 1280, margin: "auto" }}>
                   <Welcome />
                 </Box>
               </Box>
@@ -80,7 +82,7 @@ function App() {
                 </Box>
               </Box>
 
-              <RoadMap />
+              {matches && <RoadMap />}
               <Footer />
             </Box>
           }

@@ -33,14 +33,16 @@ const StepperComponent: React.FC<StepperComponentProps> = ({ activeStep, steps, 
           </Step>
         ))}
       </Stepper>
-      <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1, justifyContent: 'space-between', marginLeft: '1rem', marginRight: '1rem' }}>
-        <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ backgroundColor: '#FFD166', '&:hover': { backgroundColor: '#CCAA52' }, borderRadius: '15px', color: '#fff' }}>
-          Back
-        </Button>
-        <Button onClick={handleNext} sx={{ backgroundColor: '#205E60', '&:hover': { backgroundColor: '#16473C' }, borderRadius: '15px', color: '#fff' }}>
-          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        </Button>
-      </Box>
+      {activeStep !== 0 && (
+        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1, justifyContent: 'space-between', marginLeft: '1rem', marginRight: '1rem' }}>
+          <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ backgroundColor: '#FFD166', '&:hover': { backgroundColor: '#CCAA52' }, borderRadius: '15px', color: '#fff' }}>
+            Back
+          </Button>
+          <Button onClick={handleNext} sx={{ backgroundColor: '#205E60', '&:hover': { backgroundColor: '#16473C' }, borderRadius: '15px', color: '#fff' }}>
+            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

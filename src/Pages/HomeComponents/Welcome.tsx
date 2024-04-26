@@ -76,20 +76,20 @@ export default function Welcome() {
         </Button>
       </Box>
 
-      {!isMobile && ( // Code Needs to be responsive, shows gap on right side in iPad Pro View
-        <Box sx={{ mb: 3 }}>
-          <hr
-            style={{
-              color: "white",
-              backgroundColor: "white",
-              height: 1,
-              width: isDesktop ? "66vw" : "75vw",
-              marginTop: 100,
-              boxSizing: "border-box",
-            }}
-          />
-        </Box>
-      )}
+      {!isMobile && (
+          <Box sx={{ mb: 3, width: '100%', maxWidth: "1280px", margin: "auto" }}>
+            <hr
+              style={{
+                color: "white",
+                backgroundColor: "white",
+                height: 1,
+                width: "100%",
+                marginTop: 100,
+                boxSizing: "border-box",
+              }}
+            />
+          </Box>
+        )}
 
       <Grid container spacing={3}>
         <Grid item sm={12} md={4}>
