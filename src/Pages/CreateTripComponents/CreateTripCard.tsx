@@ -46,27 +46,23 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
     return words ? words.length : 0;
   }
   return (
-    <Box
-      sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}
-    >
+    <Box sx={{ width: "100%", display: "flex", marginTop: "20px" }}>
       {/* image box */}
-      {/* make the image no-repate */}
-      <Box>
+      <Box sx={{ width: "50%", height: "100%" }}>
         <img
           src={image}
           style={{
-            width: "50%",
-            height: "100%",
+            width: "80%",
+            height: "50%",
             backgroundSize: "cover",
             backgroundPosition: "center",
             borderRadius: "10px",
-            backgroundRepeat: "no-repeat",
           }}
           alt=""
         />
       </Box>
       {/* content box */}
-      <Box sx={{ width: "45%", display: "flex", flexDirection: "column" }}>
+      <Box sx={{ width: "50%", display: "flex", flexDirection: "column" }}>
         {/* location name */}
 
         <Box
@@ -108,8 +104,9 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
         </Typography>
 
         <Rating
-          sx={{ marginButton: "10px" }}
-          name="read-only"
+          sx={{ marginButton: "20px" }}
+          name="rating"
+          size="small"
           value={rate}
           readOnly
         />
