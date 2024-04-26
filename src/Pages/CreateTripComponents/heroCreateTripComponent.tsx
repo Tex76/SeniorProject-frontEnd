@@ -8,11 +8,15 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import CreateTripCard from "./CreateTripCard";
+import Button from "@mui/material/Button";
+import Hotel from "./Hotel.jpg";
+import Circuit from "./Circuit.jpg";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Rest from "./Rest.jpg";
+import { Dispatch, SetStateAction } from "react";
 // interfaces for the functions
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -94,7 +98,11 @@ function Accordion(props: AccordionProps) {
 }
 // end of function accordion
 
-export default function HeroCreateTripComponent() {
+export default function HeroCreateTripComponent({
+  setBlackBox,
+}: {
+  setBlackBox: Dispatch<SetStateAction<boolean>>;
+}) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -141,9 +149,45 @@ export default function HeroCreateTripComponent() {
         "places to stay": [array of places to stay],   
     }        
         */}
-          <Typography>5 items</Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography>5 items</Typography>
+            <Button
+              onClick={() => {
+                setBlackBox(true);
+              }}
+              sx={{
+                backgroundColor: "#FFD334",
+                fontFamily: "Roboto",
+                textTransform: "capitalize",
+                color: "white",
+                fontWeight: "medium",
+                fontSize: "15px",
+                borderRadius: "35px",
+                padding: "10px 25px",
+                lineHeight: "140%",
+                ":hover": { backgroundColor: "#FFC700" },
+              }}
+            >
+              More
+            </Button>
+          </Box>
           <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
             <Accordion value="Things to do" index={0}>
+              <CreateTripCard
+                catogry="things to do"
+                image={Circuit}
+                placeName="Bahrain International Circuits"
+                rate={5}
+                location="Northern"
+                type="Landing Mark"
+                description="Bahrain Circuit, nestled in the heart of the Middle East, is a captivating blend of modern racing prowess and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners. Surrounded by the desert landscape, its illuminated beauty under the night sky during races creates an unforgettable spectacle, making it a favorite among motorsport enthusiasts worldwide."
+                price="3"
+                duration="3 - 4"
+              />
+            </Accordion>
+          </Box>
+          <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
+            <Accordion value="Things to eat" index={1}>
               <CreateTripCard
                 catogry="things to eat"
                 image={Rest}
@@ -156,12 +200,22 @@ export default function HeroCreateTripComponent() {
                 cuisine="Indian"
               />
             </Accordion>
-          </Box>
-          <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-            <Accordion value="Things to eat" index={1}></Accordion>
           </Box>{" "}
           <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-            <Accordion value="Places to stay" index={2}></Accordion>
+            <Accordion value="Places to stay" index={2}>
+              <CreateTripCard
+                catogry="places to stay"
+                image={Hotel}
+                stars={5}
+                placeName="Hilton Bahrain
+                Hotel"
+                rate={5}
+                location="Muharrqa"
+                type="Hotel"
+                price="250 - 300"
+                description="The Hilton Bahrain, a beacon of luxury nestled along the azure coastline of the Arabian Gulf, embodies elegance and opulence. Boasting stunning panoramic views, lavish accommodations, and impeccable service, this five-star haven offers a seamless blend of modern comfort and traditional Arabian hospitality. Whether indulging in gourmet dining experiences, rejuvenating at the spa, or lounging by the pristine poolside, guests are immersed in a world of unparalleled luxury at the Hilton Bahrain."
+              />
+            </Accordion>
           </Box>
         </CustomTabPanel>
 

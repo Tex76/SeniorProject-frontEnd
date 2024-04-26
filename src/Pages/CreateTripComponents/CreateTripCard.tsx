@@ -48,7 +48,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
   return (
     <Box sx={{ width: "100%", display: "flex", marginTop: "20px" }}>
       {/* image box */}
-      <Box sx={{ width: "50%", height: "100%" }}>
+      <Box sx={{ width: "50%", height: "100%", position: "relative" }}>
         <img
           src={image}
           style={{
@@ -60,6 +60,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
           }}
           alt=""
         />
+        <StarIcon sx={{ position: "absolute", top: "5px", left: "5px" }} />
       </Box>
       {/* content box */}
       <Box sx={{ width: "50%", display: "flex", flexDirection: "column" }}>
@@ -75,6 +76,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
             paddingX: "6px",
             paddingY: "3px",
             marginBottom: "3px",
+            opacity: "1",
           }}
         >
           <Typography
@@ -83,6 +85,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
               fontWeight: "regular",
               fontSize: "15px",
               textAlign: "center",
+              opacity: "1",
             }}
           >
             {location}
@@ -119,7 +122,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 marginLeft: "3px",
                 fontFamily: "Roboto",
                 fontSize: "12px",
-                marginTop: "2px",
+                marginTop: "5px",
                 fontWeight: "regular",
               }}
             >
@@ -144,7 +147,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 marginLeft: "3px",
                 fontFamily: "Roboto",
                 fontSize: "12px",
-                marginTop: "2px",
+                marginTop: "5px",
                 fontWeight: "regular",
               }}
             >
@@ -162,7 +165,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 marginLeft: "3px",
                 fontFamily: "Roboto",
                 fontSize: "12px",
-                marginTop: "2px",
+                marginTop: "3px",
                 fontWeight: "regular",
               }}
             >
@@ -199,7 +202,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
 
         {catogry === "places to stay" && (
           <Box sx={{ display: "flex" }}>
-            <StarIcon />
+            <StarIcon fontSize="small" />
             <Typography
               sx={{
                 marginLeft: "3px",
@@ -218,7 +221,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 marginLeft: "3px",
                 fontFamily: "Roboto",
                 fontSize: "12px",
-                marginTop: "2px",
+                marginTop: "3px",
                 fontWeight: "regular",
               }}
             >
