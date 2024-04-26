@@ -9,7 +9,7 @@ import NavBar from "./SharedComponents/NavBar";
 import Footer from "./SharedComponents/Footer";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-
+import HeroCreateTripComponent from "./CreateTripComponents/heroCreateTripComponent";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 
@@ -54,7 +54,7 @@ const PickTrip = () => {
       <Box
         sx={{
           width: { md: "40%", sm: "60%", xs: "80%" },
-          height: { md: "85%", sm: "85%", xs: "85%" },
+          height: { md: "85%", sm: "85%", xs: "85gi%" },
 
           backgroundColor: "white",
           zIndex: 1000,

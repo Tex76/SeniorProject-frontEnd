@@ -6,6 +6,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { Typography } from "@mui/material";
 import background from "../images/CreateTrip/HeroImage.jpg";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
+import HeroCreateTripComponent from "./CreateTripComponents/heroCreateTripComponent";
+
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -103,8 +105,11 @@ export default function CreateTrip() {
                 color: "#6D7D8B",
               }}
             >
-              Small description about the Trip places and Days
+              Small description about the Trip places and Days.
             </Typography>
+
+            {/* content must be getting form other componenet */}
+            <HeroCreateTripComponent />
           </Box>
         </Box>
         {/* map box */}
