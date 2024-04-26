@@ -57,13 +57,13 @@ export default function CreateTripPopUpContent({
   // Filter places based on the search query, exclude liked places, and match location from props
   const filteredData = fakeData.filter(
     (place) =>
-      !place.liked &&
       locationsArray
         .map((loc) => loc.toLowerCase())
-        .includes(place.location.toLowerCase()) && // Match against provided locations
+        .includes(place.location.toLowerCase()) &&
       (place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         place.location.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
   const [filterArray, setFilterArray] = useState(filteredData);
 
   console.log("filterArray: ", filterArray);

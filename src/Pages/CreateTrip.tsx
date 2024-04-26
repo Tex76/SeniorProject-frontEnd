@@ -14,6 +14,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import UpdateTripInfo from "./CreateTripComponents/UpdateCreateInfo";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 
 export default function CreateTrip() {
   const [blackBox, setBlackBox] = useState(false);
@@ -93,7 +94,6 @@ export default function CreateTrip() {
         }}
       >
         {/* example of location must be same as location from CreateTripPopUp */}
-        {/* <UpdateTripInfo/> */}
         <UpdateTripInfo passFunction={setBlackBox2} />
       </Box>
       <Box sx={{ width: "100%", maxWidth: 1280 }}>
@@ -114,7 +114,8 @@ export default function CreateTrip() {
             display: "flex",
             flexDirection: "column",
             height: "100%",
-            width: { xs: "100%", lg: "50%" },
+            marginRight: "5%",
+            width: { xs: "100%", lg: "49%" },
           }}
         >
           {/* image box */}
@@ -155,10 +156,12 @@ export default function CreateTrip() {
               }}
             >
               <Typography
+                onClick={() => setBlackBox2(true)}
                 sx={{
                   color: "white",
                   fontFamily: "Roboto",
                   fontWeight: "bold",
+                  cursor: "pointer",
                 }}
                 variant="h3"
               >
@@ -167,7 +170,13 @@ export default function CreateTrip() {
               <Box sx={{ display: "flex" }}>
                 <AddLocationIcon sx={{ color: "black" }} fontSize="large" />
                 <Typography
-                  sx={{ color: "white", fontFamily: "Roboto", mt: 0.5 }}
+                  onClick={() => setBlackBox2(true)}
+                  sx={{
+                    color: "white",
+                    fontFamily: "Roboto",
+                    mt: 0.5,
+                    cursor: "pointer",
+                  }}
                   variant="body1"
                 >
                   Capital, Northen, Muharraq
@@ -177,10 +186,12 @@ export default function CreateTrip() {
           </Box>
           <Box sx={{ mt: 3 }}>
             <Typography
+              onClick={() => setBlackBox2(true)}
               sx={{
                 fontFamily: "Roboto",
                 fontWeight: "small",
                 color: "#6D7D8B",
+                cursor: "pointer",
               }}
             >
               Small description about the Trip places and Days.
@@ -191,7 +202,25 @@ export default function CreateTrip() {
           </Box>
         </Box>
         {/* map box */}
-        <Box sx={{ width: "50%", display: { xs: "none", md: "block" } }}></Box>
+        <Box
+          sx={{
+            width: "48%",
+            height: "100%", // Ensure this height fits within your layout
+            display: { xs: "none", md: "flex" },
+          }}
+        >
+          <LoadScript googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
+            <GoogleMap
+              mapContainerStyle={{
+                width: "100%",
+                height: "85%",
+                borderRadius: "15px",
+              }}
+              center={{ lat: 26.0667, lng: 50.5577 }}
+              zoom={8}
+            />
+          </LoadScript>
+        </Box>
       </Box>
 
       <Footer />

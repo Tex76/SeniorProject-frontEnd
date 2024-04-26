@@ -20,16 +20,18 @@ export function PlacesSearch({
   filterArray: Places[];
   setFilterArray: React.Dispatch<React.SetStateAction<Places[]>>;
 }) {
-  const { name, location, image, id } = places;
-  const [like, setLike] = useState(false); // Initial like state based on props
-  function toggleLike(id: string) {
-    setLike(!like);
-    // this logic I put Not like because it's not yet update it
-    setFilterArray(
-      filterArray.map((place) =>
-        place.id === id ? { ...place, liked: !like } : place
-      )
-    );
+  const { name, location, image, id, liked } = places;
+  const [like, setLike] = useState(places.liked); // Initial like state based on props
+  function toggleLike() {
+    setLike((currentLike) => {
+      // Update the filterArray with the new like status
+      setFilterArray(
+        filterArray.map((place) =>
+          place.id === places.id ? { ...place, liked: !currentLike } : place
+        )
+      );
+      return !currentLike;
+    });
   }
 
   return (
@@ -101,11 +103,11 @@ export function PlacesSearch({
       >
         <Button
           onClick={() => {
-            toggleLike(id);
+            toggleLike();
           }}
           size="medium"
           sx={{
-            backgroundColor: "white", // Corrected from "wihte" to "white"
+            backgroundColor: "white",
             color: "black",
             borderRadius: "100%",
             minWidth: "0px",
@@ -114,7 +116,7 @@ export function PlacesSearch({
           }}
         >
           {like ? (
-            <FavoriteIcon fontSize="medium" sx={{ color: "red" }} /> // Filled heart icon when liked
+            <FavoriteIcon fontSize="medium" sx={{ color: "red" }} /> // Use local like state
           ) : (
             <FavoriteBorderIcon fontSize="medium" />
           )}
