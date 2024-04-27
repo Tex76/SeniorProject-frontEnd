@@ -13,7 +13,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Circuit from "./Circuit.jpg";
 import Hotel from "./Hotel.jpg";
-import { PlacesSearch, Places } from "./PlacesSearch"; // Correct import for default export
 
 import Rest from "./Rest.jpg";
 import { PlacesSearchLikedAddFunction } from "./PlacesSearchLikedAddFunction";
@@ -78,7 +77,7 @@ export default function AddToDaysLikedElementForm({
           color: "#000000",
         }}
       >
-        Search for place
+        Choose liked place
       </Typography>
       <Typography
         sx={{
@@ -89,8 +88,8 @@ export default function AddToDaysLikedElementForm({
           color: "#000000",
         }}
       >
-        Do you already have certain activities in mind that you don't want to
-        miss? Locate and bookmark them for your trip.
+        Select place that you want to add to your day, or search among different
+        places that you have liked!
       </Typography>
       <Box
         sx={{

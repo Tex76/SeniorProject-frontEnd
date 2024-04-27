@@ -49,7 +49,7 @@ export default function SteperCard({ place }: { place: Places }) {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: { md: "100%", xs: "80%" },
         display: "flex",
         marginTop: "10px",
         backgroundColor: "#FFF5E1",

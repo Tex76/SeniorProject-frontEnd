@@ -132,16 +132,18 @@ export default function CreateTrip() {
           width: "100%",
           height: "auto",
           maxWidth: 1280,
-          padding: "20px",
+          paddingY: "20px",
+          paddingX: { md: "0", xs: "8px" },
         }}
       >
         {/* Trip information */}
         <Box
           sx={{
             display: "flex",
+            padding: { md: "0", xs: "10px" },
             flexDirection: "column",
             height: "100%",
-            marginRight: "5%",
+            marginRight: { md: "5%", xs: "0" },
             width: { xs: "100%", lg: "49%" },
           }}
         >
@@ -157,8 +159,8 @@ export default function CreateTrip() {
               backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${background})`, // Combined linear gradient and background image
               backgroundSize: "cover",
               flexDirection: "column",
-              width: "100%",
-              height: "305px",
+              width: { md: "100%", xs: "95%" },
+              height: { md: "305px", xs: "300px" },
             }}
           >
             {/* Button icon box */}

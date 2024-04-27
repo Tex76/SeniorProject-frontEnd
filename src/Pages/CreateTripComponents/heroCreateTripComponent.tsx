@@ -18,7 +18,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Rest from "./Rest.jpg";
 import { Dispatch, SetStateAction } from "react";
-import { Places } from "./StepperCreateTrip";
 // interfaces for the functions
 interface TabPanelProps {
   children?: React.ReactNode;
