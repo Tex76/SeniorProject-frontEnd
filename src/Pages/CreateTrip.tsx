@@ -69,7 +69,7 @@ export default function CreateTrip() {
         }}
       >
         {/* example of location must be same as location from CreateTripPopUp  */}
-        {/* this will be executed when more button is clicked */}
+        {/* this will be executed when more button is ***clicked*** */}
         <CreateTripPopUpContent
           location={["Northern", "Sourthern", "Capital"]}
           setBlackBox={setBlackBox}

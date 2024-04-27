@@ -18,7 +18,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Rest from "./Rest.jpg";
 import { Dispatch, SetStateAction } from "react";
-import { Places } from "./PlacesSearch";
+import { Places } from "./StepperCreateTrip";
 // interfaces for the functions
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -120,6 +120,7 @@ export default function HeroCreateTripComponent({
   const fakeDaysData = [
     [
       {
+        id: "Id-fake-from-database",
         catogry: "things to do",
         image: Circuit,
         placeName: "Bahrain International Circuits",
@@ -129,11 +130,41 @@ export default function HeroCreateTripComponent({
         description:
           "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
         duration: "3 - 4",
-        pirce: "3",
+        price: "3",
+      },
+      {
+        id: "Iddsfsf-fake-from-database",
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        price: "3",
+      },
+    ],
+    [],
+    [
+      {
+        id: "Id2-fake-from-database",
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        price: "3",
       },
     ],
     [
       {
+        id: "Id23-fake-from-database",
         catogry: "things to do",
         image: Circuit,
         placeName: "Bahrain International Circuits",
@@ -143,11 +174,12 @@ export default function HeroCreateTripComponent({
         description:
           "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
         duration: "3 - 4",
-        pirce: "3",
+        price: "3",
       },
     ],
     [
       {
+        id: "Id23-fake-from-database213",
         catogry: "things to do",
         image: Circuit,
         placeName: "Bahrain International Circuits",
@@ -157,11 +189,12 @@ export default function HeroCreateTripComponent({
         description:
           "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
         duration: "3 - 4",
-        pirce: "3",
+        price: "3",
       },
     ],
     [
       {
+        id: "Id23-fake-from-database2132e",
         catogry: "things to do",
         image: Circuit,
         placeName: "Bahrain International Circuits",
@@ -171,11 +204,12 @@ export default function HeroCreateTripComponent({
         description:
           "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
         duration: "3 - 4",
-        pirce: "3",
+        price: "3",
       },
     ],
     [
       {
+        id: "Id23-fake-from-database23223defee",
         catogry: "things to do",
         image: Circuit,
         placeName: "Bahrain International Circuits",
@@ -185,35 +219,7 @@ export default function HeroCreateTripComponent({
         description:
           "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
         duration: "3 - 4",
-        pirce: "3",
-      },
-    ],
-    [
-      {
-        catogry: "things to do",
-        image: Circuit,
-        placeName: "Bahrain International Circuits",
-        rate: 5,
-        location: "Northern",
-        type: "Landing Mark",
-        description:
-          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
-        duration: "3 - 4",
-        pirce: "3",
-      },
-    ],
-    [
-      {
-        catogry: "things to do",
-        image: Circuit,
-        placeName: "Bahrain International Circuits",
-        rate: 5,
-        location: "Northern",
-        type: "Landing Mark",
-        description:
-          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
-        duration: "3 - 4",
-        pirce: "3",
+        price: "3",
       },
     ],
   ];
@@ -377,8 +383,7 @@ export default function HeroCreateTripComponent({
             return (
               <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
                 <Accordion value={`Day ${DayIndex + 1}`} index={DayIndex}>
-                  {/* here we msut add accordion content of the add Days */}
-                  <StepperCreateTrip />
+                  <StepperCreateTrip key={DayIndex} Places={dayContent} />
                 </Accordion>
               </Box>
             );
