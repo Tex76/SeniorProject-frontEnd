@@ -8,6 +8,7 @@ import background from "../images/CreateTrip/HeroImage.jpg";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import HeroCreateTripComponent from "./CreateTripComponents/heroCreateTripComponent";
 import CreateTripPopUpContent from "./CreateTripComponents/CreateTripPopUpContent";
+import AddToDaysLikedElementForm from "./CreateTripComponents/AddToDaysLikedElementForm";
 import { useState } from "react";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -19,6 +20,7 @@ import { GoogleMap, LoadScript } from "@react-google-maps/api";
 export default function CreateTrip() {
   const [blackBox, setBlackBox] = useState(false);
   const [blackBox2, setBlackBox2] = useState(false);
+  const [blackBox3, setBlackBox3] = useState(false);
   return (
     <Box
       sx={{
@@ -35,13 +37,14 @@ export default function CreateTrip() {
         onClick={function (e) {
           setBlackBox(false);
           setBlackBox2(false);
+          setBlackBox3(false);
         }}
         sx={{
           width: "100%",
           height: "100%",
           backgroundColor: "black",
           opacity: 0.5,
-          display: blackBox || blackBox2 ? "flex" : "none",
+          display: blackBox || blackBox2 || blackBox3 ? "flex" : "none",
           position: "fixed",
           justifyContent: "center",
           flexDirection: "column",
@@ -96,6 +99,29 @@ export default function CreateTrip() {
       >
         {/* example of location must be same as location from CreateTripPopUp */}
         <UpdateTripInfo passFunction={setBlackBox2} />
+      </Box>
+
+      <Box
+        sx={{
+          width: { md: "40%", sm: "60%", xs: "80%" },
+          height: { md: "90%", sm: "85%", xs: "85gi%" },
+
+          backgroundColor: "white",
+          zIndex: 1000,
+          opacity: 1,
+          borderRadius: "8px",
+          display: blackBox3 ? "flex" : "none",
+          position: "fixed", // Changed from 'absolute' to 'fixed'
+          top: "50%",
+          flexDirection: "column",
+          left: "50%",
+          padding: "15px",
+          transform: "translate(-50%, -50%)",
+          cursor: "pointer", // Optional: Changes cursor on hover to indicate it's clickable
+        }}
+      >
+        {/* this will show the form of choose from liked places */}
+        <AddToDaysLikedElementForm passFunction={setBlackBox3} />
       </Box>
       <Box sx={{ width: "100%", maxWidth: 1280 }}>
         <NavBar textColor="rgb(0,0,0)" />
@@ -199,7 +225,10 @@ export default function CreateTrip() {
             </Typography>
 
             {/* content must be getting form other componenet */}
-            <HeroCreateTripComponent setBlackBox={setBlackBox} />
+            <HeroCreateTripComponent
+              setBlackBox3={setBlackBox3}
+              setBlackBox={setBlackBox}
+            />
           </Box>
         </Box>
         {/* map box */}

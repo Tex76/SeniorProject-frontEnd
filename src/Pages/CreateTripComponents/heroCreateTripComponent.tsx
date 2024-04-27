@@ -110,8 +110,10 @@ function Accordion(props: AccordionProps) {
 // end of function accordion
 
 export default function HeroCreateTripComponent({
+  setBlackBox3,
   setBlackBox,
 }: {
+  setBlackBox3: Dispatch<SetStateAction<boolean>>;
   setBlackBox: Dispatch<SetStateAction<boolean>>;
 }) {
   const [value, setValue] = useState(0);
@@ -383,7 +385,11 @@ export default function HeroCreateTripComponent({
             return (
               <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
                 <Accordion value={`Day ${DayIndex + 1}`} index={DayIndex}>
-                  <StepperCreateTrip key={DayIndex} Places={dayContent} />
+                  <StepperCreateTrip
+                    key={DayIndex}
+                    Places={dayContent}
+                    setBlackBox3={setBlackBox3}
+                  />
                 </Accordion>
               </Box>
             );

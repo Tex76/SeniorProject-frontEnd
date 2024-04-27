@@ -78,8 +78,10 @@ const ColorlibStepIcon = (props: ColorlibStepIconProps) => {
 };
 
 export default function VerticalLinearStepper({
+  setBlackBox3,
   Places,
 }: {
+  setBlackBox3: React.Dispatch<React.SetStateAction<boolean>>;
   Places: Places[];
 }) {
   const [activeStep, setActiveStep] = React.useState(Places.length); // Start with no active step
@@ -170,7 +172,9 @@ export default function VerticalLinearStepper({
       <Box sx={{ mt: 4, mb: 2, display: "flex" }}>
         <Button
           variant="contained"
-          onClick={addStep}
+          onClick={() => {
+            setBlackBox3(true);
+          }}
           sx={{
             mt: 1,
             mr: 1,
