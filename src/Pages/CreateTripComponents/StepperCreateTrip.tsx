@@ -7,6 +7,7 @@ import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { StepIconProps } from "@mui/material/StepIcon";
+import SteperCard from "./SteperCard";
 import Rest from "./Rest.jpg";
 import Circuit from "./Circuit.jpg";
 
@@ -149,18 +150,24 @@ export default function VerticalLinearStepper({
         ) : (
           // here we must add the logic of the cards to make sure it's added correctly
           steps.map((place: Places) => (
-            <Step key={place.id} expanded={true}>
+            <Step key={place.id} expanded={true} sx={{ width: "100%" }}>
               <StepLabel StepIconComponent={ColorlibStepIcon}>
                 {place.placeName}
               </StepLabel>
-              <StepContent>
-                {/* card logic here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
+              <StepContent
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "150%",
+                }}
+              >
+                <SteperCard place={place} />
               </StepContent>
             </Step>
           ))
         )}
       </Stepper>
-      <Box sx={{ mt: 2, mb: 2 }}>
+      <Box sx={{ mt: 4, mb: 2, display: "flex" }}>
         <Button
           variant="contained"
           onClick={addStep}
@@ -168,7 +175,8 @@ export default function VerticalLinearStepper({
             mt: 1,
             mr: 1,
             backgroundColor: "#007B80",
-            borderRadius: "15px",
+            borderRadius: "30px",
+            marginRight: "2rem",
             ":hover": {
               backgroundColor: "#16473C",
             },
@@ -183,7 +191,7 @@ export default function VerticalLinearStepper({
             mt: 1,
             mr: 1,
             backgroundColor: "#007B80",
-            borderRadius: "15px",
+            borderRadius: "30px",
             ":hover": {
               backgroundColor: "#16473C",
             },
