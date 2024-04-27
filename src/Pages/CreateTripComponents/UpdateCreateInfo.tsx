@@ -17,6 +17,7 @@ export default function UpdateTripInfo({ passFunction }: CreateTripFormProps) {
   const [errors, setErrors] = useState({
     tripName: "",
     description: "",
+    coverImage: "",
   });
 
   function validateFields() {
@@ -28,6 +29,10 @@ export default function UpdateTripInfo({ passFunction }: CreateTripFormProps) {
         document.getElementById("description") as HTMLTextAreaElement
       ).value
         ? "This field is required"
+        : "",
+      coverImage: !(document.getElementById("coverImage") as HTMLInputElement)
+        .value
+        ? "This filed is required"
         : "",
     };
     setErrors(tempErrors);
@@ -46,10 +51,11 @@ export default function UpdateTripInfo({ passFunction }: CreateTripFormProps) {
   }
 
   function handleCancel() {
-    setErrors({ tripName: "", description: "" });
+    setErrors({ tripName: "", description: "", coverImage: "" });
     passFunction(false);
     setDays(1);
     (document.getElementById("tripName") as HTMLInputElement).value = "";
+    (document.getElementById("coverImage") as HTMLInputElement).value = "";
     (document.getElementById("description") as HTMLTextAreaElement).value = "";
   }
 
@@ -118,6 +124,17 @@ export default function UpdateTripInfo({ passFunction }: CreateTripFormProps) {
               <AddIcon />
             </IconButton>
           </Box>
+        </Box>
+        <Box mt={2}>
+          <Typography variant="subtitle1">Cover Image:</Typography>
+          <TextField
+            fullWidth
+            id="coverImage"
+            name="coverImage"
+            placeholder="Enter your trip cover image..."
+            error={!!errors.tripName}
+            helperText={errors.tripName}
+          />
         </Box>
         <Box mt={2}>
           <Typography variant="subtitle1">Trip Description:</Typography>

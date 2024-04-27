@@ -68,7 +68,8 @@ export default function CreateTrip() {
           cursor: "pointer", // Optional: Changes cursor on hover to indicate it's clickable
         }}
       >
-        {/* example of location must be same as location from CreateTripPopUp */}
+        {/* example of location must be same as location from CreateTripPopUp  */}
+        {/* this will be executed when more button is clicked */}
         <CreateTripPopUpContent
           location={["Northern", "Sourthern", "Capital"]}
           setBlackBox={setBlackBox}
@@ -77,7 +78,7 @@ export default function CreateTrip() {
       <Box
         sx={{
           width: { md: "40%", sm: "60%", xs: "80%" },
-          height: { md: "70%", sm: "70%", xs: "70%" },
+          height: { md: "85%", sm: "85%", xs: "85%" },
 
           backgroundColor: "white",
           zIndex: 1000,

@@ -60,7 +60,6 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
           }}
           alt=""
         />
-        <StarIcon sx={{ position: "absolute", top: "5px", left: "5px" }} />
       </Box>
       {/* content box */}
       <Box sx={{ width: "50%", display: "flex", flexDirection: "column" }}>

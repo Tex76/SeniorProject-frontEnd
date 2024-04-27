@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
+import StepperCreateTrip from "./StepperCreateTrip";
 import { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -17,6 +18,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Rest from "./Rest.jpg";
 import { Dispatch, SetStateAction } from "react";
+import { Places } from "./PlacesSearch";
 // interfaces for the functions
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -30,6 +32,15 @@ interface AccordionProps {
   value: string; // name of the accordion
 }
 // this function will return the tab skeleton for create trip
+/*
+
+[
+  [id, id, id],
+  [id, id, id], 
+  [id, id, id],
+  [id, id, id],
+]
+*/
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -105,6 +116,109 @@ export default function HeroCreateTripComponent({
 }) {
   const [value, setValue] = useState(0);
 
+  // fake data array from data base just ignore it
+  const fakeDaysData = [
+    [
+      {
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        pirce: "3",
+      },
+    ],
+    [
+      {
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        pirce: "3",
+      },
+    ],
+    [
+      {
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        pirce: "3",
+      },
+    ],
+    [
+      {
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        pirce: "3",
+      },
+    ],
+    [
+      {
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        pirce: "3",
+      },
+    ],
+    [
+      {
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        pirce: "3",
+      },
+    ],
+    [
+      {
+        catogry: "things to do",
+        image: Circuit,
+        placeName: "Bahrain International Circuits",
+        rate: 5,
+        location: "Northern",
+        type: "Landing Mark",
+        description:
+          "Bahrain, in the heart of the Middle East, is a contemporary blend of modern racing and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners.",
+        duration: "3 - 4",
+        pirce: "3",
+      },
+    ],
+  ];
+
+  const [Days, setDays] = useState(fakeDaysData);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -136,7 +250,7 @@ export default function HeroCreateTripComponent({
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          mt: 2,
+          mt: 1,
         }}
       >
         {/* this tab view for saves */}
@@ -221,7 +335,54 @@ export default function HeroCreateTripComponent({
 
         {/* this tab view for days */}
         <CustomTabPanel value={value} index={1}>
-          Days
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              borderBottom: "1px solid #E4E4E4",
+              paddingY: "10px",
+            }}
+          >
+            {Days.map((dayContent: any, DayIndex: any) => {
+              return (
+                <Box
+                  sx={{
+                    backgroundColor: "#404040",
+                    width: "10%",
+                    paddingY: "4px",
+                    paddingX: "7px",
+                    borderRadius: "15px",
+                    borderBottom: "1px solid #E4E4E4",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      textAlign: "center",
+                      color: "white",
+                      fontFamily: "Roboto",
+                      fontSize: "11px",
+                      fontWeight: "regular",
+                      lineHeight: "22px",
+                    }}
+                  >
+                    Day {DayIndex + 1}
+                  </Typography>
+                </Box>
+              );
+            })}
+          </Box>
+
+          {Days.map((dayContent: any, DayIndex: any) => {
+            return (
+              <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
+                <Accordion value={`Day ${DayIndex + 1}`} index={DayIndex}>
+                  {/* here we msut add accordion content of the add Days */}
+                  <StepperCreateTrip />
+                </Accordion>
+              </Box>
+            );
+          })}
         </CustomTabPanel>
       </Box>
     </Box>

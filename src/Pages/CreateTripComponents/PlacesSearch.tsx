@@ -20,7 +20,7 @@ export function PlacesSearch({
   filterArray: Places[];
   setFilterArray: React.Dispatch<React.SetStateAction<Places[]>>;
 }) {
-  const { name, location, image, id, liked } = places;
+  const { name, location, image } = places;
   const [like, setLike] = useState(places.liked); // Initial like state based on props
   function toggleLike() {
     setLike((currentLike) => {
