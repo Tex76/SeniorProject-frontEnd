@@ -124,6 +124,14 @@ const Cards = () => {
             </Box>
             <Box mt={3}>
               <Typography variant="body1" component="p">
+              Price
+              </Typography>
+              <Typography variant="overline" component="p">
+              price range 4 - 15 for adult
+              </Typography>
+            </Box>
+            <Box mt={3}>
+              <Typography variant="body1" component="p">
                 Accessibility
               </Typography>
               <Typography variant="overline" component="p">
