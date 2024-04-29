@@ -42,15 +42,15 @@ const PlacesToStay = () => {
         }}
       >
         <Box
-          sx={{
+           sx={{
             backgroundImage: `url(${Background})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             position: "absolute",
-            zIndex: -1,
-            left: { md: -60, xs: 10 },
+            zIndex: 12,
+            left: { md: -100, xs: 10 },
             right: { md: 0 },
-            top: 400,
+            top: 350,
             width: "250px",
             height: "250px",
           }}
