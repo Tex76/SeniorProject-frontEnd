@@ -17,7 +17,7 @@ import formPhoto from '../images/Signup/FormPhoto.png';
 import backgroundImage from '../images/Signup/Background.png';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
-
+import axios from "axios";
 // Styled component for the form box
 const FormBox = styled(Box)(({ theme }) => ({
   borderRadius: '15px',
@@ -43,6 +43,11 @@ export default function Signup() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigation = useNavigate();
 
+export default function Signup() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+
   const [username, setUsername] = React.useState("");
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -52,10 +57,20 @@ export default function Signup() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
 
+
   const [alert, setAlert] = React.useState<string | null>(null);
+
+  const handleClickShowPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault(); // Prevent the default behavior, which is form submission
+    setShowPassword(!showPassword);
+  };
+
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
     if (!emailError && !passwordError && !confirmPasswordError && password === confirmPassword) {
       setAlert('success');
       // Navigate to Home screen
@@ -111,6 +126,47 @@ export default function Signup() {
     }
   };
 
+    const data = new FormData(event.currentTarget);
+    console.log({
+      name: data.get("name"),
+      username: data.get("username"),
+      email: data.get("email"),
+      password: data.get("password"),
+      confirmPassword: data.get("confirmPassword"),
+    });
+
+    axios
+      .post("http://localhost:5050/signin", {
+        name: data.get("name"),
+        username: data.get("username"),
+        email: data.get("email"),
+        password: data.get("password"),
+        confirmPassword: data.get("confirmPassword"),
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const FormBox = styled(Box)(({ theme }) => ({
+    borderRadius: "15px",
+    boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.15)",
+    padding: theme.spacing(3),
+    backgroundImage: `url('${backgroundImage}')`,
+    backgroundSize: "cover",
+    width: isMobile ? "100%" : "600px", // Adjust width for mobile screens
+    height: "654px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: theme.spacing(2),
+  }));
+
+
   return (
     <ThemeProvider theme={createTheme()}>
       <Container component="main" maxWidth={false}>
@@ -118,14 +174,15 @@ export default function Signup() {
 
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            width: '100vw',
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            width: "100vw",
           }}
         >
+
           <FormBox onSubmit={handleSubmit}>
 
           <Box sx={{ position: 'fixed', top: '15%', left: '50%', transform: 'translateX(-50%)'}}>
@@ -146,6 +203,7 @@ export default function Signup() {
             </Typography>
 
             <Box component="form" sx={{ mt: 3, width: '100%' }}>
+
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -196,6 +254,8 @@ export default function Signup() {
                 required
                 fullWidth
                 name="password"
+                label="Password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 label="Password"
                 type="password"
@@ -206,12 +266,35 @@ export default function Signup() {
                 error={passwordError}
                 helperText={passwordError ? "Invalid password. Must contain at least 8 characters, at least one letter and one number." : ""}
                 sx={{ mt: 2 }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        type="button" // specify the type as button to prevent form submission
+                        aria-label="toggle password visibility"
+                        onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                          handleClickShowPassword(event)
+                        } // Pass the event argument
+                        onMouseDown={(
+                          event: React.MouseEvent<HTMLButtonElement>
+                        ) => event.preventDefault()} // prevent the mousedown event from triggering form submission
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
               <TextField
                 required
                 fullWidth
                 name="confirmPassword"
+
+                label="Confirm Password"
+                type={showPassword ? "text" : "password"}
+
                 id="confirmPassword"
                 label="Confirm Password"
                 type="password"
@@ -222,14 +305,48 @@ export default function Signup() {
                 error={confirmPasswordError}
                 helperText={confirmPasswordError ? "Password and Confirm Password must match." : ""}
                 sx={{ mt: 2 }}
+
               />
 
               <hr style={{ borderWidth: '1px', color: 'rgb(200, 200, 200)', borderColor: 'rgb(200, 200, 200)', backgroundColor: 'rgb(200, 200, 200)', marginTop: '20px', flexGrow: 1, marginLeft: '10px' }} />
               
+
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        type="button" // specify the type as button to prevent form submission
+                        aria-label="toggle password visibility"
+                        onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                          handleClickShowPassword(event)
+                        } // Pass the event argument
+                        onMouseDown={(
+                          event: React.MouseEvent<HTMLButtonElement>
+                        ) => event.preventDefault()} // prevent the mousedown event from triggering form submission
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <hr
+                style={{
+                  borderWidth: "1px",
+                  color: "rgb(200, 200, 200)",
+                  borderColor: "rgb(200, 200, 200)",
+                  backgroundColor: "rgb(200, 200, 200)",
+                  marginTop: "20px",
+                  flexGrow: 1,
+                  marginLeft: "10px",
+                }}
+              />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
+
                 sx={{ mt: 3, mb: 2, backgroundColor: 'rgb(242, 183, 100)', color: 'black', '&:hover': { color: 'white' } }}
               >
                 Sign Up
@@ -237,9 +354,28 @@ export default function Signup() {
 
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
 
+
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  backgroundColor: "rgb(242, 183, 100)",
+                  color: "black",
+                  "&:hover": {
+                    // Add hover effect
+                    color: "white",
+                  },
+                }}
+              >
+                Sign Up
+              </Button>
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography variant="body2">
                   Already have an account?
-                  <Link component={RouterLink} to="/Login" sx={{ color: 'rgb(23, 18, 255)', textDecoration: 'none'}}>
+                  <Link
+                    component={RouterLink}
+                    to="/Login"
+                    sx={{ color: "rgb(23, 18, 255)", textDecoration: "none" }}
+                  >
                     {" Login"}
                   </Link>
                 </Typography>
@@ -253,7 +389,6 @@ export default function Signup() {
                 <img src={formPhoto} alt="Form"/>
               </Box>
             )}
-
         </Box>
       </Container>
     </ThemeProvider>
