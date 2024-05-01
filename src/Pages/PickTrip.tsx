@@ -9,7 +9,7 @@ import NavBar from "./SharedComponents/NavBar";
 import Footer from "./SharedComponents/Footer";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-
+import HeroCreateTripComponent from "./CreateTripComponents/heroCreateTripComponent";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 
@@ -26,7 +26,7 @@ import Icon4 from "../images/PickTrip/Icon4.png";
 import Rectangle1 from "../images/PickTrip/Rectangle1.png";
 import Rectangle2 from "../images/PickTrip/Rectangle2.png";
 import Background from "../images/PickTrip/Background.png";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 
 const PickTrip = () => {
@@ -54,7 +54,7 @@ const PickTrip = () => {
       <Box
         sx={{
           width: { md: "40%", sm: "60%", xs: "80%" },
-          height: { md: "85%", sm: "85%", xs: "85%" },
+          height: { md: "85%", sm: "85%", xs: "85gi%" },
 
           backgroundColor: "white",
           zIndex: 1000,
@@ -315,13 +315,13 @@ const PickTrip = () => {
             </Box>
           </Container>
           <Box sx={{ mt: 15 }}>
-            <LoadScript googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
+            <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
               <GoogleMap
                 mapContainerStyle={{ width: "100%", height: "400px" }}
                 center={{ lat: 26.0667, lng: 50.5577 }}
                 zoom={8}
               />
-            </LoadScript>
+            </LoadScriptNext>
           </Box>
         </Box>
         <Footer />
