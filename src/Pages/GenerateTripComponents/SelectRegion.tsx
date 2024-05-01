@@ -5,6 +5,7 @@ import region1 from '../../images/GenerateTrip/region1.png';
 import region2 from '../../images/GenerateTrip/region2.png';
 import region3 from '../../images/GenerateTrip/region3.png';
 import region4 from '../../images/GenerateTrip/region4.png';
+import region5 from '../../images/GenerateTrip/region5.png';
 
 const ImageLabel = styled('span')({
   position: 'absolute',
@@ -25,26 +26,15 @@ const regions = [
   { label: 'Northern', img: region2 },
   { label: 'Southern', img: region3 },
   { label: 'Muharraq', img: region4 },
+  { label: 'Multi-Region', img: region5 },
 ];
 
 export default function SelectRegion() {
-  const [selectedRegions, setSelectedRegions] = React.useState<string[]>([]);
+  const [selectedRegion, setSelectedRegion] = React.useState('');
 
-const handleSelect = (region: string) => {
-  if (selectedRegions.includes(region)) {
-    setSelectedRegions(prevRegions => {
-      const newRegions = prevRegions.filter(r => r !== region);
-      console.log(newRegions); // print the updated array
-      return newRegions;
-    });
-  } else {
-    setSelectedRegions(prevRegions => {
-      const newRegions = [...prevRegions, region];
-      console.log(newRegions); // print the updated array
-      return newRegions;
-    });
-  }
-};
+  const handleSelect = (region: string) => {
+    setSelectedRegion(region);
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -69,7 +59,7 @@ const handleSelect = (region: string) => {
                 m: 1,
                 borderRadius: 1,
                 transition: '0.3s',
-                border: selectedRegions.includes(region.label) ? '4px solid #FFD166' : 'none',
+                border: selectedRegion === region.label ? '2px solid #205E60' : 'none',
                 '&:hover': {
                 transform: 'scale(1.1)',
                 },

@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Box, Button, Dialog, DialogTitle, Dialog
 import BasicIcon from '@mui/icons-material/ColorLens';
 import AdvancedIcon from '@mui/icons-material/AutoAwesome';
 import { DialogActions } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface SelectMethodProps {
   activeStep: number;
@@ -22,6 +23,12 @@ export default function SelectMethod({ activeStep, setActiveStep }: SelectMethod
 
   const handleBasic = () => {
     setActiveStep(activeStep + 1);
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate("/GenerateResult");
   };
 
   return (
@@ -62,11 +69,11 @@ export default function SelectMethod({ activeStep, setActiveStep }: SelectMethod
             />
         </DialogContent>
         <DialogActions>
-            <Button variant="contained" color="primary" onClick={handleClose} sx={{ width: '100%', mt: 2 }}>
+          <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ width: '100%', mt: 2 }}>
             Submit
-            </Button>
+          </Button>
         </DialogActions>
-        </Dialog>
+      </Dialog>
     </Box>
   );
 }

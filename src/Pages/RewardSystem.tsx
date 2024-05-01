@@ -20,6 +20,23 @@ const RewardSystem = () => {
   return (
     <Box>
       <Box
+        style={{
+          backgroundColor: "teal",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          paddingBottom: "10px",
+          width: "100%",
+          }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+        <Box sx={{ width: "1280px" }}>
+          <NavBar textColor="rgb(255,255,255)" />
+        </Box>
+      </Box>
+        <Box
         sx={{
           width: "100%",
           maxWidth: 1280,
@@ -27,18 +44,6 @@ const RewardSystem = () => {
           backgroundImage: `url(${Back})`,
         }}
       >
-        <Box
-          style={{
-            backgroundColor: "teal",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            paddingBottom: "10px",
-            width: "100%",
-          }}
-          sx={{ mb: 15, maxWidth: 1280, margin: "auto" }}
-        >
-          <NavBar textColor="rgb(255,255,255)" />
-        </Box>
         <Box
           sx={{
             display: "flex",
