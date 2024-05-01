@@ -7,6 +7,7 @@ export interface Places {
   location: string;
 }
 
+// this component is the card for places that will show when user try to add to places 
 export function PlacesSearchLikedAddFunction({ places }: { places: Places }) {
   const { name, location, image } = places;
 
