@@ -26,7 +26,7 @@ import Icon4 from "../images/PickTrip/Icon4.png";
 import Rectangle1 from "../images/PickTrip/Rectangle1.png";
 import Rectangle2 from "../images/PickTrip/Rectangle2.png";
 import Background from "../images/PickTrip/Background.png";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 
 const PickTrip = () => {
@@ -315,13 +315,13 @@ const PickTrip = () => {
             </Box>
           </Container>
           <Box sx={{ mt: 15 }}>
-            <LoadScript googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
+            <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
               <GoogleMap
                 mapContainerStyle={{ width: "100%", height: "400px" }}
                 center={{ lat: 26.0667, lng: 50.5577 }}
                 zoom={8}
               />
-            </LoadScript>
+            </LoadScriptNext>
           </Box>
         </Box>
         <Footer />

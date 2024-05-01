@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScriptNext, Marker } from "@react-google-maps/api";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import "@fontsource/roboto/300.css";
@@ -109,7 +109,7 @@ const Trips = () => {
               >
                 Live map
               </Typography>
-              <LoadScript googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
+              <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
                 <Box sx={{ position: "relative" }}>
                   <GoogleMap
                     mapContainerStyle={{
@@ -143,7 +143,7 @@ const Trips = () => {
                     </Button>
                   </Box>
                 </Box>
-              </LoadScript>
+              </LoadScriptNext>
             </Box>
           </Grid>
         </Grid>

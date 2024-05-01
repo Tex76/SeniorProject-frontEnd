@@ -8,19 +8,26 @@ import background from "../images/CreateTrip/HeroImage.jpg";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import HeroCreateTripComponent from "./CreateTripComponents/heroCreateTripComponent";
 import CreateTripPopUpContent from "./CreateTripComponents/CreateTripPopUpContent";
+
 import AddToDaysLikedElementForm from "./CreateTripComponents/AddToDaysLikedElementForm";
+
 import { useState } from "react";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import UpdateTripInfo from "./CreateTripComponents/UpdateCreateInfo";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+
+import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
+
+
 
 export default function CreateTrip() {
   const [blackBox, setBlackBox] = useState(false);
   const [blackBox2, setBlackBox2] = useState(false);
+
   const [blackBox3, setBlackBox3] = useState(false);
+
   return (
     <Box
       sx={{
@@ -37,14 +44,18 @@ export default function CreateTrip() {
         onClick={function (e) {
           setBlackBox(false);
           setBlackBox2(false);
+
           setBlackBox3(false);
+
         }}
         sx={{
           width: "100%",
           height: "100%",
           backgroundColor: "black",
           opacity: 0.5,
+
           display: blackBox || blackBox2 || blackBox3 ? "flex" : "none",
+
           position: "fixed",
           justifyContent: "center",
           flexDirection: "column",
@@ -123,6 +134,7 @@ export default function CreateTrip() {
         {/* this will show the form of choose from liked places */}
         <AddToDaysLikedElementForm passFunction={setBlackBox3} />
       </Box>
+
       <Box sx={{ width: "100%", maxWidth: 1280 }}>
         <NavBar textColor="rgb(0,0,0)" />
       </Box>
@@ -132,6 +144,7 @@ export default function CreateTrip() {
           width: "100%",
           height: "auto",
           maxWidth: 1280,
+
           paddingY: "20px",
           paddingX: { md: "0", xs: "8px" },
         }}
@@ -143,6 +156,7 @@ export default function CreateTrip() {
             padding: { md: "0", xs: "10px" },
             flexDirection: "column",
             height: "100%",
+
             marginRight: { md: "5%", xs: "0" },
             width: { xs: "100%", lg: "49%" },
           }}
@@ -227,6 +241,7 @@ export default function CreateTrip() {
             </Typography>
 
             {/* content must be getting form other componenet */}
+
             <HeroCreateTripComponent
               setBlackBox3={setBlackBox3}
               setBlackBox={setBlackBox}
@@ -241,7 +256,9 @@ export default function CreateTrip() {
             display: { xs: "none", md: "flex" },
           }}
         >
-          <LoadScript googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
+
+          <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
+
             <GoogleMap
               mapContainerStyle={{
                 width: "100%",
@@ -251,7 +268,11 @@ export default function CreateTrip() {
               center={{ lat: 26.0667, lng: 50.5577 }}
               zoom={8}
             />
+
+          </LoadScriptNext>
+
           </LoadScript>
+
         </Box>
       </Box>
 
