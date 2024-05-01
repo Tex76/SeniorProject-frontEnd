@@ -16,10 +16,12 @@ import ThingsToEat from "./Pages/ThingsToEat";
 import PlacesToStay from "./Pages/PlacesToStay";
 import RewardSystem from "./Pages/RewardSystem";
 import GenerateTrip from "./Pages/GenerateTrip";
+import GenerateResult from "./Pages/GenerateResult";
 import Reviews from "./Pages/Reviews";
 import ReviewPlace from "./Pages/ReviewPlace";
 import Footer from "./Pages/SharedComponents/Footer";
 import CreateTrip from "./Pages/CreateTrip";
+import PointsStore from "./Pages/PointsStore";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -44,6 +46,8 @@ function App() {
         <Route path="/Reviews" element={<Reviews />} />
         <Route path="/ReviewPlace" element={<ReviewPlace />} />
         <Route path="/CreateTrip" element={<CreateTrip />} />
+        <Route path="/GenerateResult" element={<GenerateResult />} />
+        <Route path="/PointsStore" element={<PointsStore />} />
         <Route
           path="/"
           element={
