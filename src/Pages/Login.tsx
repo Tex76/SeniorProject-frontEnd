@@ -1,64 +1,83 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
-import { styled } from '@mui/system';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import formPhoto from '../images/Login/FormPhoto.png';
-import backgroundImage from '../images/Login/Background.png';
-import Alert from '@mui/material/Alert';
-import { useNavigate } from 'react-router-dom';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import { Link as RouterLink } from "react-router-dom";
+import { styled } from "@mui/system";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import formPhoto from "../images/Login/FormPhoto.png";
+import backgroundImage from "../images/Login/Background.png";
+import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
+import { error } from "console";
 
 // Styled component for the form box
 const FormBox = styled(Box)(({ theme }) => ({
-  borderRadius: '15px',
-  boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.15)',
+  borderRadius: "15px",
+  boxShadow: "5px 5px 5px rgba(0, 0, 0, 0.15)",
   padding: theme.spacing(3),
   backgroundImage: `url('${backgroundImage}')`,
-  backgroundSize: 'cover',
-  width: '600px',
-  height: '654px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
+  backgroundSize: "cover",
+  width: "600px",
+  height: "654px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
   gap: theme.spacing(2),
-  '@media (max-width:600px)': {
-    width: '100%',
+  "@media (max-width:600px)": {
+    width: "100%",
   },
 }));
 
 // Main component
 export default function Login() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigation = useNavigate();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [emailError, setEmailError] = React.useState(false);
-  const [passwordError, setPasswordError] = React.useState(false);
+  const [errors, setErrors] = React.useState({
+    email: "",
+  });
+  const [wrong, setWrong] = React.useState(false);
 
   const [alert, setAlert] = React.useState<string | null>(null);
 
+  const validateFields = () => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    const tempErrors = {
+      email: !emailRegex.test(email) ? "Invalid email" : "",
+    };
+    setErrors(tempErrors);
+    return !tempErrors.email;
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!emailError && !passwordError) {
-      setAlert('success');
-      // Navigate to Home screen
-      setTimeout(() => {
-        navigation('/');
-      }, 1200);
+    if (validateFields()) {
+      const email = (document.getElementById("email") as HTMLInputElement)
+        .value;
+      const password = (document.getElementById("password") as HTMLInputElement)
+        .value;
+
+      if (email !== "ali@gmail.com" || password !== "123456") {
+        setWrong(true);
+      } else {
+        setAlert("success");
+        setTimeout(() => navigation("/"), 1200);
+        setWrong(false);
+      }
     } else {
-      setAlert('error');
+      setAlert("error");
     }
   };
 
@@ -66,24 +85,12 @@ export default function Login() {
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
     // Basic regex for email validation
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(event.target.value)) {
-      setEmailError(true);
-    } else {
-      setEmailError(false);
-    }
   };
 
   // Password validation
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
     // Basic regex for password validation: At least 8 characters, at least one letter and one number
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    if (!passwordRegex.test(event.target.value)) {
-      setPasswordError(true);
-    } else {
-      setPasswordError(false);
-    }
   };
 
   return (
@@ -93,100 +100,146 @@ export default function Login() {
 
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            width: '100vw',
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            width: "100vw",
           }}
         >
           <FormBox onSubmit={handleSubmit}>
-
-          <Box sx={{ position: 'fixed', top: '15%', left: '50%', transform: 'translateX(-50%)'}}>
-            {alert === 'success' && <Alert severity="success">Login Sucess!</Alert>}
-            {alert === 'error' && <Alert severity="error">Incorrect Email or Password.</Alert>}
+            <Box
+              sx={{
+                position: "fixed",
+                top: "15%",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
+              {alert === "success" && (
+                <Alert severity="success">Login Sucess!</Alert>
+              )}
+              {alert === "error" && (
+                <Alert severity="error">Incorrect Email or Password.</Alert>
+              )}
             </Box>
-            
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
 
-            <Typography component="h1" variant="h5" sx={{ color: 'rgb(14, 34, 67)', fontSize: '32px', fontWeight: 'bold', fontFamily: 'Roboto' }}>
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{
+                color: "rgb(14, 34, 67)",
+                fontSize: "32px",
+                fontWeight: "bold",
+                fontFamily: "Roboto",
+              }}
+            >
               Login
             </Typography>
 
-            <Typography component="h5" variant="h5" sx={{ fontSize: '12px', fontFamily: 'Roboto' }}>
+            <Typography
+              component="h5"
+              variant="h5"
+              sx={{ fontSize: "12px", fontFamily: "Roboto" }}
+            >
               Welcome Back!
             </Typography>
 
-            <Box component="form" sx={{ mt: 3, width: '100%' }}>
-            <TextField
-              required
-              fullWidth
-              name="email"
-              id="email"
-              label="Email"
-              autoComplete="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={handleEmailChange}
-              error={emailError}
-              helperText={emailError ? "Invalid email" : ""}
-            />
+            <Box component="form" sx={{ mt: 3, width: "100%" }}>
+              <TextField
+                required
+                fullWidth
+                name="email"
+                id="email"
+                label="Email"
+                autoComplete="email"
+                placeholder="Enter Email"
+                value={email}
+                onChange={handleEmailChange}
+                error={!!errors.email || wrong}
+                helperText={!!errors.email ? errors.email : ""}
+              />
 
-            <TextField
-              required
-              fullWidth
-              name="password"
-              id="password"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Enter Password"
-              value={password}
-              onChange={handlePasswordChange}
-              error={passwordError}
-              helperText={passwordError ? "Invalid password. Must contain at least 8 characters, at least one letter and one number." : ""}
-              sx={{ mt: 2 }}
-            />
+              <TextField
+                required
+                fullWidth
+                name="password"
+                id="password"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                placeholder="Enter Password"
+                value={password}
+                onChange={handlePasswordChange}
+                error={wrong}
+                helperText={
+                  wrong ? "Error: either email or password wrong" : ""
+                }
+                sx={{ mt: 2 }}
+              />
 
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Link href="#" variant="body2" sx={{ color: 'rgb(23, 18, 255)' , textDecoration: 'none'}}>
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Link
+                  href="#"
+                  variant="body2"
+                  sx={{ color: "rgb(23, 18, 255)", textDecoration: "none" }}
+                >
                   Forgot password?
                 </Link>
               </Box>
 
-              <hr style={{ borderWidth: '1px', color: 'rgb(200, 200, 200)', borderColor: 'rgb(200, 200, 200)', backgroundColor: 'rgb(200, 200, 200)', marginTop: '20px', flexGrow: 1, marginLeft: '10px' }} />
-              
+              <hr
+                style={{
+                  borderWidth: "1px",
+                  color: "rgb(200, 200, 200)",
+                  borderColor: "rgb(200, 200, 200)",
+                  backgroundColor: "rgb(200, 200, 200)",
+                  marginTop: "20px",
+                  flexGrow: 1,
+                  marginLeft: "10px",
+                }}
+              />
+
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor: 'rgb(242, 183, 100)', color: 'black', '&:hover': { color: 'white' } }}
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  backgroundColor: "rgb(242, 183, 100)",
+                  color: "black",
+                  "&:hover": { color: "white" },
+                }}
               >
                 Login
               </Button>
 
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography variant="body2">
                   Don't have an account?
-                  <Link component={RouterLink} to="/Signup" sx={{ color: 'rgb(23, 18, 255)', textDecoration: 'none'}}>
+                  <Link
+                    component={RouterLink}
+                    to="/Signup"
+                    sx={{ color: "rgb(23, 18, 255)", textDecoration: "none" }}
+                  >
                     {" Sign Up"}
                   </Link>
                 </Typography>
-
               </Box>
             </Box>
           </FormBox>
-          
-          {!isMobile && (
-              <Box sx={{ ml: 3 }}>
-                <img src={formPhoto} alt="Form"/>
-              </Box>
-            )}
 
+          {!isMobile && (
+            <Box sx={{ ml: 3 }}>
+              <img src={formPhoto} alt="Form" />
+            </Box>
+          )}
         </Box>
       </Container>
     </ThemeProvider>

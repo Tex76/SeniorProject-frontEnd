@@ -22,12 +22,12 @@ import ReviewPlace from "./Pages/ReviewPlace";
 import Footer from "./Pages/SharedComponents/Footer";
 import CreateTrip from "./Pages/CreateTrip";
 import PointsStore from "./Pages/PointsStore";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function App() {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('lg'));
+  const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
   return (
     <Router>
