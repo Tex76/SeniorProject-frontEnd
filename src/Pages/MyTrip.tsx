@@ -29,10 +29,13 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { useNavigate } from "react-router-dom";
+
+// Inside your component
 
 const MyTrip = () => {
   const [sort, setSort] = useState("");
-
+  const navigate = useNavigate();
   const handleSortChange = (event: SelectChangeEvent) => {
     setSort(event.target.value);
     // Add your sorting logic here
@@ -87,6 +90,9 @@ const MyTrip = () => {
             sx={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
           >
             <Button
+              onClick={() => {
+                navigate("/CreateTrip");
+              }}
               variant="contained"
               style={{
                 backgroundColor: "sandybrown",
@@ -98,6 +104,9 @@ const MyTrip = () => {
               <AddIcon /> Create you own trip
             </Button>
             <Button
+              onClick={() => {
+                navigate("/GenerateTrip");
+              }}
               variant="contained"
               style={{
                 backgroundColor: "sandybrown",

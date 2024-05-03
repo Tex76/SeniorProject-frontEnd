@@ -11,9 +11,6 @@ import Trips from "./Pages/Trips";
 import PickTrip from "./Pages/PickTrip";
 import UserSystem from "./Pages/UserSystem";
 import MyTrip from "./Pages/MyTrip";
-import ThingsToDo from "./Pages/ThingsToDo";
-import ThingsToEat from "./Pages/ThingsToEat";
-import PlacesToStay from "./Pages/PlacesToStay";
 import RewardSystem from "./Pages/RewardSystem";
 import GenerateTrip from "./Pages/GenerateTrip";
 import GenerateResult from "./Pages/GenerateResult";
@@ -24,6 +21,7 @@ import CreateTrip from "./Pages/CreateTrip";
 import PointsStore from "./Pages/PointsStore";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Places from "./Pages/places";
 
 function App() {
   const theme = useTheme();
@@ -37,11 +35,13 @@ function App() {
         <Route path="/Trips" element={<Trips />} />
         <Route path="/PickTrip" element={<PickTrip />} />
         <Route path="/UserSystem" element={<UserSystem />} />
+        {/* you need to add user ID here */}
         <Route path="/MyTrip" element={<MyTrip />} />
         <Route path="/GenerateTrip" element={<GenerateTrip />} />
-        <Route path="/ThingsToDo" element={<ThingsToDo />} />
-        <Route path="/ThingsToEat" element={<ThingsToEat />} />
-        <Route path="/PlacesToStay" element={<PlacesToStay />} />
+        {/* <Route path="/thingsToDo" element={<ThingsToDo />} /> */}
+        {/* <Route path="/ThingsToEat" element={<ThingsToEat />} /> */}
+        {/* <Route path="/PlacesToStay" element={<PlacesToStay />} /> */}
+        <Route path="/places/:id" element={<Places />} />
         <Route path="/RewardSystem" element={<RewardSystem />} />
         <Route path="/Reviews" element={<Reviews />} />
         <Route path="/ReviewPlace" element={<ReviewPlace />} />

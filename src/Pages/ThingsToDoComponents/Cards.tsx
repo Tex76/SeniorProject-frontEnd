@@ -24,8 +24,9 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Place } from "../../../../api/SchemaDb";
 
-const Cards = () => {
+const Cards = ({ place }: { place: Place }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -42,17 +43,50 @@ const Cards = () => {
           }}
         >
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography
+              sx={{
+                fontFamily: "roboto",
+                fontWeight: "bold",
+              }}
+              variant="h5"
+              component="h2"
+            >
               Rating and Reviews
             </Typography>
-            <Typography
-              variant="body2"
-              component="p"
-              sx={{ marginBottom: "100px" }}
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                height: "200px",
+              }}
             >
-              4.8 <Rating name="place-rating" value={4} readOnly /> 1,703
-              reviews
-            </Typography>
+              <Box
+                sx={{
+                  marginTop: "15px",
+                  marginRight: "10px",
+                }}
+              >
+                <Typography>{place.rate}</Typography>
+              </Box>
+              <Box>
+                <Rating
+                  sx={{
+                    marginTop: "15px",
+                  }}
+                  name="place-rating"
+                  value={place.rate}
+                  readOnly
+                />{" "}
+              </Box>
+              <Box
+                sx={{
+                  marginTop: "15px",
+                  marginLeft: "10px",
+                }}
+              >
+                <Typography>{place.totalComments + " "} reviews</Typography>
+              </Box>
+            </Box>
             <hr />
             <Typography
               variant="h6"
@@ -65,37 +99,49 @@ const Cards = () => {
               <Typography variant="body2" component="p">
                 <LocationOnIcon style={{ color: "black" }} /> Location
               </Typography>
-              <Rating name="location-rating" value={4} readOnly />
+              <Rating
+                name="location-rating"
+                value={place.locationRate}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <GppGoodOutlinedIcon style={{ color: "black" }} /> Saftey
               </Typography>
-              <Rating name="food-quality-rating" value={4} readOnly />
+              <Rating
+                name="food-quality-rating"
+                value={place.safety}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <StorefrontOutlinedIcon style={{ color: "black" }} /> Facilities
               </Typography>
-              <Rating name="money-rating" value={4} readOnly />
+              <Rating name="money-rating" value={place.facilities} readOnly />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <ThumbUpOutlinedIcon style={{ color: "black" }} /> Convenience
               </Typography>
-              <Rating name="service-rating" value={4} readOnly />
+              <Rating
+                name="service-rating"
+                value={place.convenience}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <PeopleAltOutlinedIcon style={{ color: "black" }} /> Staff
               </Typography>
-              <Rating name="menu-variety-rating" value={4} readOnly />
+              <Rating name="menu-variety-rating" value={place.staff} readOnly />
             </Box>
             <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
+              {/* <Typography variant="body2" component="p">
                 <TimerOutlinedIcon style={{ color: "black" }} /> Duration
-              </Typography>
-              <Rating name="ambience-rating" value={4} readOnly />
+              </Typography> */}
+              {/* <Rating name="ambience-rating" value={0} readOnly /> */}
             </Box>
           </CardContent>
         </Card>
@@ -114,44 +160,91 @@ const Cards = () => {
               Characteristic
             </Typography>
             <Box mt={3}>
-              <Typography variant="body1" component="p">
+              <Typography
+                sx={{
+                  fontFamily: "roboto",
+                  fontWeight: "bold",
+                }}
+                component="p"
+              >
                 ACTIVITY TYPES
               </Typography>
               <Typography variant="overline" component="p">
-                Entertainment, motorsport events, driving experiences, Formula
-                One{" "}
+                {!!place.activityType &&
+                  place.activityType
+                    .map((activity) => {
+                      return activity;
+                    })
+                    .join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
-              <Typography variant="body1" component="p">
+              <Typography
+                sx={{
+                  fontFamily: "roboto",
+                  fontWeight: "bold",
+                }}
+                variant="body1"
+                component="p"
+              >
                 Accessibility
               </Typography>
-              <Typography variant="overline" component="p">
-                Wheelchair Accessible, Pet-Friendly, Family-Friendly, Rest
-                Areas, Food and Beverage Options, Shuttle Services, Information
-                Desks, First Aid Stations, Lost and Found Services,
-                Accessibility Amenities.
+              <Typography
+                sx={{
+                  fontFamily: "roboto",
+                  textTransform: "capitalize",
+                }}
+                variant="overline"
+                component="p"
+              >
+                {!!place.accessibility &&
+                  place.accessibility
+                    .map((accessibility) => {
+                      return accessibility;
+                    })
+                    .join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
-              <Typography variant="body1" component="p">
+              <Typography
+                sx={{
+                  fontFamily: "roboto",
+                  fontWeight: "bold",
+                }}
+                variant="body1"
+                component="p"
+              >
                 DURATION
               </Typography>
               <Typography variant="overline" component="p">
-                Average 2 - 3 hours
+                {place.duration}
               </Typography>
             </Box>
             <Box mt={3}>
-              <Typography variant="body1" component="p">
+              <Typography
+                sx={{
+                  fontFamily: "roboto",
+                  fontWeight: "bold",
+                }}
+                variant="body1"
+                component="p"
+              >
                 What to expect
               </Typography>
               <Typography variant="overline" component="p">
-                <Typography variant="overline" component="ul">
-                  <li>Thrilling Motorsport Action</li>
-                  <li>State-of-the-Art Facilities</li>
-                  <li>Vibrant Atmosphere</li>
-                  <li>Entertainment for All</li>
-                  <li>Unforgettable Experiences</li>
+                <Typography
+                  sx={{
+                    fontFamily: "roboto",
+                    fontSize: "12px",
+                    textTransform: "capitalize",
+                  }}
+                  variant="overline"
+                  component="ul"
+                >
+                  {!!place.whatToExpect &&
+                    place.whatToExpect.map((except) => {
+                      return <li>{except.toLowerCase()}</li>;
+                    })}
                 </Typography>
               </Typography>
             </Box>
@@ -168,9 +261,17 @@ const Cards = () => {
           }}
         >
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography
+              sx={{
+                fontFamily: "roboto",
+                fontWeight: "bold",
+              }}
+              variant="h5"
+              component="h2"
+            >
               Location and contact
             </Typography>
+            {/* need to be modified  */}
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3585.043484916671!2d50.513002984973575!3d26.03213318351472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e484d66f7114f99%3A0xb08bbfbdc59c2dc!2z2K3ZhNio2Kkg2KfZhNio2K3YsdmK2YYg2KfZhNiv2YjZhNmK2Kk!5e0!3m2!1sar!2sbh!4v1712646555106!5m2!1sar!2sbh"
               width="100%"
@@ -182,7 +283,7 @@ const Cards = () => {
             ></iframe>
             <Typography variant="body1" component="p">
               <LocationOnIcon style={{ color: "black", marginTop: "20px" }} />
-              Gate 255, Gulf of Bahrain Avenue Umm Jidar, Manama 1062 Bahrain
+              {place.location}
             </Typography>
             <Typography variant="body1" component="p">
               <CallIcon style={{ color: "black", marginTop: "20px" }} /> +973

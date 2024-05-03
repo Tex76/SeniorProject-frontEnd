@@ -28,7 +28,7 @@ const pages = {
   Review: "Reviews",
   Reward: "RewardSystem",
 };
-const settings = ["Login", "Signup"];
+const settings = ["Login", "Signup", "MyTrip"];
 
 interface Props {
   textColor?: string;
@@ -254,7 +254,9 @@ function NavBar({ textColor }: Props) {
           >
             {settings.map((setting) => (
               <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                {setting === "Login" || setting === "Signup" ? (
+                {setting === "Login" ||
+                setting === "Signup" ||
+                setting === "MyTrip" ? (
                   <Link
                     to={`/${setting}`}
                     style={{ textDecoration: "none", color: "inherit" }}

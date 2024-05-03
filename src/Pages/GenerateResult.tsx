@@ -24,17 +24,26 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import LandmarkIcon from "@mui/icons-material/Landscape";
 import HotelIcon from "@mui/icons-material/Hotel";
 import {
-  GoogleMap,
-  LoadScriptNext,
-  Marker,
+  APIProvider,
   InfoWindow,
-} from "@react-google-maps/api";
-
+  Map,
+  Marker,
+} from "@vis.gl/react-google-maps";
 import NavBar from "./SharedComponents/NavBar";
 import CircuitImage from "../Pages/CreateTripComponents/Circuit.jpg"; // Import the image
 
 const GenerateResult = () => {
-  // Define the days and activities
+  const mapStyle = {
+    width: "100%",
+    height: "700px",
+    borderRadius: "15px",
+  };
+
+  const center = {
+    lat: 26.0667,
+    lng: 50.5577,
+  };
+
   const days = [
     {
       title: "Day 1",
@@ -139,7 +148,7 @@ const GenerateResult = () => {
   const country = "Bahrain"; // Replace with the actual country
   const numberOfDays = days.length; // Calculate the number of days
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
-  const [center, setCenter] = useState({ lat: 26.0667, lng: 50.5577 });
+  const [, setCenter] = useState({ lat: 26.0667, lng: 50.5577 });
 
   return (
     <Box>
@@ -308,67 +317,57 @@ const GenerateResult = () => {
             ))}
           </Grid>
           <Grid item xs={6}>
-            <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
-              <GoogleMap
-                mapContainerStyle={{
-                  width: "100%",
-                  height: "700px",
-                  borderRadius: "15px",
-                }}
-                center={{ lat: 26.0667, lng: 50.5577 }}
-                zoom={8}
-                options={{
-                  streetViewControl: false, // This will remove the Street View control
-                  clickableIcons: false,
-                }}
-              >
-                {" "}
+            <APIProvider apiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
+              <Map style={mapStyle} defaultCenter={center} defaultZoom={12}>
                 {days.map((day, dayIndex) =>
-                  day.activities.map((activity, activityIndex) =>
-                    activity.position ? (
+                  day.activities.map((activity, activityIndex) => (
+                    <div key={`day-${dayIndex}-activity-${activityIndex}`}>
                       <Marker
-                        key={`day-${dayIndex}-activity-${activityIndex}`}
-                        position={{
-                          lat: activity.position.lat,
-                          lng: activity.position.lng,
-                        }}
-                      >
-                        {selectedMarker ===
-                          `day-${dayIndex}-activity-${activityIndex}` && (
-                          <InfoWindow>
-                            <Card>
-                              <CardMedia
-                                component="img"
-                                height="140"
-                                image={activity.imageUrl}
-                                alt={activity.title}
-                              />
-                              <CardContent>
-                                <Typography variant="h5" component="div">
-                                  {activity.title}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  color="text.secondary"
-                                >
-                                  Rating: {activity.rating}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  color="text.secondary"
-                                >
-                                  Type: {activity.type}
-                                </Typography>
-                              </CardContent>
-                            </Card>
-                          </InfoWindow>
-                        )}
-                      </Marker>
-                    ) : null
-                  )
+                        position={activity.position}
+                        onClick={() =>
+                          setSelectedMarker(
+                            `day-${dayIndex}-activity-${activityIndex}`
+                          )
+                        }
+                      />
+                      {selectedMarker ===
+                        `day-${dayIndex}-activity-${activityIndex}` && (
+                        <InfoWindow
+                          position={activity.position}
+                          onCloseClick={() => setSelectedMarker(null)}
+                        >
+                          <Card>
+                            <CardMedia
+                              component="img"
+                              alt={activity.title}
+                              height="140"
+                              image={activity.imageUrl}
+                            />
+                            <CardContent>
+                              <Typography variant="h5" component="div">
+                                {activity.title}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                Rating: {activity.rating}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                Type: {activity.type}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </InfoWindow>
+                      )}
+                    </div>
+                  ))
                 )}
-              </GoogleMap>
-            </LoadScriptNext>
+              </Map>
+            </APIProvider>
           </Grid>
         </Grid>
       </Box>
