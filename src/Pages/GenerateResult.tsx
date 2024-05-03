@@ -29,6 +29,7 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
+
 import NavBar from "./SharedComponents/NavBar";
 import CircuitImage from "../Pages/CreateTripComponents/Circuit.jpg"; // Import the image
 
@@ -321,6 +322,7 @@ const GenerateResult = () => {
                   clickableIcons: false,
                 }}
               >
+                {" "}
                 {days.map((day, dayIndex) =>
                   day.activities.map((activity, activityIndex) =>
                     activity.position ? (

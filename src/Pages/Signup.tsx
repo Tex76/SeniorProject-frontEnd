@@ -88,24 +88,23 @@ export default function Signup() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    validateFields();
     if (validateFields()) {
+      // Ensure that fields are validated only once and used effectively.
       setAlert({
         success: true,
         error: false,
-        alertMessage: "SignUp Sucessful!",
+        alertMessage: "SignUp Successful!",
       });
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      // Send the plain password directly to the server; ensure your connection is secure with HTTPS.
       axios
         .post("/signUp", {
           name: name,
           username: username,
           email: email,
-          password: hashedPassword,
+          password: password, // Sending the plain password securely over HTTPS.
         })
         .then((res) => {
-          setTimeout(() => navigation("/Login"), 1200);
+          setTimeout(() => navigation("/Login"), 1200); // Navigate to login page after a successful registration.
         })
         .catch((err) => {
           if (err.response && err.response.status === 400) {
@@ -114,11 +113,23 @@ export default function Signup() {
               success: false,
               alertMessage: "User already exists",
             });
+          } else {
+            // Handle other types of errors perhaps related to network issues, server errors, etc.
+            console.log(err);
+            setAlert({
+              success: false,
+              error: true,
+              alertMessage: "Registration failed, please try again.",
+            });
           }
-          console.log(err);
         });
     } else {
-      setAlert({ success: false, error: true, alertMessage: "Error" });
+      // Alert for invalid fields, assuming validateFields updates UI with specific messages
+      setAlert({
+        success: false,
+        error: true,
+        alertMessage: "Please correct the highlighted fields.",
+      });
     }
   };
 
