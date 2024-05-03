@@ -24,7 +24,7 @@ import Coin from "../../images/NavBar/coin.png";
 
 const pages = {
   Home: "",
-  Trips: "Trips",
+  Trips: "PickTrip",
   Review: "Reviews",
   Reward: "RewardSystem",
 };

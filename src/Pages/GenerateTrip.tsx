@@ -15,8 +15,10 @@ import DefineBudget from "./GenerateTripComponents/DefineBudget";
 import PickTimePeriod from "./GenerateTripComponents/PickTimePeriod";
 import GroupSize from "./GenerateTripComponents/GroupSize";
 import FavouriteActivities from "./GenerateTripComponents/FavouriteActivities";
+import SelectMethod from "./GenerateTripComponents/SelectMethod";
 
 const steps = [
+  "Select Method",
   "Choose Region",
   "Define Budget",
   "Pick Time Period",
@@ -98,25 +100,31 @@ export default function GenerateTrip() {
           </Box>
           {activeStep === 0 && (
             <Box mt={isMobile ? 2 : 5}>
-              <SelectRegion />
+              <SelectMethod activeStep={activeStep} setActiveStep={setActiveStep} />
             </Box>
           )}
           {activeStep === 1 && (
             <Box mt={isMobile ? 2 : 5}>
-              <DefineBudget />
+              <SelectRegion />
             </Box>
           )}
+          
           {activeStep === 2 && (
             <Box mt={isMobile ? 2 : 5}>
-              <PickTimePeriod />
+              <DefineBudget />
             </Box>
           )}
           {activeStep === 3 && (
             <Box mt={isMobile ? 2 : 5}>
-              <GroupSize />
+              <PickTimePeriod />
             </Box>
           )}
           {activeStep === 4 && (
+            <Box mt={isMobile ? 2 : 5}>
+              <GroupSize />
+            </Box>
+          )}
+          {activeStep === 5 && (
             <Box mt={isMobile ? 2 : 5}>
               <FavouriteActivities />
             </Box>

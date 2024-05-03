@@ -21,7 +21,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Achivements = () => {
   const labels1 = [
-    "Reviews",
+    "Points",
     "1",
     "5",
     "10",
@@ -34,11 +34,11 @@ const Achivements = () => {
     "200",
     "300",
     "500",
-    "",
+    
   ];
 
   const marks1 = labels1.map((label, i) => {
-    const value = i * (500 / 13);
+    const value = i * (500 / 12);
     return { value, label };
   });
 
@@ -53,7 +53,7 @@ const Achivements = () => {
     },
     "& .MuiSlider-markLabel": {
       top: "-10px",
-      fontSize: "0.5em",
+      fontSize: "7px",
     },
     "& .MuiSlider-markActive": {
       backgroundColor: "white",
@@ -102,7 +102,7 @@ const Achivements = () => {
                       marginRight: "10px",
                       backgroundColor: "lightBlue",
                       display: "flex",
-                      justifyContent: "center",
+                      justifyContent: "",
                       alignItems: "center",
                     }}
                   >
@@ -117,24 +117,24 @@ const Achivements = () => {
                     <Typography variant="caption">Beginner</Typography>
                   </Box>
                 </Box>
-                <div style={{ margin: "20px" }}>
+                <div style={{ marginLeft: "0px" }}>
                   <Slider
                     style={{
                       height: "30px",
                       borderRadius: "50px",
-                      margin: "-6px",
+                      margin: "px",
                     }}
                     min={0}
                     max={500}
                     step={500 / 13}
-                    value={1 * (500 / 13)}
+                    value={1 * (500 / 12)}
                     marks={marks1}
                     disabled
                     sx={sliderStyles}
                   />
                 </div>
                 <Typography variant="body2" sx={{ marginTop: 5 }}>
-                  Write reviews to gain points
+                  Write reviews to gain p
                 </Typography>
                 <Button
                   variant="contained"
@@ -176,17 +176,17 @@ const Achivements = () => {
                     <Typography variant="caption">Beginner</Typography>
                   </Box>
                 </Box>
-                <div style={{ margin: "20px" }}>
+                <div style={{ marginLeft: "0px" }}>
                   <Slider
                     style={{
                       height: "30px",
                       borderRadius: "50px",
-                      margin: "-6px",
+                      margin: "px",
                     }}
                     min={0}
                     max={500}
                     step={500 / 13}
-                    value={1 * (500 / 13)}
+                    value={1 * (500 / 12)}
                     marks={marks1}
                     disabled
                     sx={sliderStyles}
@@ -239,17 +239,17 @@ const Achivements = () => {
                     <Typography variant="caption">Beginner</Typography>
                   </Box>
                 </Box>
-                <div style={{ margin: "20px" }}>
+                <div style={{ marginLeft: "0px" }}>
                   <Slider
                     style={{
                       height: "30px",
                       borderRadius: "50px",
-                      margin: "-6px",
+                      margin: "px",
                     }}
                     min={0}
                     max={500}
                     step={500 / 13}
-                    value={1 * (500 / 13)}
+                    value={1 * (500 / 12)}
                     marks={marks1}
                     disabled
                     sx={sliderStyles}
