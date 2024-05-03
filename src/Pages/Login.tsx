@@ -16,7 +16,9 @@ import formPhoto from "../images/Login/FormPhoto.png";
 import backgroundImage from "../images/Login/Background.png";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
-import { error } from "console";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:5000";
 
 // Styled component for the form box
 const FormBox = styled(Box)(({ theme }) => ({
@@ -69,15 +71,23 @@ export default function Login() {
       const password = (document.getElementById("password") as HTMLInputElement)
         .value;
 
-      if (email !== "ali@gmail.com" || password !== "123456") {
-        setWrong(true);
-      } else {
-        setAlert("success");
-        setTimeout(() => navigation("/"), 1200);
-        setWrong(false);
-      }
-    } else {
-      setAlert("error");
+      axios
+        .post("/login", { email: email, password: password })
+        .then((res) => {
+          if (res.status === 200) {
+            setAlert("success");
+            setTimeout(() => navigation("/"), 1200);
+            setWrong(false);
+          } else {
+            setAlert("error");
+          }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 401) {
+            setAlert("error");
+          }
+          console.log(err);
+        });
     }
   };
 

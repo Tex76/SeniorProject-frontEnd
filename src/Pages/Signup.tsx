@@ -17,6 +17,11 @@ import formPhoto from "../images/Signup/FormPhoto.png";
 import backgroundImage from "../images/Signup/Background.png";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import bcrypt from "bcryptjs";
+
+axios.defaults.baseURL = "http://localhost:4000";
+
 // Styled component for the form box
 const FormBox = styled(Box)(({ theme }) => ({
   borderRadius: "15px",
@@ -47,7 +52,11 @@ export default function Signup() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [alert, setAlert] = React.useState<string | null>(null);
+  const [alert, setAlert] = React.useState({
+    success: false,
+    error: false,
+    alertMessage: "",
+  });
 
   const [errors, setErrors] = React.useState({
     email: "",
@@ -67,7 +76,7 @@ export default function Signup() {
       email: /\S+@\S+\.\S+/.test(email) ? "" : "Invalid email",
       password: /^(?=.*[A-Z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,}$/.test(password)
         ? ""
-        : "Invalid password. Must contain at least 8 characters, at least one capital letter and one number.",
+        : "Invalid password. Must contain at least 8 characters, at least one capital letter and one number and one special character.",
       confirmPassword:
         password === confirmPassword
           ? ""
@@ -77,16 +86,39 @@ export default function Signup() {
     return Object.values(tempErrors).every((x) => x === "");
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     validateFields();
     if (validateFields()) {
-      // Handle form submission here
-      //route to
-      setAlert("success");
-      setTimeout(() => navigation("/Login"), 1200);
+      setAlert({
+        success: true,
+        error: false,
+        alertMessage: "SignUp Sucessful!",
+      });
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      axios
+        .post("/signUp", {
+          name: name,
+          username: username,
+          email: email,
+          password: hashedPassword,
+        })
+        .then((res) => {
+          setTimeout(() => navigation("/Login"), 1200);
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 400) {
+            setAlert({
+              error: true,
+              success: false,
+              alertMessage: "User already exists",
+            });
+          }
+          console.log(err);
+        });
     } else {
-      setAlert("error");
+      setAlert({ success: false, error: true, alertMessage: "Error" });
     }
   };
 
@@ -142,11 +174,11 @@ export default function Signup() {
                 transform: "translateX(-50%)",
               }}
             >
-              {alert === "success" && (
-                <Alert severity="success">SignUp Sucess!</Alert>
+              {alert.success === true && (
+                <Alert severity="success">{alert.alertMessage}</Alert>
               )}
-              {alert === "error" && (
-                <Alert severity="error">Incorrect Email or Password.</Alert>
+              {alert.error === true && (
+                <Alert severity="error">{alert.alertMessage}</Alert>
               )}
             </Box>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
