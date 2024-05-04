@@ -31,11 +31,18 @@ const Cards = ({ place }: { place: Place }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <div>
-      <Box sx={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          flexDirection: isMobile ? "column" : "row",
+        }}
+      >
         <Card
           sx={{
             bgcolor: "teal",
             flex: 1,
+            width: "30%",
             margin: "10px",
             borderRadius: "10px",
             color: "white",

@@ -18,8 +18,6 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:5000";
-
 // Styled component for the form box
 const FormBox = styled(Box)(({ theme }) => ({
   borderRadius: "15px",
@@ -72,11 +70,15 @@ export default function Login() {
         .value;
 
       axios
-        .post("/login", { email: email, password: password })
+        .post("http://localhost:4000/login", {
+          email: email,
+          password: password,
+        })
         .then((res) => {
           if (res.status === 200) {
             setAlert("success");
             setTimeout(() => navigation("/"), 1200);
+            console.log(res.data);
             setWrong(false);
           } else {
             setAlert("error");

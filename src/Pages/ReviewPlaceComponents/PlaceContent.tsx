@@ -1,21 +1,6 @@
-import React, { useEffect } from "react";
-import { Typography, Card, CardContent, CardMedia } from "@mui/material";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Typography, Card, CardContent } from "@mui/material";
 import { Place } from "../../../../api/SchemaDb";
-
-const PlaceContent = () => {
-  const { id } = useParams();
-  const [place, setPlace] = React.useState<Place>();
-  useEffect(() => {
-    const fetchFunction = async () => {
-      const place = await axios.get(`http://localhost:4000/places/${id}`);
-      setPlace(place.data);
-    };
-
-    fetchFunction();
-  }, []);
-
+const PlaceContent = ({ place }: { place: Place }) => {
   if (!place) return <div>Loading...</div>;
 
   return (

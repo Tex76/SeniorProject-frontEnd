@@ -18,7 +18,6 @@ const SuccessSubmit = () => {
         justifyContent: "center",
         gap: "20px",
         padding: isMobile ? "1rem" : "50px",
-
         margin: isMobile ? "0 auto" : "0",
         // boxSizing: "border-box",
         px: isMobile ? "2rem" : "0", // Add this line

@@ -219,7 +219,10 @@ const TopReviews = ({ place }: { place: Place }) => {
                         <CircleIcon
                           sx={{ marginLeft: "10px", marginRight: "10px" }}
                         />
-                        <Typography variant="overline"> Family</Typography>
+                        <Typography variant="overline">
+                          {" "}
+                          {comment.whithWhom}
+                        </Typography>
                       </Box>
                       <Typography variant="body2">
                         {comment.commentBody}
@@ -256,7 +259,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                               readOnly
                             />
                           </Box>
-                          <Box>
+                          {/* <Box>
                             <Typography variant="body2" component="p">
                               Facilities
                             </Typography>
@@ -265,7 +268,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                               value={comment.facilities}
                               readOnly
                             />
-                          </Box>
+                          </Box> */}
                         </Box>
                         <Box display="flex" justifyContent="space-between">
                           <Box>
@@ -274,7 +277,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                             </Typography>
                             <Rating
                               name="service-rating"
-                              value={comment.locationRate}
+                              value={comment.location}
                               readOnly
                             />
                           </Box>
