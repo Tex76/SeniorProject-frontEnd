@@ -11,10 +11,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-
 import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -69,7 +67,7 @@ const Introduction = ({ place }: { place: Place }) => {
           <Grid container direction="row">
             <Grid item xs={7}>
               <img
-                src={place.imagePlace[0]}
+                src={`/systemImage/${place.imagePlace[0]}`}
                 alt="Card Image 1"
                 style={{
                   width: "100%",
@@ -81,12 +79,12 @@ const Introduction = ({ place }: { place: Place }) => {
             </Grid>
             <Grid item xs={5}>
               <img
-                src={place.imagePlace[1]}
+                src={`/systemImage/${place.imagePlace[1]}`}
                 alt="Card Image 2"
                 style={{ width: "100%", height: "50%", objectFit: "cover" }}
               />
               <img
-                src={place.imagePlace[2]}
+                src={`/systemImage/${place.imagePlace[2]}`}
                 alt="Card Image 3"
                 style={{
                   width: "100%",

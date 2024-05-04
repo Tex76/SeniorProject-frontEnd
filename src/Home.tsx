@@ -22,6 +22,7 @@ import PointsStore from "./Pages/PointsStore";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Places from "./Pages/places";
+import ReviewForm from "Pages/ReviewPlaceComponents/ReviewForm";
 
 function App() {
   const theme = useTheme();
@@ -41,6 +42,7 @@ function App() {
         {/* <Route path="/thingsToDo" element={<ThingsToDo />} /> */}
         {/* <Route path="/ThingsToEat" element={<ThingsToEat />} /> */}
         {/* <Route path="/PlacesToStay" element={<PlacesToStay />} /> */}
+        <Route path="/review/:id" element={<ReviewPlace />} />
         <Route path="/places/:id" element={<Places />} />
         <Route path="/RewardSystem" element={<RewardSystem />} />
         <Route path="/Reviews" element={<Reviews />} />

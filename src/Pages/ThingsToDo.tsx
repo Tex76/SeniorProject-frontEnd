@@ -7,9 +7,6 @@ import Introduction from "./ThingsToDoComponents/Introduction";
 import Cards from "./ThingsToDoComponents/Cards";
 import Directions from "./ThingsToDoComponents/Directions";
 import TopReviews from "./ThingsToDoComponents/TopReviews";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 

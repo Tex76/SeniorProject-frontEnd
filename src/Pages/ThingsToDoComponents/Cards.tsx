@@ -304,6 +304,9 @@ const Cards = ({ place }: { place: Place }) => {
             </Typography>
             <Box>
               <Button
+                onClick={() => {
+                  window.location.href = `/review/${place._id}`;
+                }}
                 variant="contained"
                 style={{
                   backgroundColor: "sandybrown",
