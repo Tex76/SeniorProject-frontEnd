@@ -16,8 +16,8 @@ import formPhoto from "../images/Login/FormPhoto.png";
 import backgroundImage from "../images/Login/Background.png";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
+import axios, { AxiosError } from "axios";
+import { UserContext } from "../UserContext";
 // Styled component for the form box
 const FormBox = styled(Box)(({ theme }) => ({
   borderRadius: "15px",
@@ -42,6 +42,7 @@ export default function Login() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigation = useNavigate();
+  const userContext = React.useContext(UserContext);
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -51,6 +52,8 @@ export default function Login() {
   const [wrong, setWrong] = React.useState(false);
 
   const [alert, setAlert] = React.useState<string | null>(null);
+
+  const setUser = userContext?.setUser;
 
   const validateFields = () => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -68,28 +71,33 @@ export default function Login() {
         .value;
       const password = (document.getElementById("password") as HTMLInputElement)
         .value;
+      const fetchFunction = async () => {
+        try {
+          const res = await axios.post("http://localhost:4000/login", {
+            email: email,
+            password: password,
+          });
 
-      axios
-        .post("http://localhost:4000/login", {
-          email: email,
-          password: password,
-        })
-        .then((res) => {
           if (res.status === 200) {
             setAlert("success");
+            if (setUser) {
+              setUser(res.data);
+            }
             setTimeout(() => navigation("/"), 1200);
             console.log(res.data);
             setWrong(false);
           } else {
             setAlert("error");
           }
-        })
-        .catch((err) => {
-          if (err.response && err.response.status === 401) {
+        } catch (err) {
+          if ((err as AxiosError).response?.status === 401) {
             setAlert("error");
           }
           console.log(err);
-        });
+        }
+      };
+
+      fetchFunction();
     }
   };
 

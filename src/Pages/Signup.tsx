@@ -18,9 +18,6 @@ import backgroundImage from "../images/Signup/Background.png";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import bcrypt from "bcryptjs";
-
-axios.defaults.baseURL = "http://localhost:4000";
 
 // Styled component for the form box
 const FormBox = styled(Box)(({ theme }) => ({

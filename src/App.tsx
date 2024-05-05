@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Pages/Login";
@@ -15,27 +14,15 @@ import Reviews from "./Pages/Reviews";
 import CreateTrip from "./Pages/CreateTrip";
 import GenerateResult from "./Pages/GenerateResult";
 import PointsStore from "./Pages/PointsStore";
-import SessionContext from "./context";
 import axios from "axios";
+import UserContextProvider from "./UserContext";
+
+axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.withCredentials = true;
 
 function App() {
-  const [session, setSession] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:4000/getSession", { withCredentials: true })
-      .then((response) => {
-        if (response.data) {
-          setSession(response.data); // Assuming response.data is the session information
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch session:", error);
-      });
-  }, []);
-
   return (
-    <SessionContext.Provider value={session}>
+    <UserContextProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -56,7 +43,7 @@ function App() {
           <Route path="/pointsstore" element={<PointsStore />} />
         </Routes>
       </Router>
-    </SessionContext.Provider>
+    </UserContextProvider>
   );
 }
 

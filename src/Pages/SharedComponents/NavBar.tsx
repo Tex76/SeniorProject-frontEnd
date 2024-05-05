@@ -21,6 +21,8 @@ import { Link } from "react-router-dom";
 import "@fontsource/roboto";
 import SearchBar from "./SearchBar";
 import Coin from "../../images/NavBar/coin.png";
+import { UserContext } from "../../UserContext";
+import { useContext } from "react";
 
 const pages = {
   Home: "",
@@ -35,6 +37,7 @@ interface Props {
 }
 
 function NavBar({ textColor }: Props) {
+  const { user } = useContext(UserContext);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -191,7 +194,7 @@ function NavBar({ textColor }: Props) {
                     display: "flex",
                   }}
                 >
-                  200
+                  {user ? user.points : 0}
                 </Typography>
               </Button>
             </Box>
@@ -233,13 +236,17 @@ function NavBar({ textColor }: Props) {
                   display: { xs: "none", md: "flex" },
                 }}
               >
-                200
+                {user ? user.points : 0}
               </Typography>
             </Button>
           </Box>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 2 }}>
-              <Avatar src="/broken-image.jpg" />
+              {user ? (
+                <Avatar src={`/systemImage/${user.avatarImage}`} />
+              ) : (
+                <Avatar src="broken-image.jpg" />
+              )}
             </IconButton>
           </Tooltip>
           <Menu
