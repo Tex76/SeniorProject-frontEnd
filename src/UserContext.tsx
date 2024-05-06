@@ -16,7 +16,11 @@ export default function UserContextProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<null | { [key: string]: any }>(null); // replace with your user type
 
   useEffect(() => {
-    if (!user) axios.get("/profile");
+    if (!user) {
+      axios.get("/profile").then((res) => {
+        setUser(res.data);
+      });
+    }
   });
 
   return (
