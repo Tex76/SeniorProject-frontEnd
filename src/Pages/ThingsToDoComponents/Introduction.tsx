@@ -18,6 +18,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Place } from "../../../../api/SchemaDb";
+import SavePopUp from './SavePopUp';
 
 const Introduction = ({ place }: { place: Place }) => {
   const theme = useTheme();
@@ -35,10 +36,7 @@ const Introduction = ({ place }: { place: Place }) => {
     >
       <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
         <Button style={{ marginRight: "10px", color: "black" }}>Review</Button>
-        <Typography variant="h5" style={{ margin: "0 10px" }}>
-          |
-        </Typography>
-        <Button style={{ color: "black" }}>Save</Button>
+        <SavePopUp />
       </Box>
 
       <Grid container spacing={2} sx={{ p: { xs: 2 } }}>

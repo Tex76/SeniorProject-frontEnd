@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import {
   InputBase,
@@ -10,9 +11,9 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import SearchSample from "../../images/NavBar/SearchSample.png";
+import axios from 'axios';
+import { Place } from '../../../../api/SchemaDb';
 
 // This is the main Search component that wraps the search bar
 
@@ -69,74 +70,72 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// Temporary array data
-const data = [
-  {
-    category: "Things To Do",
-    items: [
-      { image: SearchSample, title: "Cinema", link: "/ThingsToDo" },
-      { image: SearchSample, title: "Bowling", link: "/ThingsToDo" },
-    ],
-  },
-  {
-    category: "Things To Eat",
-    items: [
-      { image: SearchSample, title: "Restaurant 1", link: "/ThingsToEat" },
-      { image: SearchSample, title: "Restaurant 2", link: "/ThingsToEat" },
-    ],
-  },
-  {
-    category: "Places To Stay",
-    items: [
-      { image: SearchSample, title: "Hotel 1", link: "/PlacesToStay" },
-      { image: SearchSample, title: "Hotel 2", link: "/PlacesToStay" },
-    ],
-  },
-];
-
 // This is the main function that renders the search bar
 export default function SearchBar() {
   const [showPlaceholder, setShowPlaceholder] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [data, setData] = useState<Place[]>([]);
+
+  // Fetch data from API when component mounts
+  useEffect(() => {
+    axios.get('http://localhost:4000/api/data')
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data: ', error);
+      });
+  }, []);
 
   const filteredData = data
-    .map((category) => ({
-      ...category,
-      items: category.items.filter((item) =>
-        item.title.toLowerCase().includes(searchInput.toLowerCase())
-      ),
-    }))
-    .filter((category) => category.items.length > 0);
+    .filter(item =>
+      item.name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    
+  // Group data by category
+  const groupedData = filteredData.reduce<Record<string, Place[]>>((grouped, place) => {
+    (grouped[place.category] = grouped[place.category] || []).push(place);
+    return grouped;
+  }, {});
 
-  return (
-    <Search
-      sx={{
-        backgroundColor: "#E4E4E4",
-        borderRadius: "30px",
-        position: "relative",
-      }}
-    >
-      <SearchIconWrapper>
-        <SearchIcon sx={{ color: "#6D7D8B" }} />
-      </SearchIconWrapper>
-      <StyledInputBase
-        sx={{ color: "#6D7D8B" }}
-        placeholder={showPlaceholder ? "Search Places!" : ""}
-        inputProps={{ "aria-label": "search" }}
-        onMouseEnter={() => setShowPlaceholder(true)}
-        onMouseLeave={() => setShowPlaceholder(false)}
-        onFocus={() => {
-          setShowPlaceholder(true);
-          setShowDropdown(true);
+  // Helper function to format category names
+  const formatCategoryName = (name: string) => {
+    return name
+      .split(/(?=[A-Z])/) // split the string into words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
+      .join(' '); // join the words back together with spaces in between
+  };
+
+    return (
+      <Search
+        sx={{
+          backgroundColor: "#E4E4E4",
+          borderRadius: "30px",
+          position: "relative",
         }}
-        onBlur={() => {
-          setShowPlaceholder(false);
-          setShowDropdown(false);
-        }}
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-      />
+      >
+        <SearchIconWrapper>
+          <SearchIcon sx={{ color: "#6D7D8B" }} />
+        </SearchIconWrapper>
+        <StyledInputBase
+          sx={{ color: "#6D7D8B" }}
+          placeholder={showPlaceholder ? "Search Places!" : ""}
+          inputProps={{ "aria-label": "search" }}
+          onMouseEnter={() => setShowPlaceholder(true)}
+          onMouseLeave={() => setShowPlaceholder(false)}
+          onFocus={() => {
+            setShowPlaceholder(true);
+            setShowDropdown(true);
+          }}
+          onBlur={() => {
+            setTimeout(() => {
+              setShowDropdown(false);
+            }, 200);
+          }}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
       {showDropdown && (
         <Box
           sx={{
@@ -148,7 +147,7 @@ export default function SearchBar() {
             zIndex: 1,
           }}
         >
-          {filteredData.map((category, index) => (
+          {Object.entries(groupedData).map(([category, places], index) => (
             <Box key={index} sx={{ borderBottom: "1px solid #ddd" }}>
               <Box
                 sx={{
@@ -160,15 +159,15 @@ export default function SearchBar() {
                   fontSize: "18px",
                 }}
               >
-                {category.category}
+                {formatCategoryName(category)}
               </Box>
-              {category.items.map((item, index) => (
+              {places.map((place, index) => (
                 <Link
-                  to={item.link}
+                  key={place._id ? place._id.toString() : index.toString()}
+                  to={`/places/${place._id ? place._id.toString() : ''}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <ListItem
-                    key={index}
                     sx={{
                       borderBottom: "1px solid #ddd",
                       "&:hover": { backgroundColor: "lightgrey" },
@@ -176,8 +175,8 @@ export default function SearchBar() {
                   >
                     <ListItemAvatar>
                       <Avatar
-                        alt={item.title}
-                        src={item.image}
+                        alt={place.name}
+                        src={`/systemImage/${place.imagePlace[0]}`}
                         sx={{
                           width: "64px",
                           height: "48px",
@@ -187,7 +186,7 @@ export default function SearchBar() {
                       />
                     </ListItemAvatar>
                     <ListItemText
-                      primary={item.title}
+                      primary={place.name}
                       primaryTypographyProps={{
                         color: "black",
                         fontFamily: "Roboto",
