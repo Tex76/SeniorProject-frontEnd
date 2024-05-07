@@ -79,7 +79,7 @@ export default function SearchBar() {
 
   // Fetch data from API when component mounts
   useEffect(() => {
-    axios.get('http://localhost:4000/api/data') // replace with your API endpoint
+    axios.get('http://localhost:4000/api/data')
       .then(response => {
         setData(response.data);
       })
@@ -163,6 +163,7 @@ export default function SearchBar() {
               </Box>
               {places.map((place, index) => (
                 <Link
+                  key={place._id ? place._id.toString() : index.toString()}
                   to={`/places/${place._id ? place._id.toString() : ''}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
