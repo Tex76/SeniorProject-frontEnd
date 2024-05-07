@@ -24,8 +24,9 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Place } from "../../../../api/SchemaDb";
 
-const Cards = () => {
+const Cards = ({ place }: { place: Place }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -44,18 +45,50 @@ const Cards = () => {
           }}
         >
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography
+              sx={{
+                fontFamily: "roboto",
+                fontWeight: "bold",
+              }}
+              variant="h5"
+              component="h2"
+            >
               Rating and Reviews
             </Typography>
-            <Typography
-              variant="body2"
-              component="p"
-              sx={{ marginBottom: "100px" }}
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                height: "200px",
+              }}
             >
-              4.8
-              <Rating name="place-rating" value={4} readOnly />
-              1,703 reviews
-            </Typography>
+              <Box
+                sx={{
+                  marginTop: "15px",
+                  marginRight: "10px",
+                }}
+              >
+                <Typography>{place.rate}</Typography>
+              </Box>
+              <Box>
+                <Rating
+                  sx={{
+                    marginTop: "15px",
+                  }}
+                  name="place-rating"
+                  value={place.rate}
+                  readOnly
+                />{" "}
+              </Box>
+              <Box
+                sx={{
+                  marginTop: "15px",
+                  marginLeft: "10px",
+                }}
+              >
+                <Typography>{place.totalComments + " "} reviews</Typography>
+              </Box>
+            </Box>
             <hr />
             <Typography
               variant="h6"
@@ -68,37 +101,53 @@ const Cards = () => {
               <Typography variant="body2" component="p">
                 <LocationOnIcon style={{ color: "black" }} /> Location
               </Typography>
-              <Rating name="location-rating" value={4} readOnly />
+              <Rating
+                name="location-rating"
+                value={place.locationRate}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <DinnerDiningIcon style={{ color: "black" }} /> Food Quality
               </Typography>
-              <Rating name="food-quality-rating" value={4} readOnly />
+              <Rating
+                name="food-quality-rating"
+                value={place.foodQuality}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <LocalAtmIcon style={{ color: "black" }} /> Money
               </Typography>
-              <Rating name="money-rating" value={4} readOnly />
+              <Rating
+                name="money-rating"
+                value={place.valueForMoney}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <VolunteerActivismIcon style={{ color: "black" }} /> Service
               </Typography>
-              <Rating name="service-rating" value={4} readOnly />
+              <Rating name="service-rating" value={place.service} readOnly />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <MenuBookIcon style={{ color: "black" }} /> Menu Variety
               </Typography>
-              <Rating name="menu-variety-rating" value={4} readOnly />
+              <Rating
+                name="menu-variety-rating"
+                value={place.menuVariety}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <TableRestaurantIcon style={{ color: "black" }} /> Ambience
               </Typography>
-              <Rating name="ambience-rating" value={4} readOnly />
+              <Rating name="ambience-rating" value={place.ambiance} readOnly />
             </Box>
           </CardContent>
         </Card>
@@ -120,7 +169,7 @@ const Cards = () => {
                 PRICE RANGE
               </Typography>
               <Typography variant="overline" component="p">
-                35$ - $120
+                {place.priceRange}
               </Typography>
             </Box>
             <Box mt={3}>
@@ -128,7 +177,12 @@ const Cards = () => {
                 CUISINES
               </Typography>
               <Typography variant="overline" component="p">
-                Japanese, Sushi, Asian
+                {!!place.cuisines &&
+                  place.cuisines
+                    .map((cuisines) => {
+                      return cuisines;
+                    })
+                    .join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
@@ -136,7 +190,12 @@ const Cards = () => {
                 MEALS
               </Typography>
               <Typography variant="overline" component="p">
-                Lunch, Dinner, Brunch, Late Night
+                {!!place.meals &&
+                  place.meals
+                    .map((meals) => {
+                      return meals;
+                    })
+                    .join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
@@ -144,12 +203,12 @@ const Cards = () => {
                 FEATURES
               </Typography>
               <Typography variant="overline" component="p">
-                Delivery, Takeout, Reservations, Outdoor Seating, Private
-                Dining, Seating, Parking Available, Validated Parking, Valet
-                Parking, Highchairs Available, Wheelchair Accessible, Serves
-                Alcohol, Full Bar, Accepts American Express, Accepts Mastercard,
-                Accepts Visa, Free Wifi, Accepts Credit Cards, Table Service,
-                Live Music
+                {!!place.featuresList &&
+                  place.featuresList
+                    .map((featuresList) => {
+                      return featuresList;
+                    })
+                    .join(", ")}
               </Typography>
             </Box>
           </CardContent>
@@ -164,7 +223,14 @@ const Cards = () => {
           }}
         >
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography
+              sx={{
+                fontFamily: "roboto",
+                fontWeight: "bold",
+              }}
+              variant="h5"
+              component="h2"
+            >
               Location and contact
             </Typography>
             <iframe
@@ -178,16 +244,15 @@ const Cards = () => {
             ></iframe>
             <Typography variant="body1" component="p">
               <LocationOnIcon style={{ color: "black", marginTop: "20px" }} />
-              Road 38 Building Nr 52, Block 428, Seef Area, to the right of Ritz
-              Carlton Hotel, Manama Bahrain
+              {place.location}
             </Typography>
             <Typography variant="body1" component="p">
-              <CallIcon style={{ color: "black", marginTop: "20px" }} /> +973
-              1758 3555
+              <CallIcon style={{ color: "black", marginTop: "20px" }} />
+              {place.phoneNumber}
             </Typography>
             <Typography variant="body1" component="p">
-              <EmailIcon style={{ color: "black", marginTop: "20px" }} />{" "}
-              Reservation@bushido.com.bh
+              <EmailIcon style={{ color: "black", marginTop: "20px" }} />
+              {place.email}
             </Typography>
           </CardContent>
         </Card>
@@ -200,6 +265,9 @@ const Cards = () => {
             </Typography>
             <Box>
               <Button
+                onClick={() => {
+                  window.location.href = `/review/${place._id}`;
+                }}
                 variant="contained"
                 style={{
                   backgroundColor: "sandybrown",

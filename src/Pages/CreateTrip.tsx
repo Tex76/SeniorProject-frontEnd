@@ -20,12 +20,9 @@ import UpdateTripInfo from "./CreateTripComponents/UpdateCreateInfo";
 
 import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
 
-
-
 export default function CreateTrip() {
   const [blackBox, setBlackBox] = useState(false);
   const [blackBox2, setBlackBox2] = useState(false);
-
   const [blackBox3, setBlackBox3] = useState(false);
 
   return (
@@ -46,7 +43,6 @@ export default function CreateTrip() {
           setBlackBox2(false);
 
           setBlackBox3(false);
-
         }}
         sx={{
           width: "100%",
@@ -66,7 +62,7 @@ export default function CreateTrip() {
       <Box
         sx={{
           width: { md: "40%", sm: "60%", xs: "80%" },
-          height: { md: "90%", sm: "85%", xs: "85gi%" },
+          height: { md: "90%", sm: "85%", xs: "85%" },
 
           backgroundColor: "white",
           zIndex: 1000,
@@ -256,9 +252,7 @@ export default function CreateTrip() {
             display: { xs: "none", md: "flex" },
           }}
         >
-
           <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
-
             <GoogleMap
               mapContainerStyle={{
                 width: "100%",
@@ -268,11 +262,7 @@ export default function CreateTrip() {
               center={{ lat: 26.0667, lng: 50.5577 }}
               zoom={8}
             />
-
           </LoadScriptNext>
-
-          </LoadScript>
-
         </Box>
       </Box>
 

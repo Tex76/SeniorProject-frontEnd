@@ -21,6 +21,9 @@ import { Link } from "react-router-dom";
 import "@fontsource/roboto";
 import SearchBar from "./SearchBar";
 import Coin from "../../images/NavBar/coin.png";
+import { UserContext } from "../../UserContext";
+import { useContext } from "react";
+import axios from "axios";
 
 const pages = {
   Home: "",
@@ -28,13 +31,14 @@ const pages = {
   Review: "Reviews",
   Reward: "RewardSystem",
 };
-const settings = ["Login", "Signup"];
+const settings = ["Login", "Signup", "MyTrip", "Logout"];
 
 interface Props {
   textColor?: string;
 }
 
 function NavBar({ textColor }: Props) {
+  const { user } = useContext(UserContext);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -191,7 +195,7 @@ function NavBar({ textColor }: Props) {
                     display: "flex",
                   }}
                 >
-                  200
+                  {user ? user.points : 0}
                 </Typography>
               </Button>
             </Box>
@@ -233,13 +237,17 @@ function NavBar({ textColor }: Props) {
                   display: { xs: "none", md: "flex" },
                 }}
               >
-                200
+                {user ? user.points : 0}
               </Typography>
             </Button>
           </Box>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 2 }}>
-              <Avatar src="/broken-image.jpg" />
+              {user ? (
+                <Avatar src={`/systemImage/${user.avatarImage}`} />
+              ) : (
+                <Avatar src="broken-image.jpg" />
+              )}
             </IconButton>
           </Tooltip>
           <Menu
@@ -254,15 +262,39 @@ function NavBar({ textColor }: Props) {
           >
             {settings.map((setting) => (
               <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                {setting === "Login" || setting === "Signup" ? (
+                {setting === "Logout" && !!user ? (
+                  // Render as a button with red text and no navigation link
+                  <Typography
+                    textAlign="center"
+                    style={{ color: "red", cursor: "pointer" }}
+                    onClick={() => {
+                      axios.post("/logout").then(() => {
+                        window.location.href = "/";
+                      });
+                    }}
+                  >
+                    {setting}
+                  </Typography>
+                ) : (
+                  // Render other settings as links
                   <Link
-                    to={`/${setting}`}
+                    to={`/${
+                      setting === "Login" ||
+                      setting === "Signup" ||
+                      setting === "MyTrip"
+                        ? setting
+                        : "#"
+                    }`}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    <Typography textAlign="center">{setting}</Typography>
+                    {setting === "Login" ||
+                    setting === "Signup" ||
+                    setting === "MyTrip" ? (
+                      <Typography textAlign="center">{setting}</Typography>
+                    ) : (
+                      ""
+                    )}
                   </Link>
-                ) : (
-                  <Typography textAlign="center">{setting}</Typography>
                 )}
               </MenuItem>
             ))}

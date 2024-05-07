@@ -11,10 +11,12 @@ import TopReviews from "./ThingsToDoComponents/TopReviews";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 
 import Background from "../images/ThingsToDo/Background.jpg";
+import { Place } from "../../../api/SchemaDb";
 
-const ThingsToDo = () => {
+const ThingsToDo = ({ place }: { place: Place }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <>
       <Box
@@ -60,9 +62,9 @@ const ThingsToDo = () => {
           }}
         ></Box>
 
-        <Introduction />
+        <Introduction place={place} />
 
-        <Cards />
+        <Cards place={place} />
 
         <Box
           sx={{
@@ -75,10 +77,10 @@ const ThingsToDo = () => {
           }}
         >
           <Box sx={{ padding: "25px" }}>
-            <Directions />
+            <Directions place={place} />
           </Box>
           <Box sx={{ padding: "25px" }}>
-            <TopReviews />
+            <TopReviews place={place} />
           </Box>
         </Box>
       </Box>
