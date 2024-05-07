@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ThingsToDo from "./ThingsToDo";
+import ThingsToEat from "./ThingsToEat";
+import PlacesToStay from "./PlacesToStay";
 import { Place } from "../../../api/SchemaDb";
 // Uncomment other imports if needed
 // import ThingsToEat from "./ThingsToEat";
@@ -31,8 +33,17 @@ export default function Places() {
     return <ThingsToDo place={place} />;
   }
   // Uncomment and adjust the following lines as necessary
-  // if (place.category === "PlacesToStay") return <PlacesToStay place={place} />;
-  // if (place.category === "thingsToEat") return <ThingsToEat place={place} />;
+ 
+  
+  if (place.category === "thingsToEat") {
+    console.log(place);
+    return <ThingsToEat place={place} />;
+  }
+
+  if (place.category ==="placesToStay") {
+    console.log(place);
+    return <PlacesToStay place={place} />;
+  }
 
   return null; // Default return if no condition is met
 }
