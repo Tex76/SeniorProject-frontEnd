@@ -17,9 +17,10 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Place } from "../../../../api/SchemaDb";
+import { useNavigate } from "react-router-dom";
 
-const Introduction = ({ place }: { place: Place }) => {
+const Introduction = ({ place }: { place: any }) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -34,7 +35,14 @@ const Introduction = ({ place }: { place: Place }) => {
       }}
     >
       <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
-        <Button style={{ marginRight: "10px", color: "black" }}>Review</Button>
+        <Button
+          onClick={() => {
+            navigate(`/review/${place._id}`);
+          }}
+          style={{ marginRight: "10px", color: "black" }}
+        >
+          Review
+        </Button>
         <Typography variant="h5" style={{ margin: "0 10px" }}>
           |
         </Typography>
@@ -56,7 +64,7 @@ const Introduction = ({ place }: { place: Place }) => {
             <Box display="flex" alignItems="center">
               <PinDropOutlinedIcon />
               {place.type} | {place.rate}{" "}
-              <Rating name="place-rating" value={4} readOnly />{" "}
+              <Rating name="place-rating" value={place.rate} readOnly />{" "}
               {place.totalComments} reviews
             </Box>
           </Typography>

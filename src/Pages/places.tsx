@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ThingsToDo from "./ThingsToDo";
 import { Place } from "../../../api/SchemaDb";
+import { CircularProgress } from "@mui/material";
 // Uncomment other imports if needed
 // import ThingsToEat from "./ThingsToEat";
 // import PlacesToStay from "./PlacesToStay";
@@ -25,7 +26,21 @@ export default function Places() {
   }, [id]);
 
   // Ensure the component does not return undefined by handling all possible states
-  if (!place) return <div>Loading...</div>; // handle null or undefined state
+  if (!place) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh", // Takes full viewport height
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
   if (place.category === "thingsToDo") {
     console.log(place);
     return <ThingsToDo place={place} />;

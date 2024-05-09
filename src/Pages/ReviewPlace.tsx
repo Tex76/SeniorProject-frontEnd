@@ -9,7 +9,13 @@ import axios from "axios";
 import { Place } from "../../../api/SchemaDb";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Comment } from "../../../api/SchemaDb";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
+import { useContext } from "react";
+
+// This interface should be used in the frontend.
+
+// Use this interface when dealing with comments in your frontend.
 
 import {
   TextField,
@@ -29,7 +35,47 @@ const ResponsiveBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+export interface SimpleComment {
+  _id?: string;
+  userID: string | undefined; // Assuming you're only working with the ID as a string in the frontend
+  placeID: string | undefined;
+  userName?: string;
+  rankImage?: string;
+  userAvatar?: string;
+  contributionNumber?: number;
+  rank?: number;
+  rate: number;
+  title: string;
+  writtenDate: Date;
+  commentBody: string;
+  dateVisit: Date;
+  services?: number;
+  score: number;
+  whithWhom: string;
+  helpfulTip: string;
+
+  // Add other properties similar to your backend model but simplified
+  location?: number;
+  safety?: number;
+  facilities?: number;
+  convenience?: number;
+  staff?: number;
+
+  // Other categories
+  foodQuality?: number;
+  valueForMoney?: number;
+  service?: number;
+  menuVariety?: number;
+  ambiance?: number;
+
+  // More categories
+  serviceRate?: number;
+  roomQuality?: number;
+  cleanliness?: number;
+}
+
 const ReviewPlace = () => {
+  const { user } = useContext(UserContext);
   const [form, setForm] = useState({
     rating: 0,
     whenDate: new Date().toISOString().slice(0, 10),
@@ -57,6 +103,8 @@ const ReviewPlace = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", 1280));
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [place, setPlace] = React.useState<Place>();
   useEffect(() => {
     const fetchFunction = async () => {
@@ -68,32 +116,88 @@ const ReviewPlace = () => {
   }, [id]);
 
   function onSubmit() {
-    // let commentValue: Comment;
+    if (!user) return navigate("/login");
+    let commentValue: SimpleComment; // Ensure that Comment can handle all fields used below.
 
-    // if category is thingsToDo
-    // const review: Comment = {
-    //   rate: form.rating,
-    //   writtenDate: new Date(),
-    //   visitDate: new Date(form.whenDate),
-    //   whithWhom: form.with,
-    //   commentBody: form.review,
-    //   title: form.title,
-    //   score: 0,
-    //   location: form.subRateOne,
-    //   safety: form.subRateTwo,
-    //   facilities: form.subRateThree,
-    //   convenience: form.subRateFour,
-    //   staff: form.subRateFive,
-    //   helpfulTip: form.advice,
-    // };
-    // console.log(review);
+    // Define default properties
+    const commonProps = {
+      userID: user.id,
+      placeID: "" || id,
+      rate: form.rating,
+      writtenDate: new Date(),
+      dateVisit: new Date(form.whenDate),
+      whithWhom: form.with,
+      commentBody: form.review,
+      title: form.title,
+      score: 0,
+      helpfulTip: form.advice,
+    };
+
+    if (place?.category === "thingsToDo") {
+      commentValue = {
+        ...commonProps,
+        location: form.subRateOne,
+        safety: form.subRateTwo,
+        facilities: form.subRateThree,
+        convenience: form.subRateFour,
+        staff: form.subRateFive, // Add type assertion to ensure placeID is always of type string
+      };
+
+      if (commentValue) {
+        axios
+          .post("/setComment", commentValue)
+          .then(() => {
+            navigate(`/places/${id}`);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    } else if (place?.category === "thingsToEat") {
+      commentValue = {
+        ...commonProps,
+        foodQuality: form.subRateOne,
+        valueForMoney: form.subRateTwo,
+        service: form.subRateThree,
+        menuVariety: form.subRateFour,
+        ambiance: form.subRateFive,
+      };
+      if (commentValue) {
+        axios
+          .post("/setComment", commentValue)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    } else {
+      commentValue = {
+        ...commonProps,
+        location: form.subRateOne,
+        service: form.subRateTwo,
+        facilities: form.subRateThree, // Ensure this is correct
+        roomQuality: form.subRateFour,
+        cleanliness: form.subRateFive,
+      };
+      if (commentValue) {
+        axios
+          .post("/setComment", commentValue)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }
 
     // here we need to setup session ID in order to know the who is submitting the review
     // here must we done the logic of adding the review to the database
     // adding to the place reviews array
     // adding to the user reviews array
     // adding to the review collection
-    console.log("Form submitted", form);
   }
 
   useEffect(() => {
@@ -118,9 +222,9 @@ const ReviewPlace = () => {
       setDetails({
         detailsOne: "location",
         detailsTwo: "service",
-        detailsThree: "room quality",
-        detailsFour: "cleanliness",
-        detailsFive: "ambiance",
+        detailsThree: "facilities",
+        detailsFour: "room quality",
+        detailsFive: "cleanliness",
       });
     }
   }, [place]);

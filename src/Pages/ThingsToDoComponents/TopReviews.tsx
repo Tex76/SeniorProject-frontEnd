@@ -17,9 +17,9 @@ import CircleIcon from "@mui/icons-material/Circle";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { format, parseISO } from "date-fns";
 
 import profile from "../../images/Profile/profile.png";
-import image from "../../images/ThingsToEat/image.png";
 import Adventure from "../../images/RewardSystem/Adventure.png";
 
 import "@fontsource/roboto/300.css";
@@ -30,6 +30,7 @@ import { Comment, Photo, Place } from "../../../../api/SchemaDb";
 
 const TopReviews = ({ place }: { place: Place }) => {
   const [value, setValue] = useState(0);
+  console.log(place);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -74,7 +75,7 @@ const TopReviews = ({ place }: { place: Place }) => {
       <Tabs
         value={value}
         onChange={handleChange}
-        sx={{ justifyContent: "flex-start" }}
+        sx={{ justifyContent: "flex-start", width: "100%" }}
       >
         <Tab label="Reviews" />
         <Tab label="Photos" />
@@ -85,15 +86,13 @@ const TopReviews = ({ place }: { place: Place }) => {
           {place.comments.length === 0 ? (
             <h2 style={{ textAlign: "center" }}>No reviews yet</h2>
           ) : (
-            place.comments.map((comment: Comment) => {
+            place.comments.map((comment: any) => {
               return (
-                <>
-                  <Typography
-                    variant="h4"
-                    sx={{ fontWeight: "bold", textAlign: "center" }}
-                  >
-                    Top reviews
-                  </Typography>
+                <Box
+                  sx={{
+                    width: "100%",
+                  }}
+                >
                   <CardContent
                     sx={{
                       position: "relative",
@@ -159,21 +158,23 @@ const TopReviews = ({ place }: { place: Place }) => {
                       }}
                     >
                       <img
-                        src={comment.userAvatar}
+                        src={`/systemImage/${comment.avatarImage}`}
                         alt="profile"
                         style={{
                           width: "70px",
-                          borderRadius: "50%",
+                          height: "70px",
+                          borderRadius: "100%",
+                          objectFit: "cover",
                           marginRight: "10px",
                         }}
                       />
                       <Box>
                         <Typography variant="subtitle1">
-                          {comment.userName}
+                          {comment.username}
                         </Typography>
                         <Typography variant="caption">
                           <Box component="span" sx={{ fontWeight: "bold" }}>
-                            {comment.contributionNumber}
+                            {comment.contribution}
                           </Box>{" "}
                           contributions
                         </Typography>
@@ -188,7 +189,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                             {comment.rank}{" "}
                           </Typography>
                           <img
-                            src={comment.rankImage}
+                            src={`/systemImage/${comment.rankImage}`}
                             alt="Adventure"
                             style={{
                               width: "20px",
@@ -213,15 +214,27 @@ const TopReviews = ({ place }: { place: Place }) => {
                         {comment.title}
                       </Typography>
                       <Box display="flex" alignItems="center" mt={1} mb={2}>
-                        <Typography variant="overline">
-                          Written {comment.writtenDate.toLocaleDateString()}
+                        <Typography
+                          sx={{
+                            fontWeight: "bold",
+                            marginRight: "10px",
+                          }}
+                          variant="body1"
+                        >
+                          Written{" "}
+                          {comment.writtenDate
+                            ? format(
+                                parseISO(comment.writtenDate),
+                                "MMMM dd, yyyy"
+                              )
+                            : "Date not available"}
                         </Typography>
                         <CircleIcon
                           sx={{ marginLeft: "10px", marginRight: "10px" }}
                         />
-                        <Typography variant="overline">
+                        <Typography variant="body1">
                           {" "}
-                          {comment.whithWhom}
+                          {comment.withWhom}
                         </Typography>
                       </Box>
                       <Typography variant="body2">
@@ -230,7 +243,12 @@ const TopReviews = ({ place }: { place: Place }) => {
                       <Box mt={2}>
                         <Typography variant="body1">
                           <strong>Date visited:</strong>
-                          {comment.visitDate.toLocaleDateString()}
+                          {comment.dateVisit
+                            ? format(
+                                parseISO(comment.dateVisit),
+                                "MMMM dd, yyyy"
+                              )
+                            : "Date not available"}
                         </Typography>
                       </Box>
                       <Box
@@ -241,34 +259,24 @@ const TopReviews = ({ place }: { place: Place }) => {
                         <Box display="flex" justifyContent="space-between">
                           <Box>
                             <Typography variant="body2" component="p">
-                              Service
+                              facilities
                             </Typography>
                             <Rating
                               name="location-rating"
-                              value={comment.service}
+                              value={comment.facilities}
                               readOnly
                             />
                           </Box>
                           <Box>
                             <Typography variant="body2" component="p">
-                              Room Quality
+                              safety
                             </Typography>
                             <Rating
                               name="food-quality-rating"
-                              value={comment.roomQuality}
+                              value={comment.safety}
                               readOnly
                             />
                           </Box>
-                          {/* <Box>
-                            <Typography variant="body2" component="p">
-                              Facilities
-                            </Typography>
-                            <Rating
-                              name="money-rating"
-                              value={comment.facilities}
-                              readOnly
-                            />
-                          </Box> */}
                         </Box>
                         <Box display="flex" justifyContent="space-between">
                           <Box>
@@ -283,21 +291,21 @@ const TopReviews = ({ place }: { place: Place }) => {
                           </Box>
                           <Box>
                             <Typography variant="body2" component="p">
-                              Cleanliness
+                              Convenience
                             </Typography>
                             <Rating
                               name="menu-variety-rating"
-                              value={comment.cleanliness}
+                              value={comment.convenience}
                               readOnly
                             />
                           </Box>
                           <Box>
                             <Typography variant="body2" component="p">
-                              Ambiance
+                              staff
                             </Typography>
                             <Rating
                               name="ambience-rating"
-                              value={comment.ambiance}
+                              value={comment.staff}
                               readOnly
                             />
                           </Box>
@@ -305,7 +313,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                       </Box>
                     </Box>
                   </CardContent>
-                </>
+                </Box>
               );
             }, [])
           )}
@@ -435,7 +443,14 @@ const TopReviews = ({ place }: { place: Place }) => {
                       style={{ width: "100%" }}
                     />
                     <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                      Date: {photo.dateOfTaken.toLocaleDateString()}
+                      Date:{" "}
+                      {photo.dateOfTaken
+                        ? photo.dateOfTaken.toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "Date not available"}
                     </Typography>
                   </Box>
                 </CardContent>
