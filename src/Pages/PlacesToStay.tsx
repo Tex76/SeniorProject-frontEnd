@@ -7,8 +7,9 @@ import Directions from "./PlacesToStayComponents/Directions";
 import TopReviews from "./PlacesToStayComponents/TopReviews";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import Background from "../images/PlaceToStay/Background.jpg";
+import { Place } from "../../../api/SchemaDb";
 
-const PlacesToStay = () => {
+const PlacesToStay = ({ place }: { place: Place }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -55,9 +56,9 @@ const PlacesToStay = () => {
             height: "250px",
           }}
         ></Box>
-        <Introduction />
+        <Introduction place={place} />
 
-        <Cards />
+        <Cards place={place} />
 
         <Box
           sx={{
@@ -69,11 +70,11 @@ const PlacesToStay = () => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ padding: "25px" }}>
-            <Directions />
+          <Box sx={{ padding: "25px", width: "40%" }}>
+            <Directions place={place} />
           </Box>
-          <Box sx={{ padding: "25px" }}>
-            <TopReviews />
+          <Box sx={{ padding: "25px", width: "80%" }}>
+            <TopReviews place={place} />
           </Box>
         </Box>
       </Box>

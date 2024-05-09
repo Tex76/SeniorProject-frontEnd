@@ -18,13 +18,14 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Cardimage1 from "../../images/PlaceToStay/Cardimage1.png";
 import Cardimage2 from "../../images/PlaceToStay/Cardimage2.png";
 import Cardimage3 from "../../images/PlaceToStay/Cardimage3.png";
+import { Place } from "../../../../api/SchemaDb";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-const Introduction = () => {
+const Introduction = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -39,7 +40,14 @@ const Introduction = () => {
       }}
     >
       <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
-        <Button style={{ marginRight: "10px", color: "black" }}>Review</Button>
+        <Button
+          onClick={() => {
+            window.location.href = `/review/${place._id}`;
+          }}
+          style={{ marginRight: "10px", color: "black" }}
+        >
+          Review
+        </Button>
         <Typography variant="h5" style={{ margin: "0 10px" }}>
           |
         </Typography>
@@ -49,11 +57,10 @@ const Introduction = () => {
       <Grid container spacing={2} sx={{ p: { xs: 2 } }}>
         <Grid item xs={isMobile ? 12 : 6}>
           <Typography variant="h4" component="div" sx={{ fontWeight: "bold" }}>
-            International Circuit
+            {place.name}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-            <LocationOnIcon /> RGate 255, Gulf of Bahrain Avenue Umm Jidar,
-            Manama 1062 Bahrain
+            <LocationOnIcon /> {place.location}
           </Typography>
           <Typography
             variant="overline"
@@ -61,30 +68,19 @@ const Introduction = () => {
           >
             <Box display="flex" alignItems="center">
               <PinDropOutlinedIcon />
-              Landmark | 4.8 <Rating
-                name="place-rating"
-                value={4}
-                readOnly
-              />{" "}
-              1,750 reviews
+              {place.type} | {place.rate}{" "}
+              <Rating name="place-rating" value={place.rate} readOnly />
+              {place.totalComments} reviews
             </Box>
           </Typography>
-          <Typography variant="body1">
-            The Bahrain International Circuit, situated in Sakhir, has been a
-            hub of motorsport excellence since 2004. Hosting prestigious events
-            like the Formula One Bahrain Grand Prix, it offers thrilling races
-            and entertainment, attracting global audiences. With its
-            state-of-the-art facilities and commitment to innovation, the
-            circuit continues to be a symbol of speed and excitement in the
-            Middle East.{" "}
-          </Typography>
+          <Typography variant="body1">{place.description}</Typography>
         </Grid>
 
         <Grid item xs={isMobile ? 12 : 6}>
           <Grid container direction="row">
-            <Grid item xs={6}>
+            <Grid item xs={7}>
               <img
-                src={Cardimage1}
+                src={`/systemImage/${place.imagePlace[0]}`}
                 alt="Card Image 1"
                 style={{
                   width: "100%",
@@ -94,19 +90,19 @@ const Introduction = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
               <img
-                src={Cardimage2}
+                src={`/systemImage/${place.imagePlace[1]}`}
                 alt="Card Image 2"
-                style={{ width: "100%", objectFit: "cover", height: "50%" }}
+                style={{ width: "100%", height: "50%", objectFit: "cover" }}
               />
               <img
-                src={Cardimage3}
+                src={`/systemImage/${place.imagePlace[2]}`}
                 alt="Card Image 3"
                 style={{
                   width: "100%",
-                  objectFit: "cover",
                   height: "50%",
+                  objectFit: "cover",
                   marginTop: "-4px",
                 }}
               />

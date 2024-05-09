@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import * as React from "react";
 import {
   Button,
@@ -22,8 +23,6 @@ import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import CleaningServicesOutlinedIcon from "@mui/icons-material/CleaningServicesOutlined";
-import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
-import SportsEsportsOutlinedIcon from "@mui/icons-material/SportsEsportsOutlined";
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
 
@@ -31,18 +30,15 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Place } from "../../../../api/SchemaDb";
 
-const Cards = () => {
+const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <div>
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          width: "100%",
-        }}
+        style={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}
       >
         <Card
           sx={{
@@ -70,70 +66,99 @@ const Cards = () => {
                 About Hotel
               </Typography>
               <CardContent sx={{ borderBottom: "1px solid white" }}>
-                <Typography
-                  variant="body2"
-                  component="p"
-                  sx={{ marginBottom: "20px" }}
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    height: "200px",
+                  }}
                 >
-                  4.8 <Rating name="place-rating" value={4} readOnly /> 1,703
-                  reviews
-                </Typography>
-                <Typography
-                  variant="h6"
-                  component="p"
-                  sx={{ marginBottom: "10px" }}
-                >
-                  RATINGS{" "}
-                </Typography>
+                  <Box
+                    sx={{
+                      marginTop: "15px",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <Typography>{place.rate}</Typography>
+                  </Box>
+                  <Box>
+                    <Rating
+                      sx={{
+                        marginTop: "15px",
+                      }}
+                      name="place-rating"
+                      value={place.rate}
+                      readOnly
+                    />{" "}
+                  </Box>
+                  <Box
+                    sx={{
+                      marginTop: "15px",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    <Typography>{place.totalComments + " "} reviews</Typography>
+                  </Box>
+                </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
-                    <LocationOnIcon style={{ color: "black" }} /> Location
+                    <CleaningServicesOutlinedIcon style={{ color: "black" }} />{" "}
+                    location
                   </Typography>
-                  <Rating name="location-rating" value={4} readOnly />
+                  <Rating
+                    name="service-rating"
+                    value={place.subRatings.locationRate}
+                    readOnly
+                  />
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
                     <HowToRegOutlinedIcon style={{ color: "black" }} /> Service
                   </Typography>
-                  <Rating name="food-quality-rating" value={4} readOnly />
+                  <Rating
+                    name="food-quality-rating"
+                    value={place.subRatings.service}
+                    readOnly
+                  />
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
                     <BedOutlinedIcon style={{ color: "black" }} /> Room Quality
                   </Typography>
-                  <Rating name="money-rating" value={4} readOnly />
+                  <Rating
+                    name="money-rating"
+                    value={place.subRatings.roomQuality}
+                    readOnly
+                  />
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
                     <CleaningServicesOutlinedIcon style={{ color: "black" }} />{" "}
                     Cleanliness
                   </Typography>
-                  <Rating name="service-rating" value={4} readOnly />
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2" component="p">
-                    <StorefrontOutlinedIcon style={{ color: "black" }} />{" "}
-                    Facilities
-                  </Typography>
-                  <Rating name="menu-variety-rating" value={4} readOnly />
-                </Box>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2" component="p">
-                    <SportsEsportsOutlinedIcon style={{ color: "black" }} />{" "}
-                    intertaint
-                  </Typography>
-                  <Rating name="ambience-rating" value={4} readOnly />
+                  <Rating
+                    name="service-rating"
+                    value={place.subRatings.cleanliness}
+                    readOnly
+                  />
                 </Box>
               </CardContent>
 
               <CardContent>
-                <Typography variant="h5" component="h2">
+                <Typography
+                  sx={{
+                    fontFamily: "roboto",
+                    fontWeight: "bold",
+                  }}
+                  variant="h5"
+                  component="h2"
+                >
                   Location and contact
                 </Typography>
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3585.043484916671!2d50.513002984973575!3d26.03213318351472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e484d66f7114f99%3A0xb08bbfbdc59c2dc!2z2K3ZhNio2Kkg2KfZhNio2K3YsdmK2YYg2KfZhNiv2YjZhNmK2Kk!5e0!3m2!1sar!2sbh!4v1712646555106!5m2!1sar!2sbh"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1789.3231787283516!2d50.545328747888334!3d26.240677949579055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49a5c96a6f9721%3A0x2b4c4bdd19a1c061!2z2KjZiNi02YrYqtmI!5e0!3m2!1sar!2sbh!4v1712562450448!5m2!1sar!2sbh"
                   width="100%"
-                  height="300px"
+                  height="200px"
                   style={{
                     border: "0",
                     borderRadius: "20px",
@@ -147,16 +172,15 @@ const Cards = () => {
                   <LocationOnIcon
                     style={{ color: "black", marginTop: "20px" }}
                   />
-                  Gate 255, Gulf of Bahrain Avenue Umm Jidar, Manama 1062
-                  Bahrain
+                  {place.location}
                 </Typography>
                 <Typography variant="body1" component="p">
-                  <CallIcon style={{ color: "black", marginTop: "20px" }} />{" "}
-                  +973 1758 3555
+                  <CallIcon style={{ color: "black", marginTop: "20px" }} />
+                  {place.phoneNumber}
                 </Typography>
                 <Typography variant="body1" component="p">
-                  <EmailIcon style={{ color: "black", marginTop: "20px" }} />{" "}
-                  Reservation@bushido.com.bh{" "}
+                  <EmailIcon style={{ color: "black", marginTop: "20px" }} />
+                  {place.email}
                 </Typography>
               </CardContent>
             </Box>
@@ -180,8 +204,12 @@ const Cards = () => {
                     ACCOMMODATION TYPE
                   </Typography>
                   <Typography variant="overline" component="p">
-                    Deluxe Rooms, Executive Rooms, Suites (Junior, Executive,
-                    and Presidential), Accessible Rooms
+                    {!!place.accommodationType &&
+                      place.accommodationType
+                        .map((accommodationType: any) => {
+                          return accommodationType;
+                        })
+                        .join(", ")}
                   </Typography>
                 </Box>
                 <Box mt={3}>
@@ -189,10 +217,12 @@ const Cards = () => {
                     <ChairOutlinedIcon sx={{ color: "black" }} /> Amenities
                   </Typography>
                   <Typography variant="overline" component="p">
-                    High-speed Wi-Fi, outdoor swimming pool, fitness center,
-                    spa, dining options, business center, concierge services,
-                    valet parking, meeting spaces, and laundry services are
-                    among the amenities offered at Hilton Bahrain.
+                    {!!place.amenities &&
+                      place.amenities
+                        .map((amenities: any) => {
+                          return amenities;
+                        })
+                        .join(", ")}
                   </Typography>
                 </Box>
                 <Box mt={3}>
@@ -201,9 +231,12 @@ const Cards = () => {
                     TYPE
                   </Typography>
                   <Typography variant="overline" component="p">
-                    Standard Rooms, Executive Rooms, Suites (Junior, Executive,
-                    and Presidential), and Accessible Rooms to cater to diverse
-                    guest preferences.
+                    {!!place.roomType &&
+                      place.roomType
+                        .map((roomType: any) => {
+                          return roomType;
+                        })
+                        .join(", ")}
                   </Typography>
                 </Box>
                 <Box mt={3}>
@@ -212,9 +245,7 @@ const Cards = () => {
                     Type
                   </Typography>
                   <Typography variant="overline" component="p">
-                    In the heart of Manama, Bahrain, offering convenient access
-                    to business districts, cultural attractions, and shopping
-                    destinations.
+                    {place.locationType}
                   </Typography>
                 </Box>
                 <Box mt={3}>
@@ -223,9 +254,12 @@ const Cards = () => {
                     Additional Services
                   </Typography>
                   <Typography variant="overline" component="p">
-                    Airport transportation, car rental desk, currency exchange,
-                    24-hour room service, babysitting, tour desk, express
-                    check-in/out, gift shop, and executive lounge access.
+                    {!!place.additionalServices &&
+                      place.additionalServices
+                        .map((additionalServices: any) => {
+                          return additionalServices;
+                        })
+                        .join(", ")}
                   </Typography>
                 </Box>
                 <Box mt={3}>
@@ -234,8 +268,12 @@ const Cards = () => {
                     SPOKEN
                   </Typography>
                   <Typography variant="overline" component="p">
-                    English, Arabic, Afrikaans, Filipino, Hindi, Hungarian,
-                    Swahili, Tamil, Turkish
+                    {!!place.languagesSpoken &&
+                      place.languagesSpoken
+                        .map((languagesSpoken: any) => {
+                          return languagesSpoken;
+                        })
+                        .join(", ")}
                   </Typography>
                 </Box>
                 <Box mt={3}>
@@ -243,14 +281,18 @@ const Cards = () => {
                     <LocalAtmOutlinedIcon sx={{ color: "black" }} /> PRICE RANGE
                   </Typography>
                   <Typography variant="overline" component="p">
-                    $115 - $138 (Based on Average Rates for a Standard Room)
+                    {place.priceRange}
                   </Typography>
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
                     <StarsOutlinedIcon sx={{ color: "black" }} /> Hotel Class
                   </Typography>
-                  <Rating name="location-rating" value={3} readOnly />
+                  <Rating
+                    name="location-rating"
+                    value={place.hotelClass}
+                    readOnly
+                  />
                 </Box>
               </CardContent>
             </Box>
@@ -266,6 +308,9 @@ const Cards = () => {
             </Typography>
             <Box>
               <Button
+                onClick={() => {
+                  window.location.href = `/review/${place._id}`;
+                }}
                 variant="contained"
                 style={{
                   backgroundColor: "sandybrown",

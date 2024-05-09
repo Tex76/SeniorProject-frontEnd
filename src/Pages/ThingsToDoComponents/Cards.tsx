@@ -26,7 +26,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Place } from "../../../../api/SchemaDb";
 
-const Cards = ({ place }: { place: Place }) => {
+const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -108,7 +108,7 @@ const Cards = ({ place }: { place: Place }) => {
               </Typography>
               <Rating
                 name="location-rating"
-                value={place.locationRate}
+                value={place.subRatings.locationRate}
                 readOnly
               />
             </Box>
@@ -118,7 +118,7 @@ const Cards = ({ place }: { place: Place }) => {
               </Typography>
               <Rating
                 name="food-quality-rating"
-                value={place.safety}
+                value={place.subRatings.safety}
                 readOnly
               />
             </Box>
@@ -126,7 +126,11 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="body2" component="p">
                 <StorefrontOutlinedIcon style={{ color: "black" }} /> Facilities
               </Typography>
-              <Rating name="money-rating" value={place.facilities} readOnly />
+              <Rating
+                name="money-rating"
+                value={place.subRatings.facilities}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
@@ -134,7 +138,7 @@ const Cards = ({ place }: { place: Place }) => {
               </Typography>
               <Rating
                 name="service-rating"
-                value={place.convenience}
+                value={place.subRatings.convenience}
                 readOnly
               />
             </Box>
@@ -142,7 +146,11 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="body2" component="p">
                 <PeopleAltOutlinedIcon style={{ color: "black" }} /> Staff
               </Typography>
-              <Rating name="menu-variety-rating" value={place.staff} readOnly />
+              <Rating
+                name="menu-variety-rating"
+                value={place.subRatings.staff}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               {/* <Typography variant="body2" component="p">
@@ -179,7 +187,7 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="overline" component="p">
                 {!!place.activityType &&
                   place.activityType
-                    .map((activity) => {
+                    .map((activity: any) => {
                       return activity;
                     })
                     .join(", ")}
@@ -206,7 +214,7 @@ const Cards = ({ place }: { place: Place }) => {
               >
                 {!!place.accessibility &&
                   place.accessibility
-                    .map((accessibility) => {
+                    .map((accessibility: any) => {
                       return accessibility;
                     })
                     .join(", ")}
@@ -249,7 +257,7 @@ const Cards = ({ place }: { place: Place }) => {
                   component="ul"
                 >
                   {!!place.whatToExpect &&
-                    place.whatToExpect.map((except) => {
+                    place.whatToExpect.map((except: any) => {
                       return <li>{except.toLowerCase()}</li>;
                     })}
                 </Typography>

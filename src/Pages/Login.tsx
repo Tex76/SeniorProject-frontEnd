@@ -42,7 +42,7 @@ export default function Login() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigation = useNavigate();
-  const userContext = React.useContext(UserContext);
+  const { setUser } = React.useContext(UserContext);
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -52,8 +52,6 @@ export default function Login() {
   const [wrong, setWrong] = React.useState(false);
 
   const [alert, setAlert] = React.useState<string | null>(null);
-
-  const setUser = userContext?.setUser;
 
   const validateFields = () => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -84,7 +82,6 @@ export default function Login() {
               setUser(res.data);
             }
             setTimeout(() => navigation("/"), 1200);
-            console.log(res.data);
             setWrong(false);
           } else {
             setAlert("error");

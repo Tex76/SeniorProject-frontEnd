@@ -1,18 +1,23 @@
-import * as React from 'react';
-import { Box, Typography, Rating } from '@mui/material';
+import * as React from "react";
+import { Box, Typography, Rating } from "@mui/material";
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
-const Directions = () => {
+const Directions = ({ place }: { place: any }) => {
   return (
     <div>
-      <Typography variant="h6" component="div" sx={{ fontSize: '17px' }}>
-        4.8 <Rating name="read-only" value={5} readOnly /> 1,703 reviews
+      <Typography variant="h6" component="div" sx={{ fontSize: "17px" }}>
+        {place.rate} <Rating name="read-only" value={5} readOnly />{" "}
+        {place.totalComments - 1} reviews
       </Typography>
-      <Box display="flex" justifyContent="space-between" sx={{ marginTop: '20px' }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        sx={{ marginTop: "20px" }}
+      >
         <Box flex={1}>
           <Typography variant="inherit" component="div">
             Exceptional
@@ -23,11 +28,15 @@ const Directions = () => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-            1,670
+            {place.exceptional}
           </Typography>
         </Box>
       </Box>
-      <Box display="flex" justifyContent="space-between" sx={{ marginTop: '20px' }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        sx={{ marginTop: "20px" }}
+      >
         <Box flex={1}>
           <Typography variant="inherit" component="div">
             Great
@@ -38,11 +47,15 @@ const Directions = () => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-            60
+            {place.great}
           </Typography>
         </Box>
       </Box>
-      <Box display="flex" justifyContent="space-between" sx={{ marginTop: '20px' }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        sx={{ marginTop: "20px" }}
+      >
         <Box flex={1}>
           <Typography variant="inherit" component="div">
             Satisfactory
@@ -53,11 +66,15 @@ const Directions = () => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-            35
+            {place.satisfactory}
           </Typography>
         </Box>
       </Box>
-      <Box display="flex" justifyContent="space-between" sx={{ marginTop: '20px' }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        sx={{ marginTop: "20px" }}
+      >
         <Box flex={1}>
           <Typography variant="inherit" component="div">
             Poor
@@ -68,11 +85,15 @@ const Directions = () => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-            15
+            {place.poor}
           </Typography>
         </Box>
       </Box>
-      <Box display="flex" justifyContent="space-between" sx={{ marginTop: '20px' }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        sx={{ marginTop: "20px" }}
+      >
         <Box flex={1}>
           <Typography variant="inherit" component="div">
             Bad
@@ -83,12 +104,12 @@ const Directions = () => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-            6
+            {place.bad}
           </Typography>
         </Box>
       </Box>
     </div>
   );
-}
+};
 
 export default Directions;

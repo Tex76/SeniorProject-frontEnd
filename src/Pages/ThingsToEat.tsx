@@ -8,8 +8,9 @@ import TopReviews from "./ThingsToEatComponents/TopReviews";
 
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import Background from "../images/ThingsToEat/Background.png";
+import { Place } from "../../../api/SchemaDb";
 
-const ThingsToEat = () => {
+const ThingsToEat = ({ place }: { place: Place }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -57,9 +58,9 @@ const ThingsToEat = () => {
             height: "250px",
           }}
         ></Box>
-        <Introduction />
+        <Introduction place={place} />
 
-        <Cards />
+        <Cards place={place} />
 
         <Box
           sx={{
@@ -71,11 +72,11 @@ const ThingsToEat = () => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ padding: "25px" }}>
-            <Directions />
+          <Box sx={{ padding: "25px", width: "40%" }}>
+            <Directions place={place} />
           </Box>
-          <Box sx={{ padding: "25px" }}>
-            <TopReviews />
+          <Box sx={{ padding: "25px", width: "80%" }}>
+            <TopReviews place={place} />
           </Box>
         </Box>
 
