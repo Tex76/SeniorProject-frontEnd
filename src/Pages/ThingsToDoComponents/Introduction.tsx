@@ -17,7 +17,10 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Place } from "../../../../api/SchemaDb";
+import SavePopUp from './SavePopUp';
 import { useNavigate } from "react-router-dom";
+
 
 const Introduction = ({ place }: { place: any }) => {
   const navigate = useNavigate();
@@ -35,6 +38,9 @@ const Introduction = ({ place }: { place: any }) => {
       }}
     >
       <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
+
+        <SavePopUp />
+
         <Button
           onClick={() => {
             navigate(`/review/${place._id}`);
@@ -47,6 +53,7 @@ const Introduction = ({ place }: { place: any }) => {
           |
         </Typography>
         <Button style={{ color: "black" }}>Save</Button>
+
       </Box>
 
       <Grid container spacing={2} sx={{ p: { xs: 2 } }}>
