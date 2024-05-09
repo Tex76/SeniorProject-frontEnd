@@ -83,7 +83,8 @@ const TopReviews = ({ place }: { place: Place }) => {
 
       {value === 0 && (
         <>
-          {place.comments.length === 0 ? (
+          {place.comments.length === 0 ||
+          Object.keys(place.comments[0]).length === 0 ? (
             <h2 style={{ textAlign: "center" }}>No reviews yet</h2>
           ) : (
             place.comments.map((comment: any) => {
@@ -207,7 +208,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                         marginBottom: "10px",
                       }}
                     >
-                      <Rating name="read-only" value={4} readOnly />
+                      <Rating name="read-only" value={comment.rate} readOnly />
                     </Box>
                     <Box>
                       <Typography variant="h5" sx={{ fontWeight: "bold" }}>

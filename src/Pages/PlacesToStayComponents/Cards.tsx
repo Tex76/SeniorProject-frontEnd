@@ -32,7 +32,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Place } from "../../../../api/SchemaDb";
 
-const Cards = ({ place }: { place: Place }) => {
+const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
@@ -102,11 +102,22 @@ const Cards = ({ place }: { place: Place }) => {
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
+                    <CleaningServicesOutlinedIcon style={{ color: "black" }} />{" "}
+                    location
+                  </Typography>
+                  <Rating
+                    name="service-rating"
+                    value={place.subRatings.locationRate}
+                    readOnly
+                  />
+                </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body2" component="p">
                     <HowToRegOutlinedIcon style={{ color: "black" }} /> Service
                   </Typography>
                   <Rating
                     name="food-quality-rating"
-                    value={place.serviceRate}
+                    value={place.subRatings.service}
                     readOnly
                   />
                 </Box>
@@ -116,7 +127,7 @@ const Cards = ({ place }: { place: Place }) => {
                   </Typography>
                   <Rating
                     name="money-rating"
-                    value={place.roomQuality}
+                    value={place.subRatings.roomQuality}
                     readOnly
                   />
                 </Box>
@@ -127,7 +138,7 @@ const Cards = ({ place }: { place: Place }) => {
                   </Typography>
                   <Rating
                     name="service-rating"
-                    value={place.cleanliness}
+                    value={place.subRatings.cleanliness}
                     readOnly
                   />
                 </Box>
@@ -195,7 +206,7 @@ const Cards = ({ place }: { place: Place }) => {
                   <Typography variant="overline" component="p">
                     {!!place.accommodationType &&
                       place.accommodationType
-                        .map((accommodationType) => {
+                        .map((accommodationType: any) => {
                           return accommodationType;
                         })
                         .join(", ")}
@@ -208,7 +219,7 @@ const Cards = ({ place }: { place: Place }) => {
                   <Typography variant="overline" component="p">
                     {!!place.amenities &&
                       place.amenities
-                        .map((amenities) => {
+                        .map((amenities: any) => {
                           return amenities;
                         })
                         .join(", ")}
@@ -222,7 +233,7 @@ const Cards = ({ place }: { place: Place }) => {
                   <Typography variant="overline" component="p">
                     {!!place.roomType &&
                       place.roomType
-                        .map((roomType) => {
+                        .map((roomType: any) => {
                           return roomType;
                         })
                         .join(", ")}
@@ -245,7 +256,7 @@ const Cards = ({ place }: { place: Place }) => {
                   <Typography variant="overline" component="p">
                     {!!place.additionalServices &&
                       place.additionalServices
-                        .map((additionalServices) => {
+                        .map((additionalServices: any) => {
                           return additionalServices;
                         })
                         .join(", ")}
@@ -259,7 +270,7 @@ const Cards = ({ place }: { place: Place }) => {
                   <Typography variant="overline" component="p">
                     {!!place.languagesSpoken &&
                       place.languagesSpoken
-                        .map((languagesSpoken) => {
+                        .map((languagesSpoken: any) => {
                           return languagesSpoken;
                         })
                         .join(", ")}

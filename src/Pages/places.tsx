@@ -46,19 +46,11 @@ export default function Places() {
   if (place.category === "thingsToDo") {
     console.log(place);
     return <ThingsToDo place={place} />;
-  }
-  // Uncomment and adjust the following lines as necessary
- 
-  
-  if (place.category === "thingsToEat") {
+  } else if (place.category === "thingsToEat") {
     console.log(place);
     return <ThingsToEat place={place} />;
-  }
-
-  if (place.category ==="placesToStay") {
+  } else {
     console.log(place);
     return <PlacesToStay place={place} />;
   }
-
-  return null; // Default return if no condition is met
 }

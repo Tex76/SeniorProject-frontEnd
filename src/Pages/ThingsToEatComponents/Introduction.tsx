@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-
-import * as React from "react";
-
 import {
   Box,
   Typography,
@@ -21,7 +17,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Place } from "../../../../api/SchemaDb";
 
-const Introduction = ({ place }: { place: Place }) => {
+const Introduction = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -36,7 +32,14 @@ const Introduction = ({ place }: { place: Place }) => {
       }}
     >
       <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
-        <Button style={{ marginRight: "10px", color: "black" }}>Review</Button>
+        <Button
+          onClick={() => {
+            window.location.href = `/review/${place._id}`;
+          }}
+          style={{ marginRight: "10px", color: "black" }}
+        >
+          Review
+        </Button>
         <Typography variant="h5" style={{ margin: "0 10px" }}>
           |
         </Typography>
@@ -45,10 +48,11 @@ const Introduction = ({ place }: { place: Place }) => {
       <Grid container spacing={2} sx={{ p: { xs: 2 } }}>
         <Grid item xs={isMobile ? 12 : 6}>
           <Typography variant="h4" component="div">
-          {place.name}
+            {place.name}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-            <LocationOnIcon />{place.location}
+            <LocationOnIcon />
+            {place.location}
           </Typography>
           <Typography
             variant="overline"
@@ -56,8 +60,8 @@ const Introduction = ({ place }: { place: Place }) => {
           >
             <Box display="flex" alignItems="center">
               <LocalDiningIcon />
-              {place.type}  | {place.rate}{" "}
-              <Rating name="place-rating" value={4} readOnly />
+              {place.type} | {place.rate}{" "}
+              <Rating name="place-rating" value={place.rate} readOnly />
               {place.totalComments} reviews
             </Box>
           </Typography>
@@ -66,7 +70,7 @@ const Introduction = ({ place }: { place: Place }) => {
         <Grid item xs={isMobile ? 12 : 6}>
           <Grid container direction="row">
             <Grid item xs={7}>
-            <img
+              <img
                 src={`/systemImage/${place.imagePlace[0]}`}
                 alt="Card Image 1"
                 style={{
@@ -78,7 +82,7 @@ const Introduction = ({ place }: { place: Place }) => {
               />
             </Grid>
             <Grid item xs={5}>
-             <img
+              <img
                 src={`/systemImage/${place.imagePlace[1]}`}
                 alt="Card Image 2"
                 style={{ width: "100%", height: "50%", objectFit: "cover" }}

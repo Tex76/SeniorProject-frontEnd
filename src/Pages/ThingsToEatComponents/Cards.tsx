@@ -26,7 +26,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Place } from "../../../../api/SchemaDb";
 
-const Cards = ({ place }: { place: Place }) => {
+const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -97,23 +97,14 @@ const Cards = ({ place }: { place: Place }) => {
             >
               RATINGS{" "}
             </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <LocationOnIcon style={{ color: "black" }} /> Location
-              </Typography>
-              <Rating
-                name="location-rating"
-                value={place.locationRate}
-                readOnly
-              />
-            </Box>
+            <Box display="flex" justifyContent="space-between"></Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
                 <DinnerDiningIcon style={{ color: "black" }} /> Food Quality
               </Typography>
               <Rating
                 name="food-quality-rating"
-                value={place.foodQuality}
+                value={place.subRatings.foodQuality}
                 readOnly
               />
             </Box>
@@ -123,7 +114,7 @@ const Cards = ({ place }: { place: Place }) => {
               </Typography>
               <Rating
                 name="money-rating"
-                value={place.valueForMoney}
+                value={place.subRatings.valueForMoney}
                 readOnly
               />
             </Box>
@@ -131,7 +122,11 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="body2" component="p">
                 <VolunteerActivismIcon style={{ color: "black" }} /> Service
               </Typography>
-              <Rating name="service-rating" value={place.service} readOnly />
+              <Rating
+                name="service-rating"
+                value={place.subRatings.service}
+                readOnly
+              />
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="body2" component="p">
@@ -139,7 +134,7 @@ const Cards = ({ place }: { place: Place }) => {
               </Typography>
               <Rating
                 name="menu-variety-rating"
-                value={place.menuVariety}
+                value={place.subRatings.menuVariety}
                 readOnly
               />
             </Box>
@@ -147,7 +142,11 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="body2" component="p">
                 <TableRestaurantIcon style={{ color: "black" }} /> Ambience
               </Typography>
-              <Rating name="ambience-rating" value={place.ambiance} readOnly />
+              <Rating
+                name="ambience-rating"
+                value={place.subRatings.ambiance}
+                readOnly
+              />
             </Box>
           </CardContent>
         </Card>
@@ -179,7 +178,7 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="overline" component="p">
                 {!!place.cuisines &&
                   place.cuisines
-                    .map((cuisines) => {
+                    .map((cuisines: any) => {
                       return cuisines;
                     })
                     .join(", ")}
@@ -192,7 +191,7 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="overline" component="p">
                 {!!place.meals &&
                   place.meals
-                    .map((meals) => {
+                    .map((meals: any) => {
                       return meals;
                     })
                     .join(", ")}
@@ -205,7 +204,7 @@ const Cards = ({ place }: { place: Place }) => {
               <Typography variant="overline" component="p">
                 {!!place.featuresList &&
                   place.featuresList
-                    .map((featuresList) => {
+                    .map((featuresList: any) => {
                       return featuresList;
                     })
                     .join(", ")}

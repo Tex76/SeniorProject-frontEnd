@@ -165,8 +165,8 @@ const ReviewPlace = () => {
       if (commentValue) {
         axios
           .post("/setComment", commentValue)
-          .then((res) => {
-            console.log(res);
+          .then(() => {
+            navigate(`/places/${id}`);
           })
           .catch((err) => {
             console.error(err);
@@ -184,8 +184,8 @@ const ReviewPlace = () => {
       if (commentValue) {
         axios
           .post("/setComment", commentValue)
-          .then((res) => {
-            console.log(res);
+          .then(() => {
+            navigate(`/places/${id}`);
           })
           .catch((err) => {
             console.error(err);

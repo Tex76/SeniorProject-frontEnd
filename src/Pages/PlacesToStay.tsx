@@ -70,11 +70,11 @@ const PlacesToStay = ({ place }: { place: Place }) => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ padding: "25px" }}>
-          <Directions place={place} />
+          <Box sx={{ padding: "25px", width: "40%" }}>
+            <Directions place={place} />
           </Box>
-          <Box sx={{ padding: "25px" }}>
-          <TopReviews place={place} />
+          <Box sx={{ padding: "25px", width: "80%" }}>
+            <TopReviews place={place} />
           </Box>
         </Box>
       </Box>

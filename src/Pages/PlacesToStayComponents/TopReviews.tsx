@@ -1,23 +1,34 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import * as React from 'react';
-import { useState } from 'react';
-import { Tabs, Tab, Box, Typography, CardContent, IconButton, Menu, MenuItem, Rating } from '@mui/material';
+import * as React from "react";
+import { useState } from "react";
+import {
+  Tabs,
+  Tab,
+  Box,
+  Typography,
+  CardContent,
+  IconButton,
+  Menu,
+  MenuItem,
+  Rating,
+} from "@mui/material";
 
-import CircleIcon from '@mui/icons-material/Circle';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import CircleIcon from "@mui/icons-material/Circle";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
-import profile from '../../images/Profile/profile.png';
-import Adventure from '../../images/RewardSystem/Adventure.png';
+import profile from "../../images/Profile/profile.png";
+import Adventure from "../../images/RewardSystem/Adventure.png";
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 import { Comment, Photo, Place } from "../../../../api/SchemaDb";
+import { format, parseISO } from "date-fns";
 
-const TopReviews = ({ place }: { place: Place }) => {
+const TopReviews = ({ place }: { place: any }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -25,25 +36,25 @@ const TopReviews = ({ place }: { place: Place }) => {
   };
 
   const [, setVotes] = useState(0);
-  const [voteType, setVoteType] = useState<'upvote' | 'downvote' | null>(null);
+  const [voteType, setVoteType] = useState<"upvote" | "downvote" | null>(null);
 
   const upvote = () => {
-    if (voteType === 'upvote') {
+    if (voteType === "upvote") {
       setVotes(0);
       setVoteType(null);
     } else {
       setVotes(1);
-      setVoteType('upvote');
+      setVoteType("upvote");
     }
   };
 
   const downvote = () => {
-    if (voteType === 'downvote') {
+    if (voteType === "downvote") {
       setVotes(0);
       setVoteType(null);
     } else {
       setVotes(-1);
-      setVoteType('downvote');
+      setVoteType("downvote");
     }
   };
 
@@ -59,25 +70,24 @@ const TopReviews = ({ place }: { place: Place }) => {
 
   return (
     <div>
-      <Tabs value={value} onChange={handleChange} sx={{ justifyContent: 'flex-start' }}>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        sx={{ justifyContent: "flex-start" }}
+      >
         <Tab label="Reviews" />
         <Tab label="Photos" />
       </Tabs>
 
       {value === 0 && (
         <>
-          {place.comments.length === 0 ? (
+          {place.comments.length === 0 ||
+          Object.keys(place.comments[0]).length === 0 ? (
             <h2 style={{ textAlign: "center" }}>No reviews yet</h2>
           ) : (
-            place.comments.map((comment: Comment) => {
+            place.comments.map((comment: any) => {
               return (
                 <>
-                  <Typography
-                    variant="h4"
-                    sx={{ fontWeight: "bold", textAlign: "center" }}
-                  >
-                    Top reviews
-                  </Typography>
                   <CardContent
                     sx={{
                       position: "relative",
@@ -143,21 +153,23 @@ const TopReviews = ({ place }: { place: Place }) => {
                       }}
                     >
                       <img
-                        src={comment.userAvatar}
+                        src={`/systemImage/${comment.avatarImage}`}
                         alt="profile"
                         style={{
                           width: "70px",
-                          borderRadius: "50%",
+                          height: "70px",
+                          borderRadius: "100%",
+                          objectFit: "cover",
                           marginRight: "10px",
                         }}
                       />
                       <Box>
                         <Typography variant="subtitle1">
-                          {comment.userName}
+                          {comment.username}
                         </Typography>
                         <Typography variant="caption">
                           <Box component="span" sx={{ fontWeight: "bold" }}>
-                            {comment.contributionNumber}
+                            {comment.contribution}
                           </Box>{" "}
                           contributions
                         </Typography>
@@ -172,7 +184,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                             {comment.rank}{" "}
                           </Typography>
                           <img
-                            src={comment.rankImage}
+                            src={`/systemImage/${comment.rankImage}`}
                             alt="Adventure"
                             style={{
                               width: "20px",
@@ -190,7 +202,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                         marginBottom: "10px",
                       }}
                     >
-                      <Rating name="read-only" value={4} readOnly />
+                      <Rating name="read-only" value={comment.rate} readOnly />
                     </Box>
                     <Box>
                       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
@@ -198,14 +210,19 @@ const TopReviews = ({ place }: { place: Place }) => {
                       </Typography>
                       <Box display="flex" alignItems="center" mt={1} mb={2}>
                         <Typography variant="overline">
-                          Written {comment.writtenDate.toLocaleDateString()}
+                          Written{" "}
+                          {comment.writtenDate
+                            ? format(
+                                parseISO(comment.writtenDate),
+                                "MMMM dd, yyyy"
+                              )
+                            : "Date not available"}
                         </Typography>
                         <CircleIcon
                           sx={{ marginLeft: "10px", marginRight: "10px" }}
                         />
                         <Typography variant="overline">
-                          {" "}
-                          {comment.whithWhom}
+                          {comment.withWhom}
                         </Typography>
                       </Box>
                       <Typography variant="body2">
@@ -213,8 +230,13 @@ const TopReviews = ({ place }: { place: Place }) => {
                       </Typography>
                       <Box mt={2}>
                         <Typography variant="body1">
-                          <strong>Date visited:</strong>
-                          {comment.visitDate.toLocaleDateString()}
+                          <strong>Date visited: </strong>
+                          {comment.dateVisit
+                            ? format(
+                                parseISO(comment.dateVisit),
+                                "MMMM dd, yyyy"
+                              )
+                            : "Date not available"}
                         </Typography>
                       </Box>
                       <Box
@@ -277,11 +299,11 @@ const TopReviews = ({ place }: { place: Place }) => {
                           </Box>
                           <Box>
                             <Typography variant="body2" component="p">
-                              Ambiance
+                              facilities
                             </Typography>
                             <Rating
-                              name="ambience-rating"
-                              value={comment.ambiance}
+                              name="menu-variety-rating"
+                              value={comment.facilities}
                               readOnly
                             />
                           </Box>
@@ -429,6 +451,6 @@ const TopReviews = ({ place }: { place: Place }) => {
         ))}
     </div>
   );
-}
+};
 
 export default TopReviews;

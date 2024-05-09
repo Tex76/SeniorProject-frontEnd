@@ -7,12 +7,12 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Place } from "../../../../api/SchemaDb";
 
-const Directions = ({ place }: { place: Place }) => {
+const Directions = ({ place }: { place: any }) => {
   return (
     <div>
       <Typography variant="h6" component="div" sx={{ fontSize: "17px" }}>
-        {place.rate} <Rating name="read-only" value={5} readOnly />{" "}
-        {place.totalComments} reviews
+        {place.rate} <Rating name="read-only" value={place.rate} readOnly />{" "}
+        {place.totalComments - 1} reviews
       </Typography>
       <Box
         display="flex"
@@ -29,7 +29,7 @@ const Directions = ({ place }: { place: Place }) => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-          {place.exceptional}
+            {place.exceptional}
           </Typography>
         </Box>
       </Box>
@@ -48,7 +48,7 @@ const Directions = ({ place }: { place: Place }) => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-          {place.great}
+            {place.great}
           </Typography>
         </Box>
       </Box>
@@ -67,7 +67,7 @@ const Directions = ({ place }: { place: Place }) => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-          {place.satisfactory}
+            {place.satisfactory}
           </Typography>
         </Box>
       </Box>
@@ -86,7 +86,7 @@ const Directions = ({ place }: { place: Place }) => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-          {place.poor}
+            {place.poor}
           </Typography>
         </Box>
       </Box>
@@ -105,7 +105,7 @@ const Directions = ({ place }: { place: Place }) => {
         </Box>
         <Box flex={1}>
           <Typography variant="inherit" component="div">
-          {place.bad}
+            {place.bad}
           </Typography>
         </Box>
       </Box>
