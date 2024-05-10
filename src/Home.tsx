@@ -13,23 +13,39 @@ function App() {
   const matches = useMediaQuery(theme.breakpoints.up("lg"));
   // const [session, setSession] = useState(null);
 
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const backgroundSize = isLargeScreen ? "contain" : "cover";
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Box
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${backgroundImage})`,
+          background: `linear-gradient(145deg, rgba(35,44,67,1) 35%, rgba(109,132,151,1) 100%)`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           width: "100%",
           height: "auto",
-          paddingBottom: "5%",
         }}
       >
-        <Box sx={{ mb: 20, maxWidth: 1280, margin: "auto" }}>
-          <NavBar textColor="rgb(255,255,255)" />
-        </Box>
-        <Box sx={{ maxWidth: 1280, margin: "auto" }}>
-          <Welcome />
+        <Box
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: backgroundSize,
+            backgroundRepeat: "no-repeat",
+            maxWidth: "1280px",
+            width: "100%",
+            height: "auto",
+            margin: "auto",
+            paddingBottom: "5%"
+          }}
+        >
+          <Box sx={{ mb: 20, maxWidth: 1280, margin: "auto" }}>
+            <NavBar textColor="rgb(255,255,255)" />
+          </Box>
+          <Box sx={{ maxWidth: 1280, margin: "auto" }}>
+            <Welcome />
+          </Box>
         </Box>
       </Box>
       <Box
