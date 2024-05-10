@@ -286,9 +286,8 @@ const Cards = ({ place }: { place: any }) => {
             >
               Location and contact
             </Typography>
-            {/* need to be modified  */}
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3585.043484916671!2d50.513002984973575!3d26.03213318351472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e484d66f7114f99%3A0xb08bbfbdc59c2dc!2z2K3ZhNio2Kkg2KfZhNio2K3YsdmK2YYg2KfZhNiv2YjZhNmK2Kk!5e0!3m2!1sar!2sbh!4v1712646555106!5m2!1sar!2sbh"
+              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc&q=${place.googleLocation.lat},${place.googleLocation.lng}`}
               width="100%"
               height="200px"
               style={{ border: "0", borderRadius: "20px", marginTop: "20px" }}
@@ -301,12 +300,12 @@ const Cards = ({ place }: { place: any }) => {
               {place.location}
             </Typography>
             <Typography variant="body1" component="p">
-              <CallIcon style={{ color: "black", marginTop: "20px" }} /> +973
-              1758 3555
+              <CallIcon style={{ color: "black", marginTop: "20px" }} />
+              {place.phoneNumber}
             </Typography>
             <Typography variant="body1" component="p">
               <EmailIcon style={{ color: "black", marginTop: "20px" }} />{" "}
-              Reservation@bushido.com.bh{" "}
+              {place.email}{" "}
             </Typography>
           </CardContent>
         </Card>

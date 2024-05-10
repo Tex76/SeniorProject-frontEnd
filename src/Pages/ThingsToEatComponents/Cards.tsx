@@ -233,8 +233,7 @@ const Cards = ({ place }: { place: any }) => {
               Location and contact
             </Typography>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1789.3231787283516!2d50.545328747888334!3d26.240677949579055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49a5c96a6f9721%3A0x2b4c4bdd19a1c061!2z2KjZiNi02YrYqtmI!5e0!3m2!1sar!2sbh!4v1712562450448!5m2!1sar!2sbh"
-              width="100%"
+              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc&q=${place.googleLocation.lat},${place.googleLocation.lng}`}              width="100%"
               height="200px"
               style={{ border: "0", borderRadius: "20px", marginTop: "20px" }}
               allowFullScreen
