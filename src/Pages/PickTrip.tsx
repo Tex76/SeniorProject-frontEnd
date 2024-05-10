@@ -9,7 +9,6 @@ import NavBar from "./SharedComponents/NavBar";
 import Footer from "./SharedComponents/Footer";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-import HeroCreateTripComponent from "./CreateTripComponents/heroCreateTripComponent";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 
@@ -28,8 +27,11 @@ import Rectangle2 from "../images/PickTrip/Rectangle2.png";
 import Background from "../images/PickTrip/Background.png";
 import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 const PickTrip = () => {
+  const { user } = React.useContext(UserContext); // Provide the correct type for the UserContext
+
   const navigate = useNavigate();
   const matches = useMediaQuery("(max-width:600px)");
   const [blackBox, setBlackBox] = React.useState(false);
@@ -237,7 +239,10 @@ const PickTrip = () => {
                           trip.
                         </Typography>
                         <Button
-                          onClick={() => setBlackBox(true)}
+                          onClick={() => {
+                            if (user) setBlackBox(true);
+                            else navigate("/login");
+                          }}
                           variant="contained"
                           sx={{
                             backgroundColor: "rgb(0, 123, 128)",

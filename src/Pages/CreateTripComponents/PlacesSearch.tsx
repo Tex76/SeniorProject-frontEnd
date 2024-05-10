@@ -1,37 +1,17 @@
 import { Box, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite"; // Import for the filled heart icon
+import axios from "axios";
 
-export interface Places {
-  id: string;
-  name: string;
-  image: string;
-  location: string;
-  liked: boolean;
-}
-
-export function PlacesSearch({
-  places,
-  filterArray,
-  setFilterArray,
-}: {
-  places: Places;
-  filterArray: Places[];
-  setFilterArray: React.Dispatch<React.SetStateAction<Places[]>>;
-}) {
-  const { name, location, image } = places;
-  const [like, setLike] = useState(places.liked); // Initial like state based on props
-  function toggleLike() {
-    setLike((currentLike) => {
-      // Update the filterArray with the new like status
-      setFilterArray(
-        filterArray.map((place) =>
-          place.id === places.id ? { ...place, liked: !currentLike } : place
-        )
-      );
-      return !currentLike;
-    });
+export function PlacesSearch({ places, trip }: { places: any; trip: any }) {
+  const { name, location, imagePlace } = places;
+  // Initial like state based on props
+  function addToLikedPLaces() {
+    axios
+      .post(`/trip/places/addLiked`, { tripID: trip._id, placeId: places._id })
+      .catch((err) => {
+        console.error("Error adding liked place to trip", err);
+      });
   }
 
   return (
@@ -49,7 +29,7 @@ export function PlacesSearch({
       <Box sx={{ display: "flex", width: "50%", height: "100%" }}>
         <Box sx={{ width: "40%", height: "100%" }}>
           <img
-            src={image}
+            src={`/systemImages/${imagePlace[0]}`}
             alt={name}
             style={{
               width: "100%",
@@ -103,7 +83,7 @@ export function PlacesSearch({
       >
         <Button
           onClick={() => {
-            toggleLike();
+            addToLikedPLaces();
           }}
           size="medium"
           sx={{
@@ -115,11 +95,7 @@ export function PlacesSearch({
             border: "1px solid black",
           }}
         >
-          {like ? (
-            <FavoriteIcon fontSize="medium" sx={{ color: "red" }} /> // Use local like state
-          ) : (
-            <FavoriteBorderIcon fontSize="medium" />
-          )}
+          <FavoriteBorderIcon fontSize="medium" />
         </Button>
       </Box>
     </Box>

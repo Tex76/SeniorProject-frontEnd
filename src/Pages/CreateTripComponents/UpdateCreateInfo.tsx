@@ -7,12 +7,15 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { FormControl } from "@mui/material";
+import axios from "axios";
 
-interface CreateTripFormProps {
-  passFunction: (open: boolean) => void;
-}
-
-export default function UpdateTripInfo({ passFunction }: CreateTripFormProps) {
+export default function UpdateTripInfo({
+  passFunction,
+  trip,
+}: {
+  passFunction: any;
+  trip: any;
+}) {
   const [days, setDays] = useState(1);
   const [errors, setErrors] = useState({
     tripName: "",
@@ -42,9 +45,24 @@ export default function UpdateTripInfo({ passFunction }: CreateTripFormProps) {
   function formSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (validateFields()) {
+      axios
+        .post(`update/trips/${trip._id}`, {
+          tripName: (document.getElementById("tripName") as HTMLInputElement)
+            .value,
+          description: (
+            document.getElementById("description") as HTMLTextAreaElement
+          ).value,
+          coverImage: (
+            document.getElementById("coverImage") as HTMLInputElement
+          ).value,
+          totalDays: days,
+        })
+        .then((res) => {
+          console.log("Trip updated successfully", res);
+          passFunction(false);
+        });
+
       console.log("Form is valid");
-      // Handle form submission here
-      // route to
     } else {
       console.log("Validation failed");
     }

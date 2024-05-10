@@ -1,33 +1,64 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-
-import * as React from "react";
-
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Typography,
   Button,
   Rating,
   Grid,
+  IconButton,
+  Modal,
+  Card,
+  CardContent,
+  CardMedia,
+  Divider,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-
-import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-
-import Cardimage1 from "../../images/PlaceToStay/Cardimage1.png";
-import Cardimage2 from "../../images/PlaceToStay/Cardimage2.png";
-import Cardimage3 from "../../images/PlaceToStay/Cardimage3.png";
-import { Place } from "../../../../api/SchemaDb";
-
+import HotelIcon from "@mui/icons-material/Hotel";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import DateRangeIcon from "@mui/icons-material/DateRange";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../../UserContext";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 const Introduction = ({ place }: { place: any }) => {
+  const { user } = useContext(UserContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
+  const [trips, setTrips] = useState([]);
+
+  useEffect(() => {
+    if (!user) navigate("/login");
+    axios
+      .get(`/user/trips/${user.id}`)
+      .then((res) => setTrips(res.data.trips))
+      .catch((err) => console.error("Error fetching trips", err));
+  }, [user, navigate]);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: isMobile ? "90%" : 586,
+    height: isMobile ? "90%" : 516,
+    bgcolor: "background.paper",
+    borderRadius: 10,
+    boxShadow: 24,
+    p: 4,
+    overflow: "auto",
+  };
 
   return (
     <div
@@ -41,9 +72,7 @@ const Introduction = ({ place }: { place: any }) => {
     >
       <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
         <Button
-          onClick={() => {
-            window.location.href = `/review/${place._id}`;
-          }}
+          onClick={() => navigate(`/review/${place._id}`)}
           style={{ marginRight: "10px", color: "black" }}
         >
           Review
@@ -51,37 +80,135 @@ const Introduction = ({ place }: { place: any }) => {
         <Typography variant="h5" style={{ margin: "0 10px" }}>
           |
         </Typography>
-        <Button style={{ color: "black" }}>Save</Button>
+        <Button onClick={handleOpen} style={{ color: "black" }}>
+          Save
+        </Button>
       </Box>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-save-to-trip"
+        aria-describedby="modal-description"
+      >
+        <Box sx={modalStyle}>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography
+            id="modal-save-to-trip"
+            variant="h5"
+            sx={{ fontFamily: "Roboto", fontWeight: "bold", fontSize: 25 }}
+          >
+            Save to trip
+          </Typography>
+          {trips ? (
+            trips.map((trip: any, index: any) => (
+              <Link to="#" key={index} style={{ textDecoration: "none" }}>
+                <Card
+                  sx={{
+                    display: "flex",
+                    backgroundColor: "rgba(255, 211, 52, 0.58)",
+                    mt: 2,
+                    p: 2,
+                    transition: "transform 0.3s",
+                    "&:hover": { transform: "scale(1.05)" },
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{ width: 113, height: 94, borderRadius: 1 }}
+                    image={trip.image}
+                    alt={trip.tripName}
+                  />
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontFamily: "Roboto",
+                        fontWeight: "bold",
+                        fontSize: 14,
+                      }}
+                    >
+                      {trip.tripName}
+                    </Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                      <DateRangeIcon />
+                      <Typography variant="body2" color="text.secondary">
+                        {trip.duration}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                      <LocationOnIcon />
+                      <Typography variant="body2" color="text.secondary">
+                        {trip.location}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))
+          ) : (
+            <Typography
+              sx={{
+                fontFamily: "Roboto",
+                fontWeight: "bold",
+                fontSize: 14,
+                color: "text.secondary",
+                textAlign: "center",
+                mt: 5,
+              }}
+            >
+              No trips created yet. Create New Trip
+            </Typography>
+          )}
+          <Divider sx={{ my: 2 }} />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton color="primary" aria-label="add to trip">
+              <AddIcon />
+            </IconButton>
+            <Typography variant="body1">Create Trip</Typography>
+          </Box>
+        </Box>
+      </Modal>
 
       <Grid container spacing={2} sx={{ p: { xs: 2 } }}>
         <Grid item xs={isMobile ? 12 : 6}>
-          <Typography variant="h4" component="div" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
             {place.name}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-            <LocationOnIcon /> {place.location}
+            <HotelIcon /> {place.location}
           </Typography>
           <Typography
             variant="overline"
             sx={{ marginTop: "20px", marginBottom: "20px" }}
           >
             <Box display="flex" alignItems="center">
-              <PinDropOutlinedIcon />
+              <LocationOnIcon />
               {place.type} | {place.rate}{" "}
-              <Rating name="place-rating" value={place.rate} readOnly />
+              <Rating name="place-rating" value={place.rate} readOnly />{" "}
               {place.totalComments} reviews
             </Box>
           </Typography>
           <Typography variant="body1">{place.description}</Typography>
         </Grid>
-
         <Grid item xs={isMobile ? 12 : 6}>
           <Grid container direction="row">
             <Grid item xs={7}>
               <img
                 src={`/systemImage/${place.imagePlace[0]}`}
-                alt="Card Image 1"
+                alt="Main Room View"
                 style={{
                   width: "100%",
                   height: "100%",
@@ -93,12 +220,12 @@ const Introduction = ({ place }: { place: any }) => {
             <Grid item xs={5}>
               <img
                 src={`/systemImage/${place.imagePlace[1]}`}
-                alt="Card Image 2"
+                alt="Lobby View"
                 style={{ width: "100%", height: "50%", objectFit: "cover" }}
               />
               <img
                 src={`/systemImage/${place.imagePlace[2]}`}
-                alt="Card Image 3"
+                alt="Facilities View"
                 style={{
                   width: "100%",
                   height: "50%",
@@ -113,4 +240,5 @@ const Introduction = ({ place }: { place: any }) => {
     </div>
   );
 };
+
 export default Introduction;

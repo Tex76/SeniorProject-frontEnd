@@ -10,13 +10,19 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { SelectChangeEvent } from "@mui/material";
+import { UserContext } from "../../UserContext";
+import { useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface CreateTripFormProps {
   passFunction: (open: boolean) => void;
 }
 
 export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
+  const { user } = useContext(UserContext);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const navigator = useNavigate();
   const [days, setDays] = useState(1);
   const [errors, setErrors] = useState({
     tripName: "",
@@ -44,8 +50,21 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
     event.preventDefault();
     if (validateFields()) {
       console.log("Form is valid");
-      // Handle form submission here
-      //route to
+      axios
+        .post("/trips", {
+          useID: user.id,
+          tripName: (document.getElementById("tripName") as HTMLInputElement)
+            .value,
+          region: selectedRegions,
+          days: days,
+          description: (
+            document.getElementById("description") as HTMLTextAreaElement
+          ).value,
+        })
+        .then((res) => {
+          navigator("/createtrip/" + res.data.id);
+        })
+        .catch((err) => console.error("Error creating trip", err));
     } else {
       console.log("Validation failed");
     }

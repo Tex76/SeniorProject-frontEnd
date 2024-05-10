@@ -38,7 +38,7 @@ function App() {
           <Route path="/rewardsystem" element={<RewardSystem />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/reviewplace" element={<ReviewPlace />} />
-          <Route path="/createtrip" element={<CreateTrip />} />
+          <Route path="/createtrip/:id" element={<CreateTrip />} />
           <Route path="/generateresult" element={<GenerateResult />} />
           <Route path="/pointsstore" element={<PointsStore />} />
         </Routes>

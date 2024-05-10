@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-
 import * as React from "react";
 
 import {
@@ -17,15 +15,60 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Place } from "../../../../api/SchemaDb";
-import SavePopUp from './SavePopUp';
-import { useNavigate } from "react-router-dom";
+import {
+  Modal,
+  Divider,
+  IconButton,
+  Card,
+  CardContent,
+  CardMedia,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import DateRangeIcon from "@mui/icons-material/DateRange";
+import { UserContext } from "../../UserContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Introduction = ({ place }: { place: any }) => {
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [trips, setTrips] = React.useState([]); // [trip1, trip2, trip3, ...]
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const style = {
+    position: "absolute",
+    width: isMobile ? "90%" : 586,
+    height: isMobile ? "90%" : 516,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    bgcolor: "background.paper",
+    borderRadius: "10px",
+    boxShadow: 24,
+    p: 4,
+    overflow: "auto",
+  };
+
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!user) navigate("/login");
+    axios
+      .get(`/user/trips/${user.id}`)
+      .then((res) => {
+        console.log("getting trips from user id");
+        setTrips(res.data.trips);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [user.id]);
 
   return (
     <div
@@ -38,8 +81,122 @@ const Introduction = ({ place }: { place: any }) => {
       }}
     >
       <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
+        {/* pop up */}
+        <div>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="save-to-trip"
+            aria-describedby="save-to-trip-description"
+          >
+            <Box sx={style}>
+              <IconButton
+                aria-label="close"
+                onClick={handleClose}
+                sx={{ position: "absolute", right: 8, top: 8 }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography
+                id="save-to-trip"
+                variant="h5"
+                component="h2"
+                sx={{ fontFamily: "Roboto", fontWeight: "bold", fontSize: 25 }}
+              >
+                Save to trip
+              </Typography>
+              {/* Map over the cards array to create a Card component for each object */}
+              {trips ? (
+                trips.map((card: any, index: any) => (
+                  <Link to="#" style={{ textDecoration: "none" }}>
+                    <Card
+                      key={index}
+                      sx={{
+                        display: "flex",
+                        backgroundColor: "rgba(255, 211, 52, 0.58)",
+                        mt: 2,
+                        p: 2,
+                        transition: "transform 0.3s",
+                        "&:hover": { transform: "scale(1.05)" },
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        sx={{ width: 113, height: 94, borderRadius: 1 }}
+                        image={card.image}
+                        alt={card.tripName}
+                      />
+                      <CardContent
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="h6"
+                          component="div"
+                          sx={{
+                            fontFamily: "Roboto",
+                            fontWeight: "bold",
+                            fontSize: 14,
+                          }}
+                        >
+                          {card.tripName}
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            mt: 1,
+                          }}
+                        >
+                          <DateRangeIcon />
+                          <Typography variant="body2" color="text.secondary">
+                            {card.duration}
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            mt: 1,
+                          }}
+                        >
+                          <LocationOnIcon />
+                          <Typography variant="body2" color="text.secondary">
+                            {card.location}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))
+              ) : (
+                <Typography
+                  sx={{
+                    fontFamily: "Roboto",
+                    fontWeight: "bold",
+                    fontSize: 14,
+                    color: "text.secondary",
+                    textAlign: "center",
+                    mt: 5,
+                  }}
+                >
+                  There is no trip created yet. Create New Trip
+                </Typography>
+              )}
 
-        <SavePopUp />
+              <Divider sx={{ my: 2 }} />
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <IconButton color="primary" aria-label="add to trip">
+                  <AddIcon />
+                </IconButton>
+                <Typography variant="body1">Create Trip</Typography>
+              </Box>
+            </Box>
+          </Modal>
+        </div>
 
         <Button
           onClick={() => {
@@ -52,8 +209,9 @@ const Introduction = ({ place }: { place: any }) => {
         <Typography variant="h5" style={{ margin: "0 10px" }}>
           |
         </Typography>
-        <Button style={{ color: "black" }}>Save</Button>
-
+        <Button onClick={handleOpen} style={{ color: "black" }}>
+          Save
+        </Button>
       </Box>
 
       <Grid container spacing={2} sx={{ p: { xs: 2 } }}>

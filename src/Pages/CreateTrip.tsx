@@ -11,20 +11,45 @@ import CreateTripPopUpContent from "./CreateTripComponents/CreateTripPopUpConten
 
 import AddToDaysLikedElementForm from "./CreateTripComponents/AddToDaysLikedElementForm";
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import UpdateTripInfo from "./CreateTripComponents/UpdateCreateInfo";
-
+import { UserContext } from "../UserContext";
 import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function CreateTrip() {
+  const { id } = useParams();
+  const { user } = useContext(UserContext);
+  const [trip, setTrip] = useState<any>([]); // [trip, setTrips
   const [blackBox, setBlackBox] = useState(false);
   const [blackBox2, setBlackBox2] = useState(false);
   const [blackBox3, setBlackBox3] = useState(false);
 
+  function checkUserBelongToTrip() {
+    axios.get(`/trips/${id}`).then((res) => {
+      if (res.data.trip.userID !== user.id) {
+        alert("You do not have permission to view this page");
+        window.location.replace("/");
+      }
+    });
+  }
+
+  useEffect(() => {
+    checkUserBelongToTrip();
+    axios
+      .get(`/trips/${id}`)
+      .then((res) => {
+        setTrip(res.data.trip);
+      })
+      .catch((err) =>
+        console.error("Error fetching trips from create trip", err)
+      );
+  }, [id]);
   return (
     <Box
       sx={{
@@ -80,10 +105,7 @@ export default function CreateTrip() {
       >
         {/* example of location must be same as location from CreateTripPopUp  */}
         {/* this will be executed when more button is ***clicked*** */}
-        <CreateTripPopUpContent
-          location={["Northern", "Sourthern", "Capital"]}
-          setBlackBox={setBlackBox}
-        />
+        <CreateTripPopUpContent setBlackBox={setBlackBox} trip={trip} />
       </Box>
       <Box
         sx={{
@@ -105,7 +127,7 @@ export default function CreateTrip() {
         }}
       >
         {/* example of location must be same as location from CreateTripPopUp */}
-        <UpdateTripInfo passFunction={setBlackBox2} />
+        <UpdateTripInfo trip={trip} passFunction={setBlackBox2} />
       </Box>
 
       <Box
@@ -128,7 +150,12 @@ export default function CreateTrip() {
         }}
       >
         {/* this will show the form of choose from liked places */}
-        <AddToDaysLikedElementForm passFunction={setBlackBox3} />
+        {/* example of location must be same as location from CreateTripPopUp */}
+        {/* example of location must be same as location from CreateTripPopUp */}
+        {/* example of location must be same as location from CreateTripPopUp */}
+        {/* example of location must be same as location from CreateTripPopUp */}
+        {/* example of location must be same as location from CreateTripPopUp */}
+        <AddToDaysLikedElementForm trip={trip} passFunction={setBlackBox3} />
       </Box>
 
       <Box sx={{ width: "100%", maxWidth: 1280 }}>
@@ -204,7 +231,7 @@ export default function CreateTrip() {
                 }}
                 variant="h3"
               >
-                Trip Name
+                {trip.tripName ? trip.tripName : "Trip Name"}
               </Typography>
               <Box sx={{ display: "flex" }}>
                 <AddLocationIcon sx={{ color: "black" }} fontSize="large" />
@@ -218,7 +245,9 @@ export default function CreateTrip() {
                   }}
                   variant="body1"
                 >
-                  Capital, Northen, Muharraq
+                  {trip.location && trip.location.length > 0
+                    ? trip.location.join(", ")
+                    : "Location"}
                 </Typography>
               </Box>
             </Box>
@@ -233,12 +262,13 @@ export default function CreateTrip() {
                 cursor: "pointer",
               }}
             >
-              Small description about the Trip places and Days.
+              {trip.description ? trip.description : "Description"}
             </Typography>
 
             {/* content must be getting form other componenet */}
 
             <HeroCreateTripComponent
+              trip={trip}
               setBlackBox3={setBlackBox3}
               setBlackBox={setBlackBox}
             />

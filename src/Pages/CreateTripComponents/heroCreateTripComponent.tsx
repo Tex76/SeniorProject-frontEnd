@@ -107,13 +107,15 @@ function Accordion(props: AccordionProps) {
   );
 }
 // end of function accordion
-
+// NEED TO BE MOVED TO THE MAIN CREATE TRIP PAGE
 export default function HeroCreateTripComponent({
   setBlackBox3,
   setBlackBox,
+  trip,
 }: {
   setBlackBox3: Dispatch<SetStateAction<boolean>>;
   setBlackBox: Dispatch<SetStateAction<boolean>>;
+  trip: any;
 }) {
   const [value, setValue] = useState(0);
 

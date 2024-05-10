@@ -5,49 +5,38 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search"; // Importing the search icon
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Circuit from "./Circuit.jpg";
-import Hotel from "./Hotel.jpg";
-import { PlacesSearch, Places } from "./PlacesSearch"; // Correct import for default export
-
-import Rest from "./Rest.jpg";
-
-const fakeData = [
-  {
-    id: "Id-fake-from-database",
-    name: "Rest",
-    image: Rest,
-    location: "Northern",
-    liked: false,
-  },
-  {
-    id: "Id2-fake-from-database",
-    name: "Circuit",
-    image: Circuit,
-    location: "Sourthern",
-    liked: false,
-  },
-  {
-    id: "Id3-fake-from-database",
-    name: "Hotel",
-    image: Hotel,
-    location: "Capital",
-    liked: false,
-  },
-];
+import { PlacesSearch } from "./PlacesSearch"; // Correct import for default export
+import axios from "axios";
 
 export default function CreateTripPopUpContent({
-  location: locationsArray,
   setBlackBox, // Renamed for clarity
+  trip,
 }: {
-  location: string[];
   setBlackBox: React.Dispatch<React.SetStateAction<boolean>>;
+  trip: any;
 }) {
+  const [searchPlaces, setSearchPlaces] = useState<any>([]); // [likedPlaces, setLikedPlaces
+
+  useEffect(() => {
+    const fetchTrip = async () => {
+      axios
+        .post(`/trip/search`, {
+          location: trip.region,
+          likedPlaces: trip.likedPlaces,
+        })
+        .then((res) => {
+          setSearchPlaces(res.data);
+        });
+    };
+    fetchTrip();
+  }, [searchPlaces, trip]);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,13 +44,10 @@ export default function CreateTripPopUpContent({
   };
 
   // Filter places based on the search query, exclude liked places, and match location from props
-  const filteredData = fakeData.filter(
-    (place) =>
-      locationsArray
-        .map((loc) => loc.toLowerCase())
-        .includes(place.location.toLowerCase()) &&
-      (place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        place.location.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredData = searchPlaces.filter(
+    (place: any) =>
+      place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      place.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const [filterArray, setFilterArray] = useState(filteredData);
@@ -146,12 +132,8 @@ export default function CreateTripPopUpContent({
             }}
           >
             {filteredData.length > 0 ? (
-              filteredData.map((place: Places) => (
-                <PlacesSearch
-                  places={place}
-                  filterArray={filterArray}
-                  setFilterArray={setFilterArray}
-                />
+              filteredData.map((place: any) => (
+                <PlacesSearch places={place} trip={trip} />
               ))
             ) : (
               <Typography
@@ -195,7 +177,7 @@ export default function CreateTripPopUpContent({
         </Button>
         <Button
           onClick={() => {
-            // here you must add the new places with like state into the trip
+            setBlackBox(false);
           }}
           type="submit"
           sx={{

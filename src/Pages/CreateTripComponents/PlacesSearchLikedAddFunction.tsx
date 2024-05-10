@@ -1,15 +1,8 @@
 import { Box, Typography } from "@mui/material";
 
-export interface Places {
-  id: string;
-  name: string;
-  image: string;
-  location: string;
-}
-
-// this component is the card for places that will show when user try to add to places 
-export function PlacesSearchLikedAddFunction({ places }: { places: Places }) {
-  const { name, location, image } = places;
+// this component is the card for places that will show when user try to add to places
+export function PlacesSearchLikedAddFunction({ places }: { places: any }) {
+  const { name, location, imagePlace } = places;
 
   return (
     <Box
@@ -29,7 +22,7 @@ export function PlacesSearchLikedAddFunction({ places }: { places: Places }) {
       <Box sx={{ display: "flex", width: "50%", height: "100%" }}>
         <Box sx={{ width: "40%", height: "100%" }}>
           <img
-            src={image}
+            src={`/systemImages/${imagePlace[0]}`}
             alt={name}
             style={{
               width: "100%",
@@ -69,18 +62,6 @@ export function PlacesSearchLikedAddFunction({ places }: { places: Places }) {
           </Typography>
         </Box>
       </Box>
-      {/* like box button */}
-      <Box
-        sx={{
-          width: "10%",
-          height: "100%",
-          marginTop: "5px",
-          padding: "5px 10px",
-          display: "flex",
-          justifyContent: "center",
-          paddingLeft: "100px",
-        }}
-      ></Box>
     </Box>
   );
 }

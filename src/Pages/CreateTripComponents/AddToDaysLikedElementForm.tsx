@@ -5,7 +5,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search"; // Importing the search icon
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -16,33 +16,25 @@ import Hotel from "./Hotel.jpg";
 
 import Rest from "./Rest.jpg";
 import { PlacesSearchLikedAddFunction } from "./PlacesSearchLikedAddFunction";
-
-const fakeData = [
-  {
-    id: "Id-fake-from-database",
-    name: "Rest",
-    image: Rest,
-    location: "Northern",
-  },
-  {
-    id: "Id2-fake-from-database",
-    name: "Circuit",
-    image: Circuit,
-    location: "Sourthern",
-  },
-  {
-    id: "Id3-fake-from-database",
-    name: "Hotel",
-    image: Hotel,
-    location: "Capital",
-  },
-];
+import axios from "axios";
 
 export default function AddToDaysLikedElementForm({
-  passFunction, // Renamed for clarity
+  passFunction,
+  trip, // Renamed for clarity
 }: {
   passFunction: React.Dispatch<React.SetStateAction<boolean>>;
+  trip: any;
 }) {
+  const [likedPlaces, setLikedPlaces] = useState([]); // [likedPlaces, setLikedPlaces
+  useEffect(() => {
+    const fetchTrip = async () => {
+      axios.get(`/trip/places/${trip._id}`).then((res) => {
+        setLikedPlaces(res.data);
+      });
+    };
+    fetchTrip();
+  }, [trip]);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,13 +42,11 @@ export default function AddToDaysLikedElementForm({
   };
 
   // Filter places based on the search query, exclude liked places, and match location from props
-  const filteredData = fakeData.filter((place) =>
+  const filteredData = likedPlaces.filter((place: any) =>
     place.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const [filterArray, setFilterArray] = useState(filteredData);
-
-  console.log("filterArray: ", filterArray);
 
   return (
     <Box
