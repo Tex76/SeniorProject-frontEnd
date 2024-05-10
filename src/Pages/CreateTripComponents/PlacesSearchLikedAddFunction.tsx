@@ -1,7 +1,11 @@
 import { Box, Typography } from "@mui/material";
 
 // this component is the card for places that will show when user try to add to places
-export function PlacesSearchLikedAddFunction({ places }: { places: any }) {
+export default function PlacesSearchLikedAddFunction({
+  places,
+}: {
+  places: any;
+}) {
   const { name, location, imagePlace } = places;
 
   return (

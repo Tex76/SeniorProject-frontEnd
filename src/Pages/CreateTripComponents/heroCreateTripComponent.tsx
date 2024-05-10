@@ -30,16 +30,7 @@ interface AccordionProps {
   index: number; // id or index of accordion
   value: string; // name of the accordion
 }
-// this function will return the tab skeleton for create trip
-/*
 
-[
-  [id, id, id],
-  [id, id, id], 
-  [id, id, id],
-  [id, id, id],
-]
-*/
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -306,6 +297,7 @@ export default function HeroCreateTripComponent({
                 description="Bahrain Circuit, nestled in the heart of the Middle East, is a captivating blend of modern racing prowess and Arabian charm. This world-class facility offers a dynamic track layout that challenges drivers with its fast straights and technical corners. Surrounded by the desert landscape, its illuminated beauty under the night sky during races creates an unforgettable spectacle, making it a favorite among motorsport enthusiasts worldwide."
                 price="3"
                 duration="3 - 4"
+                googleLocation={{ lat: 26.0322, lng: 50.5102 }}
               />
             </Accordion>
           </Box>
@@ -321,6 +313,7 @@ export default function HeroCreateTripComponent({
                 description="Welcome to Restaurant Sufra, where every dish tells a story of tradition and taste. Inspired by the rich culinary heritage of the Mediterranean, Sufra invites you on a journey of flavor exploration. From sizzling kebabs to aromatic tagines, our menu is a celebration of authentic flavors and fresh ingredients meticulously crafted to delight your senses. Whether you're seeking a cozy dinner with loved ones or a vibrant gathering with friends, let Restaurant Sufra be your culinary sanctuary, where every meal is a cherished memory in the making."
                 price="250"
                 cuisine="Indian"
+                googleLocation={{ lat: 26.0322, lng: 50.5102 }}
               />
             </Accordion>
           </Box>{" "}
@@ -337,6 +330,7 @@ export default function HeroCreateTripComponent({
                 type="Hotel"
                 price="250 - 300"
                 description="The Hilton Bahrain, a beacon of luxury nestled along the azure coastline of the Arabian Gulf, embodies elegance and opulence. Boasting stunning panoramic views, lavish accommodations, and impeccable service, this five-star haven offers a seamless blend of modern comfort and traditional Arabian hospitality. Whether indulging in gourmet dining experiences, rejuvenating at the spa, or lounging by the pristine poolside, guests are immersed in a world of unparalleled luxury at the Hilton Bahrain."
+                googleLocation={{ lat: 26.0322, lng: 50.5102 }}
               />
             </Accordion>
           </Box>

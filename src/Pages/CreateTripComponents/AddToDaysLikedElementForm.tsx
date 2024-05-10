@@ -11,11 +11,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Circuit from "./Circuit.jpg";
-import Hotel from "./Hotel.jpg";
-
-import Rest from "./Rest.jpg";
-import { PlacesSearchLikedAddFunction } from "./PlacesSearchLikedAddFunction";
+import PlacesSearchLikedAddFunction from "./PlacesSearchLikedAddFunction";
 import axios from "axios";
 
 export default function AddToDaysLikedElementForm({
@@ -130,7 +126,7 @@ export default function AddToDaysLikedElementForm({
                 <Box
                   sx={{ width: "100%" }}
                   onClick={() => {
-                    // here must we add it to data base
+                    // here must we add it to days array
                     // addFunction(place.id);
                   }}
                   // here must when we click we do something like added place into the main Array

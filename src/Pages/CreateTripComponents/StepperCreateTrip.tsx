@@ -82,12 +82,12 @@ export default function VerticalLinearStepper({
   Places,
 }: {
   setBlackBox3: React.Dispatch<React.SetStateAction<boolean>>;
-  Places: Places[];
+  Places: any[];
 }) {
   const [activeStep, setActiveStep] = React.useState(Places.length); // Start with no active step
   //we fetch places of day from the days array
 
-  const [steps, setSteps] = React.useState<Places[]>(Places); // Start with an empty steps array
+  const [steps, setSteps] = React.useState<any[]>(Places); // Start with an empty steps array
 
   const handleNext = (newStep: number) => {
     setActiveStep(newStep);
@@ -151,7 +151,7 @@ export default function VerticalLinearStepper({
           </Step>
         ) : (
           // here we must add the logic of the cards to make sure it's added correctly
-          steps.map((place: Places) => (
+          steps.map((place: any) => (
             <Step key={place.id} expanded={true} sx={{ width: "100%" }}>
               <StepLabel StepIconComponent={ColorlibStepIcon}>
                 {place.placeName}

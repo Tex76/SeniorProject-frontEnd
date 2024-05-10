@@ -27,7 +27,7 @@ export interface Places {
   cuisine?: string;
   duration?: string;
 }
-export default function SteperCard({ place }: { place: Places }) {
+export default function SteperCard({ place }: { place: any }) {
   const [readMore, setReadMore] = useState(false);
   const {
     image,
@@ -59,7 +59,7 @@ export default function SteperCard({ place }: { place: Places }) {
       {/* image box */}
 
       <img
-        src={image}
+        src={`/systemImages/${place.placeImage[0]}`}
         style={{
           width: "50%",
           marginRight: "15px",

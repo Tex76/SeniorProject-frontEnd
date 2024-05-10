@@ -25,6 +25,7 @@ interface CreateTripCardProps {
   stars?: number;
   cuisine?: string;
   duration?: string;
+  googleLocation: any;
 }
 export default function CreateTripCard(Props: CreateTripCardProps) {
   const [readMore, setReadMore] = useState(false);
@@ -40,6 +41,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
     cuisine,
     stars,
     price,
+    googleLocation, // this is the location of the place in google map location FOR BASHIR
   } = Props;
   function countWords(text: string): number {
     const words = text.match(/\S+/g);

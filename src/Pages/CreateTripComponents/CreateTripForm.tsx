@@ -15,6 +15,8 @@ import { useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+axios.defaults.baseURL = "http://localhost:4000";
+
 interface CreateTripFormProps {
   passFunction: (open: boolean) => void;
 }
@@ -52,7 +54,7 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
       console.log("Form is valid");
       axios
         .post("/trips", {
-          useID: user.id,
+          userID: user.id,
           tripName: (document.getElementById("tripName") as HTMLInputElement)
             .value,
           region: selectedRegions,

@@ -34,13 +34,19 @@ const Introduction = ({ place }: { place: any }) => {
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!user) navigate("/login");
     axios
       .get(`/user/trips/${user.id}`)
-      .then((res) => setTrips(res.data.trips))
-      .catch((err) => console.error("Error fetching trips", err));
-  }, [user, navigate]);
+      .then((res) => {
+        console.log("getting trips from user id");
+        setTrips(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [user._id]);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -107,56 +113,72 @@ const Introduction = ({ place }: { place: any }) => {
             Save to trip
           </Typography>
           {trips ? (
-            trips.map((trip: any, index: any) => (
-              <Link to="#" key={index} style={{ textDecoration: "none" }}>
-                <Card
+            trips.map((trip: any, index) => (
+              <Card
+                onClick={() => {
+                  axios
+                    .post(`/trip/places/addLiked`, {
+                      placeId: place._id,
+                      tripId: trip._id,
+                    })
+                    .then((res) => {
+                      console.log("Added to trip:", res.data);
+                      handleClose();
+                    })
+                    .catch((err) => {
+                      console.error("Error adding to trip:", err);
+                      alert(
+                        "Failed to add to trip: " + err.response.data.message
+                      );
+                    });
+                }}
+                key={index}
+                sx={{
+                  display: "flex",
+                  backgroundColor: "rgba(255, 211, 52, 0.58)",
+                  mt: 2,
+                  p: 2,
+                  transition: "transform 0.3s",
+                  "&:hover": { transform: "scale(1.05)" },
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  sx={{ width: 113, height: 94, borderRadius: 1 }}
+                  image={`/systemImage/${trip.imageTrip}`}
+                  alt={trip.tripName}
+                />
+                <CardContent
                   sx={{
                     display: "flex",
-                    backgroundColor: "rgba(255, 211, 52, 0.58)",
-                    mt: 2,
-                    p: 2,
-                    transition: "transform 0.3s",
-                    "&:hover": { transform: "scale(1.05)" },
+                    flexDirection: "column",
+                    justifyContent: "center",
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    sx={{ width: 113, height: 94, borderRadius: 1 }}
-                    image={trip.image}
-                    alt={trip.tripName}
-                  />
-                  <CardContent
+                  <Typography
+                    variant="h6"
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
+                      fontFamily: "Roboto",
+                      fontWeight: "bold",
+                      fontSize: 14,
                     }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: "Roboto",
-                        fontWeight: "bold",
-                        fontSize: 14,
-                      }}
-                    >
-                      {trip.tripName}
+                    {trip.tripName}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                    <DateRangeIcon />
+                    <Typography variant="body2" color="text.secondary">
+                      {trip.totalDays}
                     </Typography>
-                    <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                      <DateRangeIcon />
-                      <Typography variant="body2" color="text.secondary">
-                        {trip.duration}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                      <LocationOnIcon />
-                      <Typography variant="body2" color="text.secondary">
-                        {trip.location}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Link>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                    <LocationOnIcon />
+                    <Typography variant="body2" color="text.secondary">
+                      {trip.region.join(", ")}
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Card>
             ))
           ) : (
             <Typography

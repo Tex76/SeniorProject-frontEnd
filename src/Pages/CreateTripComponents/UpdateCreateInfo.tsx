@@ -8,6 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { FormControl } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateTripInfo({
   passFunction,
@@ -16,7 +17,11 @@ export default function UpdateTripInfo({
   passFunction: any;
   trip: any;
 }) {
-  const [days, setDays] = useState(1);
+  const navigator = useNavigate();
+  const [days, setDays] = useState(trip.totalDays);
+  const [tripName, setTripName] = useState(trip.tripName);
+  const [description, setDescription] = useState(trip.description);
+  const [coverImage, setCoverImage] = useState(trip.imageTrip);
   const [errors, setErrors] = useState({
     tripName: "",
     description: "",
@@ -47,34 +52,30 @@ export default function UpdateTripInfo({
     if (validateFields()) {
       axios
         .post(`update/trips/${trip._id}`, {
-          tripName: (document.getElementById("tripName") as HTMLInputElement)
-            .value,
-          description: (
-            document.getElementById("description") as HTMLTextAreaElement
-          ).value,
-          coverImage: (
-            document.getElementById("coverImage") as HTMLInputElement
-          ).value,
+          tripName: tripName,
+          description: description,
+          coverImage: coverImage,
           totalDays: days,
         })
         .then((res) => {
           console.log("Trip updated successfully", res);
+          // reloade the current page to show changes
+          // write the logic here
+          window.location.reload();
           passFunction(false);
         });
-
-      console.log("Form is valid");
     } else {
       console.log("Validation failed");
     }
   }
 
   function handleCancel() {
-    setErrors({ tripName: "", description: "", coverImage: "" });
+    setErrors({
+      tripName: "",
+      description: "",
+      coverImage: "",
+    });
     passFunction(false);
-    setDays(1);
-    (document.getElementById("tripName") as HTMLInputElement).value = "";
-    (document.getElementById("coverImage") as HTMLInputElement).value = "";
-    (document.getElementById("description") as HTMLTextAreaElement).value = "";
   }
 
   return (
@@ -100,8 +101,10 @@ export default function UpdateTripInfo({
           <TextField
             fullWidth
             id="tripName"
+            onChange={(e) => setTripName(e.target.value)}
             name="tripName"
             placeholder="Enter your trip name"
+            value={tripName}
             error={!!errors.tripName}
             helperText={errors.tripName}
           />
@@ -147,6 +150,8 @@ export default function UpdateTripInfo({
           <Typography variant="subtitle1">Cover Image:</Typography>
           <TextField
             fullWidth
+            value={coverImage}
+            onChange={(e) => setCoverImage(e.target.value)}
             id="coverImage"
             name="coverImage"
             placeholder="Enter your trip cover image..."
@@ -158,6 +163,8 @@ export default function UpdateTripInfo({
           <Typography variant="subtitle1">Trip Description:</Typography>
           <textarea
             rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             style={{
               width: "96%",
               resize: "none",
