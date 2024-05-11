@@ -712,7 +712,6 @@ export default function CreateTrip() {
                     sx={{
                       width: "100%",
                       display: "flex",
-                      justifyContent: "space-between",
                       borderBottom: "1px solid #E4E4E4",
                       paddingY: "10px",
                     }}
@@ -728,6 +727,7 @@ export default function CreateTrip() {
                                 paddingX: "7px",
                                 borderRadius: "15px",
                                 borderBottom: "1px solid #E4E4E4",
+                                mr: "5px",
                               }}
                             >
                               <Typography
@@ -747,6 +747,7 @@ export default function CreateTrip() {
                         })
                       : "No days set yet"}
                   </Box>
+                  {/* [[places],[],[],[],[]] */}
 
                   {Days
                     ? Days.map((places: any, DayIndex: any) => {

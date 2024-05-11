@@ -33,7 +33,7 @@ export default function SteperCard({ place }: { place: any }) {
       {/* image box */}
 
       <img
-        src={`/systemImage/${place.imagePlace[0]}`}
+        src={`/systemImage/${place.imagePlace[1]}`}
         style={{
           width: "50%", // Set a fixed width
           height: "50%", // Set a fixed height

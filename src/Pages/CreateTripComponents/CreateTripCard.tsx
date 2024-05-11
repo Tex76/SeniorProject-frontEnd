@@ -47,6 +47,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
     const words = text.match(/\S+/g);
     return words ? words.length : 0;
   }
+
   return (
     <Box sx={{ width: "100%", display: "flex", marginTop: "20px" }}>
       {/* image box */}
