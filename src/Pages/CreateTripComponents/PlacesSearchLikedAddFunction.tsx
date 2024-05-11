@@ -26,7 +26,7 @@ export default function PlacesSearchLikedAddFunction({
       <Box sx={{ display: "flex", width: "50%", height: "100%" }}>
         <Box sx={{ width: "40%", height: "100%" }}>
           <img
-            src={`/systemImages/${imagePlace[0]}`}
+            src={`/systemImage/${imagePlace[0]}`}
             alt={name}
             style={{
               width: "100%",

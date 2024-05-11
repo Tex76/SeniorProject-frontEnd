@@ -120,16 +120,15 @@ const Introduction = ({ place }: { place: any }) => {
                     .post(`/trip/places/addLiked`, {
                       placeId: place._id,
                       tripId: trip._id,
+                      tripregion: trip.region,
+                      placeregion: place.region,
                     })
                     .then((res) => {
-                      console.log("Added to trip:", res.data);
+                      console.log(res.data);
                       handleClose();
                     })
                     .catch((err) => {
-                      console.error("Error adding to trip:", err);
-                      alert(
-                        "Failed to add to trip: " + err.response.data.message
-                      );
+                      alert(err.response.data.message);
                     });
                 }}
                 key={index}

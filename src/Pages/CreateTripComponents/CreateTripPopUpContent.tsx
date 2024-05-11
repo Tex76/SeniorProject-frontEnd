@@ -25,6 +25,7 @@ export default function CreateTripPopUpContent({
 
   useEffect(() => {
     const fetchTrip = async () => {
+      console.log("trip from popup: ", trip);
       axios
         .post(`/trip/search`, {
           location: trip.region,
@@ -32,10 +33,11 @@ export default function CreateTripPopUpContent({
         })
         .then((res) => {
           setSearchPlaces(res.data);
+          console.log("searchPlaces: ", res.data);
         });
     };
     fetchTrip();
-  }, [searchPlaces, trip]);
+  }, [trip]); // Remove searchPlaces from dependencies
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -44,15 +46,15 @@ export default function CreateTripPopUpContent({
   };
 
   // Filter places based on the search query, exclude liked places, and match location from props
+
   const filteredData = searchPlaces.filter(
     (place: any) =>
       place.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       place.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const [filterArray, setFilterArray] = useState(filteredData);
-
-  console.log("filterArray: ", filterArray);
+  console.log("filterData: ", filteredData);
+  if (!searchPlaces) return <div>Loading...</div>;
 
   return (
     <Box
@@ -87,70 +89,51 @@ export default function CreateTripPopUpContent({
         Do you already have certain activities in mind that you don't want to
         miss? Locate and bookmark them for your trip.
       </Typography>
+      <TextField
+        fullWidth
+        variant="outlined"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+          style: { borderRadius: "40px" },
+        }}
+        placeholder="Search" // Using placeholder instead of label
+        sx={{ mt: 2 }}
+      />
+
       <Box
         sx={{
-          marginTop: "20px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
+          mt: 2,
+          width: "100%",
+          maxHeight: "300px", // Set a maximum height
+          overflowY: "auto", // Enable vertical scrolling
+          paddingY: "10px",
+          borderTop: "1px solid #E4E4E4",
         }}
       >
-        <TextField
-          fullWidth
-          variant="outlined"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-            style: { borderRadius: "40px" },
-          }}
-          placeholder="Search" // Using placeholder instead of label
-        />
-
-        <Box
-          sx={{
-            borderTop: "1px solid #E4E4E4",
-            marginTop: "20px",
-            width: "100%",
-            height: "100%",
-            overflowY: "auto",
-            paddingY: "10px",
-          }}
-        >
-          <Box
+        {filteredData.length > 0 ? (
+          filteredData.map((place: any) => (
+            <PlacesSearch key={place._id} place={place} trip={trip} />
+          ))
+        ) : (
+          <Typography
             sx={{
-              borderTop: "1px solid #E4E4E4",
               marginTop: "20px",
-              width: "100%",
-              height: "100%",
-              overflowY: "auto",
-              paddingY: "10px",
+              fontFamily: "Roboto",
+              fontWeight: "regular",
+              fontSize: "16px",
+              textAlign: "center",
+              color: "grey",
             }}
           >
-            {filteredData.length > 0 ? (
-              filteredData.map((place: any) => (
-                <PlacesSearch places={place} trip={trip} />
-              ))
-            ) : (
-              <Typography
-                sx={{
-                  marginTop: "20px",
-                  fontFamily: "Roboto",
-                  fontWeight: "regular",
-                  fontSize: "16px",
-                  textAlign: "center",
-                  color: "grey",
-                }}
-              >
-                No places found
-              </Typography>
-            )}
-          </Box>
-        </Box>
+            No places found
+          </Typography>
+        )}
       </Box>
       <Box
         sx={{
@@ -178,6 +161,7 @@ export default function CreateTripPopUpContent({
         <Button
           onClick={() => {
             setBlackBox(false);
+            window.location.reload();
           }}
           type="submit"
           sx={{

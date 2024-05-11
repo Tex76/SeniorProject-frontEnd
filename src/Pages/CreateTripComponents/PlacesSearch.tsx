@@ -2,15 +2,23 @@ import { Box, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import axios from "axios";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
-export function PlacesSearch({ places, trip }: { places: any; trip: any }) {
-  const { name, location, imagePlace } = places;
+export function PlacesSearch({ place, trip }: { place: any; trip: any }) {
+  const { name, location, imagePlace } = place;
+  const [like, setlike] = useState(false);
   // Initial like state based on props
   function addToLikedPLaces() {
     axios
-      .post(`/trip/places/addLiked`, { tripID: trip._id, placeId: places._id })
+      .post(`/trip/places/addLiked`, {
+        tripId: trip._id,
+        placeId: place._id,
+        placeregion: place.region,
+        tripregion: trip.region,
+      })
       .catch((err) => {
         console.error("Error adding liked place to trip", err);
+        alert(err.response.data.message || "Error adding liked place to trip");
       });
   }
 
@@ -29,7 +37,7 @@ export function PlacesSearch({ places, trip }: { places: any; trip: any }) {
       <Box sx={{ display: "flex", width: "50%", height: "100%" }}>
         <Box sx={{ width: "40%", height: "100%" }}>
           <img
-            src={`/systemImages/${imagePlace[0]}`}
+            src={`/systemImage/${imagePlace[0]}`}
             alt={name}
             style={{
               width: "100%",
@@ -84,6 +92,7 @@ export function PlacesSearch({ places, trip }: { places: any; trip: any }) {
         <Button
           onClick={() => {
             addToLikedPLaces();
+            setlike(true);
           }}
           size="medium"
           sx={{
@@ -95,7 +104,11 @@ export function PlacesSearch({ places, trip }: { places: any; trip: any }) {
             border: "1px solid black",
           }}
         >
-          <FavoriteBorderIcon fontSize="medium" />
+          {like ? (
+            <FavoriteIcon fontSize="medium" sx={{ color: "red" }} /> // Use local like state
+          ) : (
+            <FavoriteBorderIcon fontSize="medium" />
+          )}
         </Button>
       </Box>
     </Box>

@@ -114,6 +114,8 @@ const Introduction = ({ place }: { place: any }) => {
                         .post(`/trip/places/addLiked`, {
                           placeId: place._id,
                           tripId: trip._id,
+                          tripregion: trip.region,
+                          placeregion: place.region,
                         })
                         .then((res) => {
                           console.log(res.data);

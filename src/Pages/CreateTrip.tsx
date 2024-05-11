@@ -38,6 +38,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Co2Sharp } from "@mui/icons-material";
 
 axios.defaults.baseURL = "http://localhost:4000";
 interface TabPanelProps {
@@ -52,21 +53,22 @@ interface AccordionProps {
   value: string; // name of the accordion
 }
 
-function formatTripLikedPlacesBaseOnCategory(
-  trip: any,
-  setThingsToDo: any,
-  setThingsToEat: any,
-  setPlacesToStay: any
-) {
+function formatTripLikedPlacesBaseOnCategory(trip: any) {
+  const thingsToDo: any = [];
+  const thingsToEat: any = [];
+  const placesToStay: any = [];
+
   trip.likedPlaces.forEach((place: any) => {
-    if (place.category === "things to do") {
-      setThingsToDo((prev: any) => [...prev, place]);
-    } else if (place.category === "things to eat") {
-      setThingsToEat((prev: any) => [...prev, place]);
-    } else if (place.category === "places to stay") {
-      setPlacesToStay((prev: any) => [...prev, place]);
+    if (place.category === "thingsToDo") {
+      thingsToDo.push(place);
+    } else if (place.category === "thingsToEat") {
+      thingsToEat.push(place);
+    } else {
+      placesToStay.push(place);
     }
   });
+
+  return { thingsToDo, thingsToEat, placesToStay };
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -144,6 +146,7 @@ export default function CreateTrip() {
     description: "",
     likedPlaces: [],
     days: [],
+    imageTrip: "",
   }); // [trip, setTrips]
 
   const [isLoading, setIsLoading] = useState(true);
@@ -156,39 +159,32 @@ export default function CreateTrip() {
   const [placesToStay, setPlacesToStay] = useState([]);
   const [likedPlaces, setLikedPlaces] = useState([]); // [likedPlaces, setLikedPlaces
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [Days, setDays] = useState([[]]);
   useEffect(() => {
     setIsLoading(true);
     axios
       .get(`/trips/${id}`)
       .then((res) => {
-        console.log("Trip data fetched:", res.data.trip);
+        console.log("Trip data fetched:", res.data);
+        setTrip(res.data);
+        setDays(res.data.days);
+        setLikedPlaces(res.data.likedPlaces);
 
-        // Check user permission
-        // if (!user || res.data.trip.userID.toString().trim() !== user.id) {
-        //   alert("You do not have permission to view this page");
-        //   window.location.replace("/");
-        //   return; // Stop further execution in this block
-        // }
-
-        // Set trip data and categorize liked places
-        setTrip(res.data.trip);
-        formatTripLikedPlacesBaseOnCategory(
-          res.data.trip,
-          setThingsToDo,
-          setThingsToEat,
-          setPlacesToStay
-        );
-        setDays(res.data.trip.days);
-        setLikedPlaces(res.data.trip.likedPlaces);
+        // Categorize places and update state
+        const { thingsToDo, thingsToEat, placesToStay } =
+          formatTripLikedPlacesBaseOnCategory(res.data);
+        setThingsToDo(thingsToDo);
+        setThingsToEat(thingsToEat);
+        setPlacesToStay(placesToStay);
       })
       .catch((error) => {
         console.error("Error fetching the trip data:", error);
       })
       .finally(() => {
-        setIsLoading(false); // Ensure loading is set to false regardless of outcome
+        setIsLoading(false);
       });
-  }, [id, user]); // Depend on `id` and `user` to ensure re-run when these values change
+  }, [id]); // Ensure effect only runs when `id` changes
+  // Depend on `id` and `user` to ensure re-run when these values change
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
@@ -198,7 +194,6 @@ export default function CreateTrip() {
     place.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const [Days, setDays] = useState([[]]);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -360,76 +355,59 @@ export default function CreateTrip() {
             Select place that you want to add to your day, or search among
             different places that you have liked!
           </Typography>
+          <TextField
+            fullWidth
+            variant="outlined"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              style: { borderRadius: "40px" },
+            }}
+            placeholder="Search"
+            sx={{ mt: 2 }}
+          />
           <Box
             sx={{
-              marginTop: "20px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              mt: 2,
+              width: "100%",
+              maxHeight: "300px", // Set a maximum height
+              overflowY: "auto", // Enable vertical scrolling
+              paddingY: "10px",
+              borderTop: "1px solid #E4E4E4",
             }}
           >
-            <TextField
-              fullWidth
-              variant="outlined"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                style: { borderRadius: "40px" },
-              }}
-              placeholder="Search" // Using placeholder instead of label
-            />
-
-            <Box
-              sx={{
-                borderTop: "1px solid #E4E4E4",
-                marginTop: "20px",
-                width: "100%",
-                height: "100%",
-                overflowY: "auto",
-                paddingY: "10px",
-              }}
-            >
-              <Box
+            {filteredData.length > 0 ? (
+              filteredData.map((place: any) => (
+                <Box
+                  sx={{ width: "100%" }}
+                  key={place._id} // Assuming place has an _id property
+                  onClick={() => {
+                    // your click handler logic
+                    //---------------------------------------------------------------------------------------------------------
+                  }}
+                >
+                  <PlacesSearchLikedAddFunction places={place} />
+                </Box>
+              ))
+            ) : (
+              <Typography
                 sx={{
-                  borderTop: "1px solid #E4E4E4",
                   marginTop: "20px",
-                  width: "100%",
-                  height: "100%",
-                  overflowY: "auto",
-                  paddingY: "10px",
+                  fontFamily: "Roboto",
+                  fontWeight: "regular",
+                  fontSize: "16px",
+                  textAlign: "center",
+                  color: "grey",
                 }}
               >
-                {filteredData.length > 0 ? (
-                  filteredData.map((place: any) => (
-                    <Box
-                      sx={{ width: "100%" }}
-                      onClick={() => {}}
-                      // here must when we click we do something like added place into the main Array
-                    >
-                      <PlacesSearchLikedAddFunction places={place} />
-                    </Box>
-                  ))
-                ) : (
-                  <Typography
-                    sx={{
-                      marginTop: "20px",
-                      fontFamily: "Roboto",
-                      fontWeight: "regular",
-                      fontSize: "16px",
-                      textAlign: "center",
-                      color: "grey",
-                    }}
-                  >
-                    No places found
-                  </Typography>
-                )}
-              </Box>
-            </Box>
+                No places found
+              </Typography>
+            )}
           </Box>
           <Box
             sx={{
@@ -493,7 +471,7 @@ export default function CreateTrip() {
               justifyContent: "space-between",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${background})`, // Combined linear gradient and background image
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${trip.imageTrip})`, // Combined linear gradient and background image
               backgroundSize: "cover",
               flexDirection: "column",
               width: { md: "100%", xs: "95%" },
@@ -610,6 +588,7 @@ export default function CreateTrip() {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Typography>
+                      Items:{" "}
                       {trip
                         ? trip.likedPlaces.length
                         : "You don't have liked places yet"}
@@ -641,10 +620,10 @@ export default function CreateTrip() {
                           <CreateTripCard
                             key={index}
                             catogry="things to do"
-                            image={`/systemImage/${place.placeImage[0]}`}
+                            image={`/systemImage/${place.imagePlace[0]}`}
                             placeName={place.name}
                             rate={place.rate}
-                            location={place.location}
+                            location={place.region}
                             type={place.type}
                             description={place.description}
                             price={place.price}
@@ -662,14 +641,14 @@ export default function CreateTrip() {
                           <CreateTripCard
                             key={index}
                             catogry="things to eat"
-                            image={`/systemImage/${place.placeImage[0]}`}
+                            image={`/systemImage/${place.imagePlace[0]}`}
                             placeName={place.name}
                             rate={place.rate}
-                            location={place.location}
+                            location={place.region}
                             type={place.type}
                             description={place.description}
-                            price={place.price}
-                            duration={place.duration}
+                            price={place.priceRange}
+                            cuisine={place.cuisines[0]}
                             googleLocation={place.googleLocation}
                           />
                         );
@@ -683,14 +662,14 @@ export default function CreateTrip() {
                           <CreateTripCard
                             key={index}
                             catogry="places to stay"
-                            image={`/systemImage/${place.placeImage[0]}`}
+                            image={`/systemImage/${place.imagePlace[0]}`}
                             placeName={place.name}
                             rate={place.rate}
-                            location={place.location}
+                            location={place.region}
                             type={place.type}
                             description={place.description}
-                            price={place.price}
-                            duration={place.duration}
+                            price={place.priceRange}
+                            stars={place.hotelClass}
                             googleLocation={place.googleLocation}
                           />
                         );
