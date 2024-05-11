@@ -39,6 +39,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Co2Sharp } from "@mui/icons-material";
+import ThingsToEat from "./ThingsToEat";
 
 axios.defaults.baseURL = "http://localhost:4000";
 interface TabPanelProps {
@@ -147,6 +148,7 @@ export default function CreateTrip() {
     likedPlaces: [],
     days: [],
     imageTrip: "",
+    _id: "",
   }); // [trip, setTrips]
 
   const [isLoading, setIsLoading] = useState(true);
@@ -160,6 +162,7 @@ export default function CreateTrip() {
   const [likedPlaces, setLikedPlaces] = useState([]); // [likedPlaces, setLikedPlaces
   const [searchQuery, setSearchQuery] = useState("");
   const [Days, setDays] = useState([[]]);
+  const [currentDaysIndex, setCurrentDaysIndex] = useState(0);
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -388,7 +391,23 @@ export default function CreateTrip() {
                   key={place._id} // Assuming place has an _id property
                   onClick={() => {
                     // your click handler logic
+                    // must be passed to specific day
                     //---------------------------------------------------------------------------------------------------------
+                    axios
+                      .post("/trip/addPlaceToDay", {
+                        tripId: trip._id,
+                        placeId: place._id,
+                        dayIndex: currentDaysIndex,
+                      })
+                      .then((response) => {
+                        const updatedTrip = response.data.trip;
+                        setDays(updatedTrip.days); // Update the days state with the new array from the server
+                        console.log("Updated days:", updatedTrip.days);
+                        setBlackBox3(false); // Close modal after update
+                      })
+                      .catch((error) => {
+                        console.error("Error adding place to day:", error);
+                      });
                   }}
                 >
                   <PlacesSearchLikedAddFunction places={place} />
@@ -614,7 +633,10 @@ export default function CreateTrip() {
                     </Button>
                   </Box>
                   <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-                    <Accordion value="Things to do" index={0}>
+                    <Accordion
+                      value={`Things To Do (${thingsToDo.length})`}
+                      index={0}
+                    >
                       {thingsToDo.map((place: any, index: any) => {
                         return (
                           <CreateTripCard
@@ -635,7 +657,10 @@ export default function CreateTrip() {
                     </Accordion>
                   </Box>
                   <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-                    <Accordion value="Things to eat" index={1}>
+                    <Accordion
+                      value={`Things To Eat (${thingsToEat.length})`}
+                      index={1}
+                    >
                       {thingsToEat.map((place: any, index: any) => {
                         return (
                           <CreateTripCard
@@ -656,7 +681,10 @@ export default function CreateTrip() {
                     </Accordion>
                   </Box>{" "}
                   <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-                    <Accordion value="Places to stay" index={2}>
+                    <Accordion
+                      value={`Places To Stay (${placesToStay.length})`}
+                      index={2}
+                    >
                       {placesToStay.map((place: any, index: any) => {
                         return (
                           <CreateTripCard
@@ -721,18 +749,20 @@ export default function CreateTrip() {
                   </Box>
 
                   {Days
-                    ? Days.map((dayContent: any, DayIndex: any) => {
+                    ? Days.map((places: any, DayIndex: any) => {
                         return (
                           <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
                             <Accordion
                               value={`Day ${DayIndex + 1}`}
                               index={DayIndex}
                             >
-                              {/* this is the stepper for the day */}
                               <StepperCreateTrip
-                                key={DayIndex}
-                                Places={dayContent}
+                                key={places._id}
+                                trip={trip}
+                                Places={places}
                                 setBlackBox3={setBlackBox3}
+                                setCurrentDaysIndex={setCurrentDaysIndex} // Assuming this prop is meant to handle some index logic
+                                dayIndex={DayIndex} // Correctly pass the day index
                               />
                             </Accordion>
                           </Box>

@@ -5,47 +5,10 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { StepIconProps } from "@mui/material/StepIcon";
 import SteperCard from "./SteperCard";
-import Rest from "./Rest.jpg";
-import Circuit from "./Circuit.jpg";
+import { StepIconProps } from "@mui/material/StepIcon";
+import axios from "axios";
 
-export interface Places {
-  id: string;
-  catogry: "things to eat" | "places to stay" | "things to do";
-  image: string;
-  placeName: string;
-  rate: number;
-  location: string;
-  type: string;
-  description: string;
-  price: string; // Ensure this is spelled correctly and matches your data objects
-  stars?: number;
-  cuisine?: string;
-  duration?: string;
-}
-
-/*
-export interface Places {
-  id: string;
-  name: string;
-  image: string;
-  location: string;
-  liked: boolean;
-}
-*/
-// this dum function that just showing random data
-// const getRandomDescription = () => {
-//   const descriptions = [
-//     "This is a random description for step ",
-//     "Another exciting step with details: ",
-//     "Learn more about this random step: ",
-//     "Discover what this step has for you: ",
-//     "Explore the contents of step: ",
-//   ];
-//   return descriptions[Math.floor(Math.random() * descriptions.length)];
-// };
 interface ColorlibStepIconProps extends StepIconProps {
   completed?: boolean;
   icon: React.ReactNode;
@@ -53,9 +16,8 @@ interface ColorlibStepIconProps extends StepIconProps {
 
 const ColorlibStepIcon = (props: ColorlibStepIconProps) => {
   const { completed, icon } = props;
-
   const iconStyles = {
-    backgroundColor: "#007B80", // Customize this color
+    backgroundColor: completed ? "#16473C" : "#007B80",
     color: "#fff",
     width: 30,
     height: 30,
@@ -65,96 +27,75 @@ const ColorlibStepIcon = (props: ColorlibStepIconProps) => {
     alignItems: "center",
   };
 
-  return (
-    <div
-      style={{
-        ...iconStyles,
-        backgroundColor: completed ? "#16473C" : "#007B80",
-      }}
-    >
-      {icon}
-    </div>
-  );
+  return <div style={iconStyles}>{icon}</div>;
 };
 
 export default function VerticalLinearStepper({
-  setBlackBox3,
   Places,
-}: {
-  setBlackBox3: React.Dispatch<React.SetStateAction<boolean>>;
-  Places: any[];
-}) {
-  const [activeStep, setActiveStep] = React.useState(Places.length); // Start with no active step
-  //we fetch places of day from the days array
+  setBlackBox3,
+  dayIndex,
+  setCurrentDaysIndex,
+  trip,
+}: any) {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [steps, setSteps] = React.useState<any[]>([]);
 
-  const [steps, setSteps] = React.useState<any[]>(Places); // Start with an empty steps array
+  // Update steps state whenever Places prop changes
+  React.useEffect(() => {
+    setSteps(Places);
+    setActiveStep(0); // Optionally reset the active step or set it based on some logic
+  }, [Places]); // Dependency array includes Places to react to changes
 
   const handleNext = (newStep: number) => {
     setActiveStep(newStep);
   };
 
-  const addStep = () => {
-    if (activeStep === -1) {
-      // The foolwing must be
-      const newPlace: Places = {
-        id: "",
-        catogry: "things to eat",
-        image: "",
-        placeName: "New Place",
-        rate: 0,
-        location: "",
-        type: "",
-        description: "",
-        price: "",
-        stars: 0,
-        cuisine: "",
-        duration: "",
-      };
-      setSteps([newPlace]); // Add the first step
-      handleNext(0); // Set the first step as active
-    } else {
-      const newStepNumber = steps.length + 1;
-      const newPlace: Places = {
-        id: "",
-        catogry: "things to eat",
-        image: "",
-        placeName: `New Place ${newStepNumber}`,
-        rate: 0,
-        location: "",
-        type: "",
-        description: "",
-        price: "",
-        stars: 0,
-        cuisine: "",
-        duration: "",
-      };
-      setSteps([...steps, newPlace]); // Add the new step
-      handleNext(steps.length); // Move to the next step
-    }
+  const addStep = (dayIndex: any, Places: any) => {
+    // Implement adding a new step logic if needed
+    const newStep = Places[dayIndex];
+    setSteps([...steps, newStep]);
+    setActiveStep(steps.length);
   };
-
   const deleteLastStep = () => {
-    if (steps.length > 0) {
-      const newSteps = steps.slice(0, -1);
-      setSteps(newSteps);
-      setActiveStep(newSteps.length - 1);
-      // here must sure that when we delete something it will be delete it from everything else
+    if (steps.length === 0) {
+      console.log("No steps to delete");
+      return;
+    }
+
+    const lastStepId = steps[steps.length - 1]._id;
+
+    if (window.confirm("Are you sure you want to delete this place?")) {
+      axios
+        .post(`/trip/places/delete`, {
+          tripId: trip._id, // Assuming Places[0] is valid and has a tripId
+          placeId: lastStepId,
+          dayIndex: dayIndex,
+        })
+        .then((res) => {
+          console.log("Place deleted successfully", res.data);
+          const newSteps = steps.slice(0, -1);
+          setSteps(newSteps);
+          setActiveStep(Math.max(0, newSteps.length - 1)); // Avoid negative activeStep
+        })
+        .catch((err) => {
+          console.error("Error deleting place", err);
+          alert(err.response?.data?.message || "Error deleting place");
+        });
     }
   };
 
   return (
     <Box sx={{ maxWidth: 400 }}>
       <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.length === 0 ? ( // If no steps, show a placeholder
+        {steps.length === 0 ? (
           <Step>
             <StepLabel>Click on Add to add new place</StepLabel>
           </Step>
         ) : (
-          // here we must add the logic of the cards to make sure it's added correctly
           steps.map((place: any) => (
-            <Step key={place.id} expanded={true} sx={{ width: "100%" }}>
+            <Step key={place._id} expanded={true} sx={{ width: "100%" }}>
               <StepLabel StepIconComponent={ColorlibStepIcon}>
-                {place.placeName}
+                {place.name}
               </StepLabel>
               <StepContent
                 sx={{
@@ -174,6 +115,7 @@ export default function VerticalLinearStepper({
           variant="contained"
           onClick={() => {
             setBlackBox3(true);
+            setCurrentDaysIndex(dayIndex);
           }}
           sx={{
             mt: 1,

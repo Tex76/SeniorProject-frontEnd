@@ -31,18 +31,14 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
     region: "",
     description: "",
   });
+  const [tripName, setTripName] = useState("");
+  const [description, setDescription] = useState("");
 
   function validateFields() {
     let tempErrors = {
-      tripName: !(document.getElementById("tripName") as HTMLInputElement).value
-        ? "This field is required"
-        : "",
+      tripName: !tripName ? "This field is required" : "",
       region: selectedRegions.length === 0 ? "This field is required" : "",
-      description: !(
-        document.getElementById("description") as HTMLTextAreaElement
-      ).value
-        ? "This field is required"
-        : "",
+      description: !description ? "This field is required" : "",
     };
     setErrors(tempErrors);
     return Object.values(tempErrors).every((x) => x === "");
@@ -52,19 +48,22 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
     event.preventDefault();
     if (validateFields()) {
       console.log("Form is valid");
+      if (!user) {
+        alert("User not logged in");
+        return;
+      }
+
       axios
         .post("/trips", {
-          userID: user.id,
-          tripName: (document.getElementById("tripName") as HTMLInputElement)
-            .value,
+          userid: user.id,
+          tripName: tripName,
           region: selectedRegions,
           days: days,
-          description: (
-            document.getElementById("description") as HTMLTextAreaElement
-          ).value,
+          description: description,
         })
         .then((res) => {
-          navigator("/createtrip/" + res.data.id);
+          console.log("Trip created response from createTripForm", res.data);
+          navigator("/createtrip/" + res.data.trip._id);
         })
         .catch((err) => console.error("Error creating trip", err));
     } else {
@@ -117,7 +116,9 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
           <Typography variant="subtitle1">Trip Name:</Typography>
           <TextField
             fullWidth
+            onChange={(e) => setTripName(e.target.value)}
             id="tripName"
+            value={tripName}
             name="tripName"
             placeholder="Enter your trip name"
             error={!!errors.tripName}
@@ -190,6 +191,8 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
           <Typography variant="subtitle1">Trip Description:</Typography>
           <textarea
             rows={3}
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
             style={{
               width: "96%",
               resize: "none",

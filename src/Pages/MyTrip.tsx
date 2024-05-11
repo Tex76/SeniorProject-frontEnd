@@ -191,7 +191,7 @@ const MyTrip = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={`/systemImage/${trip.imageTrip}`}
+                    image={trip.imageTrip}
                     alt="green iguana"
                     sx={{ width: "30%", borderRadius: "10px", height: "100%" }}
                   />

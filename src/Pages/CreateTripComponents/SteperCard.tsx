@@ -13,35 +13,9 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 // this might be modify when we deploy the actual database
-export interface Places {
-  id: string;
-  catogry: "things to eat" | "places to stay" | "things to do";
-  image: string;
-  placeName: string;
-  rate: number;
-  location: string;
-  type: string;
-  description: string;
-  price: string; // Ensure this is spelled correctly and matches your data objects
-  stars?: number;
-  cuisine?: string;
-  duration?: string;
-}
 export default function SteperCard({ place }: { place: any }) {
   const [readMore, setReadMore] = useState(false);
-  const {
-    image,
-    placeName,
-    rate,
-    location,
-    catogry,
-    type,
-    description,
-    duration,
-    cuisine,
-    stars,
-    price,
-  } = place;
+
   function countWords(text: string): number {
     const words = text.match(/\S+/g);
     return words ? words.length : 0;
@@ -59,16 +33,15 @@ export default function SteperCard({ place }: { place: any }) {
       {/* image box */}
 
       <img
-        src={`/systemImages/${place.placeImage[0]}`}
+        src={`/systemImage/${place.imagePlace[0]}`}
         style={{
-          width: "50%",
+          width: "50%", // Set a fixed width
+          height: "50%", // Set a fixed height
           marginRight: "15px",
-          height: "100%",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          objectFit: "cover", // This ensures the image covers the area without stretching
           borderRadius: "5px 0px 0px 5px",
         }}
-        alt=""
+        alt={place.name} // It's a good practice to provide an alt attribute for accessibility
       />
 
       {/* content box */}
@@ -119,18 +92,18 @@ export default function SteperCard({ place }: { place: any }) {
             color: "#000000",
           }}
         >
-          {placeName}
+          {place.name}
         </Typography>
 
         <Rating
           sx={{ marginButton: "20px" }}
           name="rating"
           size="small"
-          value={rate}
+          value={place.rate}
           readOnly
         />
         {/* things to eat content */}
-        {catogry === "things to eat" && (
+        {place.category === "thingsToEat" && (
           <Box sx={{ display: "flex" }}>
             <DinnerDiningIcon fontSize="small" />
             <Typography
@@ -142,7 +115,7 @@ export default function SteperCard({ place }: { place: any }) {
                 fontWeight: "regular",
               }}
             >
-              {type}
+              {place.type}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
             <MenuBookIcon fontSize="small" />
@@ -154,7 +127,7 @@ export default function SteperCard({ place }: { place: any }) {
                 fontWeight: "regular",
               }}
             >
-              {cuisine}
+              {place.cuisine}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
             <MonetizationOnIcon fontSize="small" />
@@ -167,13 +140,13 @@ export default function SteperCard({ place }: { place: any }) {
                 fontWeight: "regular",
               }}
             >
-              ${price}
+              ${place.priceRange}
             </Typography>
           </Box>
         )}
 
         {/* things to eat content */}
-        {catogry === "things to do" && (
+        {place.category === "thingsToDo" && (
           <Box sx={{ display: "flex" }}>
             <LocalActivityIcon fontSize="small" />
             <Typography
@@ -185,7 +158,7 @@ export default function SteperCard({ place }: { place: any }) {
                 fontWeight: "regular",
               }}
             >
-              {type}
+              {place.type}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
             <AccessTimeIcon fontSize="small" />
@@ -198,7 +171,7 @@ export default function SteperCard({ place }: { place: any }) {
                 fontWeight: "regular",
               }}
             >
-              {duration} hours
+              {place.duration}
             </Typography>
             <Box sx={{ width: "2px", margin: "0 5px" }}></Box>
             <MonetizationOnIcon fontSize="small" />
@@ -211,12 +184,12 @@ export default function SteperCard({ place }: { place: any }) {
                 fontWeight: "regular",
               }}
             >
-              ${price} per adult
+              {place.priceRange} per adult
             </Typography>
           </Box>
         )}
 
-        {catogry === "places to stay" && (
+        {place.category === "placesToStay" && (
           <Box sx={{ display: "flex" }}>
             <StarIcon fontSize="small" />
             <Typography
@@ -228,7 +201,7 @@ export default function SteperCard({ place }: { place: any }) {
                 fontWeight: "regular",
               }}
             >
-              {stars}
+              {place.hotelClass}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
             <MonetizationOnIcon fontSize="small" />
@@ -236,12 +209,12 @@ export default function SteperCard({ place }: { place: any }) {
               sx={{
                 marginLeft: "3px",
                 fontFamily: "Roboto",
-                fontSize: "2px",
-                marginTop: "3px",
+                fontSize: "12px",
+                marginTop: "2px",
                 fontWeight: "regular",
               }}
             >
-              ${price} per night
+              {place.priceRange} per adult
             </Typography>
           </Box>
         )}
@@ -256,10 +229,10 @@ export default function SteperCard({ place }: { place: any }) {
             }}
           >
             {readMore
-              ? description
-              : description
+              ? place.description
+              : place.description
                   .split(" ")
-                  .slice(0, countWords(description) / 2 / 2)
+                  .slice(0, countWords(place.description) / 2 / 2)
                   .join(" ") + " ..."}
           </Typography>
           <Typography

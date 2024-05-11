@@ -138,7 +138,7 @@ const Introduction = ({ place }: { place: any }) => {
                     <CardMedia
                       component="img"
                       sx={{ width: 113, height: 94, borderRadius: 1 }}
-                      image={`/systemImage/${trip.imageTrip}`}
+                      image={trip.imageTrip}
                       alt={trip.tripName}
                     />
                     <CardContent
@@ -203,7 +203,13 @@ const Introduction = ({ place }: { place: any }) => {
 
               <Divider sx={{ my: 2 }} />
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <IconButton color="primary" aria-label="add to trip">
+                <IconButton
+                  onClick={() => {
+                    navigate("/pickTrip");
+                  }}
+                  color="primary"
+                  aria-label="add to trip"
+                >
                   <AddIcon />
                 </IconButton>
                 <Typography variant="body1">Create Trip</Typography>

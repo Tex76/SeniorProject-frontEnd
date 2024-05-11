@@ -18,7 +18,6 @@ export function PlacesSearch({ place, trip }: { place: any; trip: any }) {
       })
       .catch((err) => {
         console.error("Error adding liked place to trip", err);
-        alert(err.response.data.message || "Error adding liked place to trip");
       });
   }
 
