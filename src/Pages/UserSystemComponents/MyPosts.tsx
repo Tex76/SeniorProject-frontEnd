@@ -8,23 +8,22 @@ import {
   Tab,
   Rating,
 } from "@mui/material";
-import profile from "../../images/Profile/profile.png";
-import placeImage from "../../images/Profile/placeImage.png";
-import postedimage from "../../images/Profile/postedimage.png";
+
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-const MyPosts = () => {
-    const [value, setValue] = useState(0);
+const MyPosts = ({ user }: { user: any }) => {
+  const [value, setValue] = useState(0);
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
   return (
-    <div >
-      <Card >
+    <div>
+      <Card>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -46,67 +45,132 @@ const MyPosts = () => {
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
+                flexDirection: "column", // Change this line
                 marginBottom: "10px",
               }}
             >
-              <img
-                src={profile}
-                alt="profile"
-                style={{
-                  width: "70px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
-              />
-              <Box>
-                <Typography variant="subtitle1">Jasem Saleh</Typography>
-                <Typography variant="caption">Mar 5, 2023</Typography>
-              </Box>
+              {user.reviewComments.map((comment: any) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    marginBottom: "10px",
+                    borderTop: "1px solid #000",
+                  }}
+                  key={comment._id}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        margin: "10px",
+                      }}
+                    >
+                      <img
+                        src={user.avatarImage}
+                        alt="profile"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
+                    <Box>
+                      <Typography variant="body1">@{user.userName}</Typography>
+                      <Typography variant="body1">
+                        {new Date(user.joinDate).toISOString().split("T")[0]}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "flex-start", // Change this line
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <Rating name="read-only" value={comment.rate} readOnly />
+                  </Box>
+                  <Box>
+                    <Typography variant="body2">
+                      {comment.commentBody}
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2">
+                    Date visited:{" "}
+                    {new Date(comment.dateVisit).toISOString().split("T")[0]}
+                  </Typography>
+
+                  <Link
+                    to={`/places/${comment.placeID._id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    {" "}
+                    {/* Use Link to wrap the Card */}
+                    <Card
+                      sx={{
+                        width: "80%", // Adjust the width of the card
+                        height: "80%", // Adjust the height of the card
+                        margin: "10px",
+                        backgroundColor: "whitesmoke",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      {/* Ensure imagePlace exists and has at least one image */}
+                      {comment.placeID.imagePlace &&
+                        comment.placeID.imagePlace.length > 0 && (
+                          <img
+                            src={`/systemImage/${comment.placeID.imagePlace[0]}`}
+                            alt={comment.placeID.name}
+                            style={{
+                              width: "40%", // Adjust the width of the image
+                              borderRadius: "10px",
+                              margin: "10px",
+                            }}
+                          />
+                        )}
+                      <Box>
+                        <Typography variant="h6" style={{ fontSize: "0.8rem" }}>
+                          {" "}
+                          {comment.placeID.name}
+                        </Typography>
+                        <Typography
+                          variant="subtitle1"
+                          style={{ fontSize: "0.7rem" }}
+                        >
+                          {" "}
+                          {comment.placeID.region}
+                        </Typography>
+                        <Rating
+                          name="place-rating"
+                          value={comment.placeID.rate}
+                          readOnly
+                        />
+                        <Typography
+                          variant="subtitle1"
+                          style={{ fontSize: "0.7rem" }}
+                        >
+                          {" "}
+                          {comment.placeID.description}
+                        </Typography>
+                      </Box>
+                    </Card>
+                  </Link>
+                </Box>
+              ))}
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "10px",
-              }}
-            >
-              <Rating name="read-only" value={4} readOnly />{" "}
-              {/* Replace 4 with the actual rating */}
-            </Box>
-            <Box>
-              <Typography variant="body2">
-                “We are regular customers at this place, each time we want a
-                good steak, this is where we go. The service is very nice, the
-                meet is fresh and cotoletta Milanes...”
-              </Typography>
-            </Box>
-            <img
-              src={postedimage}
-              alt="place"
-              style={{ width: "50%", margin: "10px" }}
-            />
-            <Typography variant="body2">Date visited: March 2023</Typography>
-            <Card
-              sx={{
-                margin: "10px",
-                backgroundColor: "whitesmoke",
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <img
-                src={placeImage}
-                alt="place"
-                style={{ width: "50%", borderRadius: "10px", margin: "10px" }}
-              />
-              <Box>
-                <Typography variant="h6">Bushido by Buddha-Bar</Typography>
-                <Typography variant="subtitle1">Northern</Typography>
-                <Rating name="place-rating" value={4} readOnly />{" "}
-                {/* Replace 4 with the actual place rating */}
-              </Box>
-            </Card>
           </CardContent>
         )}
 
@@ -123,25 +187,10 @@ const MyPosts = () => {
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
+                flexDirection: "column", // Change this line
                 marginBottom: "10px",
               }}
-            >
-              <img
-                src={profile}
-                alt="profile"
-                style={{
-                  width: "70px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
-              />
-              <Box>
-                <Typography variant="subtitle1">Jasem Saleh</Typography>
-                <Typography variant="caption">Mar 5, 2023</Typography>
-              </Box>
-            </Box>
-            <img src={postedimage} alt="place" style={{ width: "100%" }} />
+            ></Box>
           </CardContent>
         )}
       </Card>
