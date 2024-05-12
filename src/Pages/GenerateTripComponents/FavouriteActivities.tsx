@@ -1,33 +1,42 @@
 import * as React from 'react';
 import { Box, Typography, Button, TextField, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import FavouriteActivitiesContext from '../../FavouriteActivitiesContext';
 
 export default function FavouriteActivities() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // List of all possible activities
   const activities = [
     'Culture', 'History', 'Beaches', 'Middle Eastern', 'Dessert',
     'Lunch', 'Shopping', 'Museums', 'Entertainment', 'Ancient Ruins'
   ];
 
-  const [selectedActivities, setSelectedActivities] = React.useState<string[]>([]);
+  // State for the search term in the activity search box
   const [searchTerm, setSearchTerm] = React.useState('');
 
+  // Access the favouriteActivities and setFavouriteActivities from the context
+  const { favouriteActivities, setFavouriteActivities } = React.useContext(FavouriteActivitiesContext);
+
+  // Function to handle the selection of an activity
   const handleSelect = (activity: string) => {
-    if (!selectedActivities.includes(activity)) {
-      setSelectedActivities(prev => [...prev, activity]);
+    if (!favouriteActivities.includes(activity)) {
+      setFavouriteActivities([...favouriteActivities, activity]);
     }
   };
 
+  // Function to handle the deselection of an activity
   const handleDeselect = (activity: string) => {
-    setSelectedActivities(prev => prev.filter(item => item !== activity));
+    setFavouriteActivities(favouriteActivities.filter(item => item !== activity));
   };
 
+  // Function to handle the search of activities
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
+  // Filter the activities based on the search term
   const filteredActivities = activities.filter(activity =>
     activity.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -68,23 +77,26 @@ export default function FavouriteActivities() {
         />
       </Box>
       <Box mt={2} sx={{ display: 'flex', flexWrap: 'wrap' }}>
-        {selectedActivities.map((activity) => (
-          <Button
-            variant="outlined"
+        {favouriteActivities.map((activity) => (
+          <Box 
             key={activity}
             sx={{
+              display: 'flex',
+              alignItems: 'center',
               color: 'black',
               borderColor: 'black',
               borderRadius: '5px',
               marginRight: '1rem',
               marginBottom: '1rem',
-            }}
-          >
-            {activity}
-            <IconButton onClick={() => handleDeselect(activity)} size="small">
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          </Button>
+              padding: '6px 16px',
+              borderWidth: 1,
+              borderStyle: 'solid',
+            }}>
+              <Typography variant="body1">{activity}</Typography>
+              <IconButton onClick={() => handleDeselect(activity)} size="small">
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            </Box>
         ))}
       </Box>
     </Box>

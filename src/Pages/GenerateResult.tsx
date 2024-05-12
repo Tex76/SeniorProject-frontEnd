@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -15,363 +16,256 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CircularProgress
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
-import LandmarkIcon from "@mui/icons-material/Landscape";
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import LandscapeIcon from '@mui/icons-material/Landscape';
 import HotelIcon from "@mui/icons-material/Hotel";
-import {
-  APIProvider,
-  InfoWindow,
-  Map,
-  Marker,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker, InfoWindow } from "@vis.gl/react-google-maps";
 import NavBar from "./SharedComponents/NavBar";
-import CircuitImage from "../Pages/CreateTripComponents/Circuit.jpg"; // Import the image
+import axios from 'axios';
+import RegionContext from '../RegionContext';
+import BudgetContext from '../BudgetContext';
+import TimePeriodContext from '../TimePeriodContext';
+import GroupSizeContext from '../GroupSizeContext';
+import FavouriteActivitiesContext from "../FavouriteActivitiesContext";
+import { Place } from "../../../api/SchemaDb";
+
+interface Day {
+  id: string;
+  description: string;
+  activities: Place[];
+}
 
 const GenerateResult = () => {
-  const mapStyle = {
-    width: "100%",
-    height: "700px",
-    borderRadius: "15px",
-  };
+  const { selectedRegion } = useContext(RegionContext);
+  const { budget } = useContext(BudgetContext);
+  const { days } = useContext(TimePeriodContext);
+  const { groupSize } = useContext(GroupSizeContext);
+  const { favouriteActivities } = useContext(FavouriteActivitiesContext);
 
-  const center = {
-    lat: 26.0667,
-    lng: 50.5577,
-  };
-
-  const days = [
-    {
-      title: "Day 1",
-      description: "This is a description for Day 1",
-      activities: [
-        {
-          title: "Activity 1",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          imageUrl: CircuitImage,
-          rating: 5,
-          type: "Landmark",
-          duration: "2 hours",
-          budget: 200,
-          position: {
-            lat: 26.0667,
-            lng: 50.5577,
-          },
-        },
-        {
-          title: "Activity 2",
-          description:
-            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          imageUrl: CircuitImage,
-          rating: 4,
-          type: "Restaurant",
-          duration: "3 hours",
-          budget: 500,
-          position: {
-            lat: 26.0767,
-            lng: 50.5577,
-          },
-        },
-        {
-          title: "Activity 3",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          imageUrl: CircuitImage,
-          rating: 3,
-          type: "Hotel",
-          duration: "1 hour",
-          budget: 1000,
-          position: {
-            lat: 26.0667,
-            lng: 50.5477,
-          },
-        },
-      ],
-    },
-    {
-      title: "Day 2",
-      description: "This is a description for Day 1",
-      activities: [
-        {
-          title: "Activity 1",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          imageUrl: CircuitImage,
-          rating: 5,
-          type: "Landmark",
-          duration: "2 hours",
-          budget: 200,
-          position: {
-            lat: 26.0467,
-            lng: 50.5777,
-          },
-        },
-        {
-          title: "Activity 2",
-          description:
-            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          imageUrl: CircuitImage,
-          rating: 4,
-          type: "Restaurant",
-          duration: "3 hours",
-          budget: 500,
-          position: {
-            lat: 26.1667,
-            lng: 50.5577,
-          },
-        },
-        {
-          title: "Activity 3",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          imageUrl: CircuitImage,
-          rating: 3,
-          type: "Hotel",
-          duration: "1 hour",
-          budget: 1000,
-          position: {
-            lat: 26.0467,
-            lng: 50.5177,
-          },
-        },
-      ],
-    },
-    // More days...
-  ];
-
-  // Define the country and calculate the number of days
-  const country = "Bahrain"; // Replace with the actual country
-  const numberOfDays = days.length; // Calculate the number of days
+  const [description, setDescription] = useState<string>('');
+  const [itinerary, setItinerary] = useState<Day[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
-  const [, setCenter] = useState({ lat: 26.0667, lng: 50.5577 });
 
-  return (
-    <Box>
-      <Box sx={{ mb: 20, maxWidth: 1280, margin: "auto" }}>
-        <NavBar textColor="rgb(0,0,0)" />
-      </Box>
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (!favouriteActivities.length) {
+          setError('No favourite activities selected');
+          setLoading(false);
+          return;
+        }
+  
+      // Make a POST request to the backend
+      const response = await axios.post('http://localhost:5000/api/generate_itinerary', {
+        selectedRegion,
+        budget,
+        days,
+        groupSize,
+        favouriteActivities
+      });
+  
+        // Parse the response data
+        const responseData = response.data;
+        setDescription(responseData.trip.description);
+  
+        // Organize the itinerary based on the response data
+        const organizedItinerary = responseData.trip.days.map((day: any, index: number) => {
+          return {
+            id: `day${index + 1}`,
+            activities: day.places.map((place: any, placeIndex: number) => {
+              return {
+                id: `activity${placeIndex + 1}`,
+                name: place.name,
+                description: place.description,
+                imageUrl: place.imagePlace ? `/systemImage/${place.imagePlace}` : '/defaultImage.jpg',
+                rating: place.rate,
+                type: place.category,
+                duration: place.duration || 'N/A',
+                budget: place.priceRange,
+                position: place.googleLocation,
+                category: place.category
+              };
+            }),
+            description: day.description
+          };
+        });
+        setItinerary(organizedItinerary);
+      } catch (error) {
+        setError('An error occurred while fetching data');
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, [selectedRegion, budget, days, groupSize, favouriteActivities]);
 
-      <Typography variant="h3" align="center">
-        Bahrain Trip
-      </Typography>
-      <Divider sx={{ mb: 10 }} />
+  const accordionRef = useRef<HTMLDivElement>(null);
+  const [accordionHeight, setAccordionHeight] = useState('700px');
 
-      <Box maxWidth={1280} margin="auto">
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            {/* Add the title and description */}
-            <Typography
-              variant="h5"
-              sx={{
-                fontWeight: "bold",
-                marginBottom: "20px",
-                fontFamily: "Roboto",
-              }}
-            >
-              Your trip to {country} for {numberOfDays} days
+  useEffect(() => {
+    if (accordionRef.current) {
+      setAccordionHeight(`${accordionRef.current.offsetHeight}px`);
+    }
+  }, [accordionRef.current]);
+
+    // Ensure that mapCenter and mapZoom are defined before rendering the Map component
+  const defaultMapCenter = { lat: 26.0667, lng: 50.5577 };
+  const defaultMapZoom = 12;
+
+  const [mapCenter, setMapCenter] = useState({ lat: 26.0667, lng: 50.5577 });
+  const [mapZoom, setMapZoom] = useState(12);
+  
+  useEffect(() => {
+    if (itinerary.length > 0 && itinerary[0].activities.length > 0) {
+      setMapCenter(itinerary[0].activities[0].googleLocation);
+    }
+  }, [itinerary]);
+
+return (
+  <Box>
+    <Box maxWidth={1280} margin="auto">
+      <NavBar textColor="rgb(0,0,0)" />
+    </Box>
+    <Divider sx={{ mb: 5 }} />
+    <Typography sx={{ mb: 5 }} variant="h3" align="center">Bahrain Trip</Typography>
+    <Divider sx={{ mb: 5 }} />
+    <Box maxWidth={1280} margin="auto">
+      {loading ? (
+        <CircularProgress />
+      ) : error ? (
+        <Typography color="error">{error}</Typography>
+      ) : (
+        <Grid container spacing={2} style={{ minHeight: '100vh' }}>
+          <Grid item xs={6} ref={accordionRef}>
+            <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: "20px", fontFamily: "Roboto" }}>
+              Your trip to {selectedRegion} for {days} days
             </Typography>
-            <Typography
-              variant="body1"
-              sx={{ fontFamily: "Roboto", marginBottom: "20px" }}
-            >
-              Bahrain is a vibrant city that offers a perfect blend of hidden
-              gems, historic landmarks, and great food. As you explore the city,
-              you'll come across hidden corners filled with local charm and
-              unique experiences. Discover ancient ruins and impressive
-              architecture that tell the tales of Bahrain's rich history.
-              Indulge in a culinary adventure as you savor delicious Turkish
-              cuisine, from traditional street food to exquisite restaurants.
-              With three days to explore, you'll have the opportunity to immerse
-              yourself in the city's diverse culture, visit iconic landmarks,
-              and uncover the hidden treasures that make Bahrain a remarkable
-              destination.
+            <Typography variant="body1" sx={{ fontFamily: "Roboto", marginBottom: "20px" }}>
+              {description}
             </Typography>
             <Divider sx={{ marginBottom: "50px" }} />
-            {/* Map through each day */}
-            {days.map((day, index) => (
-              <Accordion key={index}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls={`panel-day${index}-content`}
-                  id={`panel-day${index}-header`}
-                >
-                  <Box>
-                    {/* Display the title of the day */}
-                    <Typography variant="h5">{day.title}</Typography>
-                    {/* Display the description of the day */}
-                    <Typography variant="body1">{day.description}</Typography>
-                  </Box>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box>
-                    {/* Start of the vertical stepper */}
-                    <Stepper orientation="vertical">
-                      {/* Map through each activity of the day */}
-                      {day.activities.map((activity, step) => (
-                        <Step key={step} active>
-                          <StepLabel>
-                            {/* Each activity is represented as an accordion */}
-                            <Accordion
-                              onClick={() => {
-                                setSelectedMarker(
-                                  `day-${index}-activity-${step}`
-                                );
-                                setCenter({
-                                  lat: activity.position.lat,
-                                  lng: activity.position.lng,
-                                });
+          {itinerary.map((day) => (
+            <Accordion key={day.id}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${day.id}-content`} id={`panel-${day.id}-header`}>
+              <Box display="flex" alignItems="center">
+                <Typography variant="h5">{day.id}</Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary">{day.description}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Stepper orientation="vertical">
+                  {day && day.activities && day.activities.map((activity: Place) => (
+                    <Step key={activity.id} active>
+                      <StepLabel>
+                        <Accordion>
+                          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-activity-${activity.id}-content`} id={`panel-activity-${activity.id}-header`}>
+                            <Box display="flex" alignItems="center">
+                            {activity.category === "thingsToDo" && <LandscapeIcon sx={{ mr: 2 }}/>}
+                            {activity.category === "PlacesToStay" && <HotelIcon sx={{ mr: 2 }}/>}
+                            {activity.category === "thingsToEat" && <RestaurantIcon sx={{ mr: 2 }}/>}
+                            <Typography variant="h5" component="div">{activity.name}</Typography>
+                            </Box>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Card
+                              onMouseEnter={() => {
+                                setSelectedMarker(activity.id);
+                                setMapCenter(activity.googleLocation);
+                                setMapZoom(15);
+                              }}
+                              onMouseLeave={() => {
+                                setSelectedMarker(null);
+                                setMapCenter({ lat: 26.0667, lng: 50.5577 });
+                                setMapZoom(12);
                               }}
                             >
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls={`panel-activity${step}-content`}
-                                id={`panel-activity${step}-header`}
-                              >
-                                {/* Display the title of the activity */}
-                                <Typography
-                                  sx={{ flexBasis: "33.33%", flexShrink: 0 }}
-                                >
-                                  {activity.title}
-                                </Typography>
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                <Box>
-                                  <Box sx={{ position: "relative" }}>
-                                    {/* Display an image for the activity */}
-                                    <img
-                                      src={activity.imageUrl}
-                                      alt={activity.title}
-                                      style={{
-                                        width: "500px",
-                                        height: "300px",
-                                      }}
-                                    />
-                                    {/* Favorite button at the top right corner of the image */}
-                                    <IconButton
-                                      sx={{
-                                        position: "absolute",
-                                        top: 0,
-                                        right: 0,
-                                      }}
-                                    >
-                                      <FavoriteBorderIcon />
-                                    </IconButton>
-                                  </Box>
-                                  {/* Display the title of the activity */}
-                                  <Typography variant="h6">
-                                    {activity.title}
-                                  </Typography>
-                                  {/* Display a rating for the activity */}
-                                  <Rating
-                                    name={`rating-${step}`}
-                                    value={activity.rating}
-                                    readOnly
-                                  />
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: "10px",
-                                    }}
-                                  >
-                                    {/* Display the type of the activity */}
-                                    {activity.type === "Restaurant" && (
-                                      <RestaurantIcon />
-                                    )}
-                                    {activity.type === "Landmark" && (
-                                      <LandmarkIcon />
-                                    )}
-                                    {activity.type === "Hotel" && <HotelIcon />}
-                                    <Typography>{activity.type}</Typography>
-                                    {/* Display the duration of the activity */}
-                                    <AccessTimeIcon />
-                                    <Typography>
-                                      Duration: {activity.duration}
-                                    </Typography>
-                                    {/* Display the budget of the activity */}
-                                    <MonetizationOnIcon />
-                                    <Typography>
-                                      Budget: ${activity.budget}
-                                    </Typography>
-                                  </Box>
-                                  <Divider sx={{ marginBottom: "10px" }} />
-                                  {/* Display the description of the activity */}
-                                  <Typography noWrap>
-                                    {activity.description}
-                                  </Typography>
-                                </Box>
-                              </AccordionDetails>
-                            </Accordion>
-                          </StepLabel>
-                        </Step>
-                      ))}
-                    </Stepper>
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </Grid>
-          <Grid item xs={6}>
-            <APIProvider apiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
-              <Map style={mapStyle} defaultCenter={center} defaultZoom={12}>
-                {days.map((day, dayIndex) =>
-                  day.activities.map((activity, activityIndex) => (
-                    <div key={`day-${dayIndex}-activity-${activityIndex}`}>
-                      <Marker
-                        position={activity.position}
-                        onClick={() =>
-                          setSelectedMarker(
-                            `day-${dayIndex}-activity-${activityIndex}`
-                          )
-                        }
-                      />
-                      {selectedMarker ===
-                        `day-${dayIndex}-activity-${activityIndex}` && (
-                        <InfoWindow
-                          position={activity.position}
-                          onCloseClick={() => setSelectedMarker(null)}
-                        >
-                          <Card>
                             <CardMedia
                               component="img"
-                              alt={activity.title}
-                              height="140"
-                              image={activity.imageUrl}
+                              image={activity.imagePlace && activity.imagePlace.length > 0 ? activity.imagePlace[0] : 'defaultImage.jpg'}
+                              alt={activity.name}
+                              sx={{ height: 140 }}
                             />
                             <CardContent>
-                              <Typography variant="h5" component="div">
-                                {activity.title}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                Rating: {activity.rating}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                Type: {activity.type}
-                              </Typography>
+                                <Typography variant="h6" component="div">
+                                  {activity.name}
+                                </Typography>
+                              <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
+                                <Rating name={`rating-${activity.id}`} value={activity.rate} readOnly />
+                                <AccessTimeIcon />
+                                <Typography>{activity.duration}</Typography>
+                                <MonetizationOnIcon />
+                                <Typography>
+                                  {typeof activity.priceRange === 'number' 
+                                    ? `$${activity.priceRange}` 
+                                    : 'Not available'}
+                                </Typography>
+                              </Box>
+                                <IconButton sx={{ ml: 2 }}><FavoriteBorderIcon /></IconButton>
+                              </Box>
+                              <Divider sx={{ mb: 5 }} />
+                              <Typography variant="body2" color="text.secondary">{activity.description}</Typography>
                             </CardContent>
-                          </Card>
-                        </InfoWindow>
+                            </Card>
+                          </AccordionDetails>
+                        </Accordion>
+                      </StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Grid>
+          <Grid item xs={6} style={{ position: 'sticky', top: 0 }}>
+            <APIProvider apiKey={process.env.REACT_APP_MAPS_API_KEY || ''}>
+            <Map
+              style={{ width: "100%", height: accordionHeight, borderRadius: "15px" }}
+              center={mapCenter}
+              zoom={mapZoom}
+            >
+              {itinerary.map((day) =>
+                day.activities.map((activity: Place) => (
+                  <React.Fragment key={activity.id}>
+                    <Marker position={activity.googleLocation} onClick={() => setSelectedMarker(activity.id)} />
+                    {selectedMarker === activity.id && (
+                      <InfoWindow position={activity.googleLocation} onCloseClick={() => setSelectedMarker(null)}>
+                        <Card>
+                          <CardMedia
+                            component="img"
+                            height="140"
+                            // image={activity.imagePlace[0]}
+                            alt={activity.name}
+                          />
+                          <CardContent>
+                            <Typography variant="h5" component="div">{activity.name}</Typography>
+                            <Typography variant="body2" color="text.secondary">Rating: {activity.rate}</Typography>
+                            <Typography variant="body2" color="text.secondary">Type: {activity.type}</Typography>
+                          </CardContent>
+                        </Card>
+                      </InfoWindow>
                       )}
-                    </div>
+                    </React.Fragment>
                   ))
                 )}
               </Map>
             </APIProvider>
           </Grid>
         </Grid>
-      </Box>
+      )},
     </Box>
-  );
+  </Box>
+);
 };
+
 export default GenerateResult;

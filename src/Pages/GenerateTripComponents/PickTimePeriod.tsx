@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Box, Typography, TextField, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import TimePeriodContext from '../../TimePeriodContext';  // import the context
 
 export default function PickTimePeriod() {
-  const [days, setDays] = React.useState(1);
+  const { days, setDays } = React.useContext(TimePeriodContext);  // use the context
   const buttonSize = 50;
 
   const handleIncrement = () => {
