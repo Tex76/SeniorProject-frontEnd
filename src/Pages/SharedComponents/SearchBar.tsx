@@ -145,6 +145,8 @@ export default function SearchBar() {
             position: "absolute",
             width: "100%",
             zIndex: 1,
+            maxHeight: "700px",
+            overflow: "auto"
           }}
         >
           {Object.entries(groupedData).map(([category, places], index) => (
