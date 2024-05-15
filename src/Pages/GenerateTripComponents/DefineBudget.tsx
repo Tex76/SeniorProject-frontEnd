@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Box, Typography, Slider, TextField, useTheme, useMediaQuery } from '@mui/material';
+import BudgetContext from '../../BudgetContext';
 
 export default function DefineBudget() {
-  const [budget, setBudget] = React.useState([20, 50]);
+  const { budget, setBudget } = React.useContext(BudgetContext);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

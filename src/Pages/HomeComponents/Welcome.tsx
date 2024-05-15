@@ -15,7 +15,6 @@ export default function Welcome() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
     <Box
@@ -65,7 +64,7 @@ export default function Welcome() {
             padding: "15px 30px",
             fontSize: "15px",
             alignSelf: "center",
-            width: "160px",
+            width: isMobile ? "100%" : "160px",
             height: "49px",
             fontFamily: "Roboto",
             textTransform: "capitalize",
@@ -92,7 +91,7 @@ export default function Welcome() {
         )}
 
       <Grid container spacing={3}>
-        <Grid item sm={12} md={4}>
+        <Grid item xs={12} sm={12} md={4}>
           <Typography
             variant="h4"
             gutterBottom
@@ -118,7 +117,7 @@ export default function Welcome() {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={12} md={4}>
           <Typography
             variant="h4"
             gutterBottom
@@ -144,7 +143,7 @@ export default function Welcome() {
           </Typography>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={12} md={4}>
           <Typography
             variant="h4"
             gutterBottom

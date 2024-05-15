@@ -5,7 +5,7 @@ import region1 from '../../images/GenerateTrip/region1.png';
 import region2 from '../../images/GenerateTrip/region2.png';
 import region3 from '../../images/GenerateTrip/region3.png';
 import region4 from '../../images/GenerateTrip/region4.png';
-import region5 from '../../images/GenerateTrip/region5.png';
+import RegionContext from '../../RegionContext';
 
 const ImageLabel = styled('span')({
   position: 'absolute',
@@ -26,14 +26,17 @@ const regions = [
   { label: 'Northern', img: region2 },
   { label: 'Southern', img: region3 },
   { label: 'Muharraq', img: region4 },
-  { label: 'Multi-Region', img: region5 },
 ];
 
 export default function SelectRegion() {
-  const [selectedRegion, setSelectedRegion] = React.useState('');
+  const { selectedRegion, setSelectedRegion } = React.useContext(RegionContext);
 
   const handleSelect = (region: string) => {
-    setSelectedRegion(region);
+    if (selectedRegion.includes(region)) {
+      setSelectedRegion(selectedRegion.filter(r => r !== region));
+    } else {
+      setSelectedRegion([...selectedRegion, region]);
+    }
   };
 
   return (
@@ -59,7 +62,7 @@ export default function SelectRegion() {
                 m: 1,
                 borderRadius: 1,
                 transition: '0.3s',
-                border: selectedRegion === region.label ? '2px solid #205E60' : 'none',
+                border: selectedRegion.includes(region.label) ? '2px solid #FFD166' : 'none',
                 '&:hover': {
                 transform: 'scale(1.1)',
                 },
