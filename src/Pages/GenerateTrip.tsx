@@ -100,7 +100,10 @@ export default function GenerateTrip() {
           </Box>
           {activeStep === 0 && (
             <Box mt={isMobile ? 2 : 5}>
-              <SelectMethod activeStep={activeStep} setActiveStep={setActiveStep} />
+              <SelectMethod
+                activeStep={activeStep}
+                setActiveStep={setActiveStep}
+              />
             </Box>
           )}
           {activeStep === 1 && (
@@ -108,7 +111,7 @@ export default function GenerateTrip() {
               <SelectRegion />
             </Box>
           )}
-          
+
           {activeStep === 2 && (
             <Box mt={isMobile ? 2 : 5}>
               <DefineBudget />

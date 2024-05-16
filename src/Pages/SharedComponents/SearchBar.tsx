@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import axios from 'axios';
-import { Place } from '../../../../api/SchemaDb';
+import axios from "axios";
+import { Place } from "../../../../api/SchemaDb";
 
 // This is the main Search component that wraps the search bar
 
@@ -79,63 +79,66 @@ export default function SearchBar() {
 
   // Fetch data from API when component mounts
   useEffect(() => {
-    axios.get('http://localhost:4000/api/data')
-      .then(response => {
+    axios
+      .get("http://localhost:4000/api/data")
+      .then((response) => {
         setData(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching data: ', error);
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
       });
   }, []);
 
-  const filteredData = data
-    .filter(item =>
-      item.name.toLowerCase().includes(searchInput.toLowerCase())
-    );
-    
+  const filteredData = data.filter((item) =>
+    item.name.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
   // Group data by category
-  const groupedData = filteredData.reduce<Record<string, Place[]>>((grouped, place) => {
-    (grouped[place.category] = grouped[place.category] || []).push(place);
-    return grouped;
-  }, {});
+  const groupedData = filteredData.reduce<Record<string, Place[]>>(
+    (grouped, place) => {
+      (grouped[place.category] = grouped[place.category] || []).push(place);
+      return grouped;
+    },
+    {}
+  );
 
   // Helper function to format category names
   const formatCategoryName = (name: string) => {
     return name
       .split(/(?=[A-Z])/) // split the string into words
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
-      .join(' '); // join the words back together with spaces in between
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
+      .join(" "); // join the words back together with spaces in between
   };
 
-    return (
-      <Search
-        sx={{
-          backgroundColor: "#E4E4E4",
-          borderRadius: "30px",
-          position: "relative",
+  return (
+    <Search
+      sx={{
+        backgroundColor: "#E4E4E4",
+        borderRadius: "30px",
+        position: "relative",
+      }}
+    >
+      <SearchIconWrapper>
+        <SearchIcon sx={{ color: "#6D7D8B" }} />
+      </SearchIconWrapper>
+      <StyledInputBase
+        sx={{ color: "black" }}
+        placeholder={showPlaceholder ? "Search Places!" : ""}
+        inputProps={{ "aria-label": "search" }}
+        onMouseEnter={() => setShowPlaceholder(true)}
+        onMouseLeave={() => setShowPlaceholder(false)}
+        onFocus={() => {
+          setShowPlaceholder(true);
+          setShowDropdown(true);
         }}
-      >
-        <SearchIconWrapper>
-          <SearchIcon sx={{ color: "#6D7D8B" }} />
-        </SearchIconWrapper>
-        <StyledInputBase
-          sx={{ color: "#6D7D8B" }}
-          placeholder={showPlaceholder ? "Search Places!" : ""}
-          inputProps={{ "aria-label": "search" }}
-          onMouseEnter={() => setShowPlaceholder(true)}
-          onMouseLeave={() => setShowPlaceholder(false)}
-          onFocus={() => {
-            setShowPlaceholder(true);
-            setShowDropdown(true);
-          }}
-          onBlur={() => {
-            setTimeout(() => {
-              setShowDropdown(false);
-            }, 200);
-          }}
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
+        onBlur={() => {
+          setTimeout(() => {
+            setShowDropdown(false);
+          }, 200);
+        }}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+      />
       {showDropdown && (
         <Box
           sx={{
@@ -146,7 +149,7 @@ export default function SearchBar() {
             width: "100%",
             zIndex: 1,
             maxHeight: "700px",
-            overflow: "auto"
+            overflow: "auto",
           }}
         >
           {Object.entries(groupedData).map(([category, places], index) => (
@@ -166,7 +169,7 @@ export default function SearchBar() {
               {places.map((place, index) => (
                 <Link
                   key={place._id ? place._id.toString() : index.toString()}
-                  to={`/places/${place._id ? place._id.toString() : ''}`}
+                  to={`/places/${place._id ? place._id.toString() : ""}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <ListItem
