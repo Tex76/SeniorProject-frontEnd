@@ -30,7 +30,15 @@ const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
-    <div>
+    <Box
+      sx={{
+        width: "100%",
+        padding: "20px",
+        display: "flex",
+        marginTop: "50px",
+        flexDirection: "column",
+      }}
+    >
       <Box
         style={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}
       >
@@ -38,7 +46,7 @@ const Cards = ({ place }: { place: any }) => {
           sx={{
             bgcolor: "teal",
             flex: 1,
-            margin: "10px",
+            margin: "0 10px 10px 0",
             borderRadius: "10px",
             color: "white",
             height: "Auto",
@@ -154,7 +162,7 @@ const Cards = ({ place }: { place: any }) => {
           sx={{
             bgcolor: "teal",
             flex: 1,
-            margin: "10px",
+            margin: "0 0 10px 0",
             borderRadius: "10px",
             color: "white",
           }}
@@ -216,7 +224,7 @@ const Cards = ({ place }: { place: any }) => {
           sx={{
             bgcolor: "teal",
             flex: 1,
-            margin: "10px",
+            margin: "0 0 10px 10px",
             borderRadius: "10px",
             color: "white",
           }}
@@ -233,7 +241,8 @@ const Cards = ({ place }: { place: any }) => {
               Location and contact
             </Typography>
             <iframe
-              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc&q=${place.googleLocation.lat},${place.googleLocation.lng}`}              width="100%"
+              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc&q=${place.googleLocation.lat},${place.googleLocation.lng}`}
+              width="100%"
               height="200px"
               style={{ border: "0", borderRadius: "20px", marginTop: "20px" }}
               allowFullScreen
@@ -256,7 +265,13 @@ const Cards = ({ place }: { place: any }) => {
         </Card>
       </Box>
       <Box>
-        <Card sx={{ bgcolor: "teal", borderRadius: "10px", color: "white" }}>
+        <Card
+          sx={{
+            bgcolor: "teal",
+            borderRadius: "10px",
+            color: "white",
+          }}
+        >
           <CardContent>
             <Typography variant="h5" component="h2">
               Characteristic
@@ -289,7 +304,7 @@ const Cards = ({ place }: { place: any }) => {
           </CardContent>
         </Card>
       </Box>
-    </div>
+    </Box>
   );
 };
 

@@ -16,7 +16,7 @@ import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
+
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
 
@@ -24,13 +24,21 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Place } from "../../../../api/SchemaDb";
 
 const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <div>
+    <Box
+      sx={{
+        width: "100%",
+        padding: "20px",
+        display: "flex",
+        marginTop: "50px",
+        flexDirection: "column",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -42,11 +50,11 @@ const Cards = ({ place }: { place: any }) => {
           sx={{
             bgcolor: "teal",
             flex: 1,
-            width: "30%",
-            margin: "10px",
+            width: { xs: "100%", md: "30%" },
+            margin: { xs: "10px 0", md: "0 10px 10px 0" },
             borderRadius: "10px",
             color: "white",
-            height: "Auto",
+            height: "auto",
           }}
         >
           <CardContent>
@@ -83,7 +91,7 @@ const Cards = ({ place }: { place: any }) => {
                   name="place-rating"
                   value={place.rate}
                   readOnly
-                />{" "}
+                />
               </Box>
               <Box
                 sx={{
@@ -91,7 +99,7 @@ const Cards = ({ place }: { place: any }) => {
                   marginLeft: "10px",
                 }}
               >
-                <Typography>{place.totalComments + " "} reviews</Typography>
+                <Typography>{place.totalComments} reviews</Typography>
               </Box>
             </Box>
             <hr />
@@ -100,64 +108,46 @@ const Cards = ({ place }: { place: any }) => {
               component="p"
               sx={{ marginTop: "50px", marginBottom: "10px" }}
             >
-              RATINGS{" "}
+              Ratings
             </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <LocationOnIcon style={{ color: "black" }} /> Location
-              </Typography>
-              <Rating
-                name="location-rating"
-                value={place.subRatings.locationRate}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <GppGoodOutlinedIcon style={{ color: "black" }} /> Saftey
-              </Typography>
-              <Rating
-                name="food-quality-rating"
-                value={place.subRatings.safety}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <StorefrontOutlinedIcon style={{ color: "black" }} /> Facilities
-              </Typography>
-              <Rating
-                name="money-rating"
-                value={place.subRatings.facilities}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <ThumbUpOutlinedIcon style={{ color: "black" }} /> Convenience
-              </Typography>
-              <Rating
-                name="service-rating"
-                value={place.subRatings.convenience}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <PeopleAltOutlinedIcon style={{ color: "black" }} /> Staff
-              </Typography>
-              <Rating
-                name="menu-variety-rating"
-                value={place.subRatings.staff}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              {/* <Typography variant="body2" component="p">
-                <TimerOutlinedIcon style={{ color: "black" }} /> Duration
-              </Typography> */}
-              {/* <Rating name="ambience-rating" value={0} readOnly /> */}
-            </Box>
+            {[
+              {
+                label: "Location",
+                icon: <LocationOnIcon />,
+                rate: place.subRatings.locationRate,
+              },
+              {
+                label: "Safety",
+                icon: <GppGoodOutlinedIcon />,
+                rate: place.subRatings.safety,
+              },
+              {
+                label: "Facilities",
+                icon: <StorefrontOutlinedIcon />,
+                rate: place.subRatings.facilities,
+              },
+              {
+                label: "Convenience",
+                icon: <ThumbUpOutlinedIcon />,
+                rate: place.subRatings.convenience,
+              },
+              {
+                label: "Staff",
+                icon: <PeopleAltOutlinedIcon />,
+                rate: place.subRatings.staff,
+              },
+            ].map((item, index) => (
+              <Box key={index} display="flex" justifyContent="space-between">
+                <Typography variant="body2" component="p">
+                  {item.icon} {item.label}
+                </Typography>
+                <Rating
+                  name={`${item.label.toLowerCase()}-rating`}
+                  value={item.rate}
+                  readOnly
+                />
+              </Box>
+            ))}
           </CardContent>
         </Card>
 
@@ -165,13 +155,20 @@ const Cards = ({ place }: { place: any }) => {
           sx={{
             bgcolor: "teal",
             flex: 1,
-            margin: "10px",
+            margin: { xs: "10px 0", md: "0 0 10px 0" },
             borderRadius: "10px",
             color: "white",
           }}
         >
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography
+              sx={{
+                fontFamily: "roboto",
+                fontWeight: "bold",
+              }}
+              variant="h5"
+              component="h2"
+            >
               Characteristic
             </Typography>
             <Box mt={3}>
@@ -182,15 +179,10 @@ const Cards = ({ place }: { place: any }) => {
                 }}
                 component="p"
               >
-                ACTIVITY TYPES
+                Activity Types
               </Typography>
               <Typography variant="overline" component="p">
-                {!!place.activityType &&
-                  place.activityType
-                    .map((activity: any) => {
-                      return activity;
-                    })
-                    .join(", ")}
+                {place.activityType?.join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
@@ -212,12 +204,7 @@ const Cards = ({ place }: { place: any }) => {
                 variant="overline"
                 component="p"
               >
-                {!!place.accessibility &&
-                  place.accessibility
-                    .map((accessibility: any) => {
-                      return accessibility;
-                    })
-                    .join(", ")}
+                {place.accessibility?.join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
@@ -229,7 +216,7 @@ const Cards = ({ place }: { place: any }) => {
                 variant="body1"
                 component="p"
               >
-                DURATION
+                Duration
               </Typography>
               <Typography variant="overline" component="p">
                 {place.duration}
@@ -244,23 +231,20 @@ const Cards = ({ place }: { place: any }) => {
                 variant="body1"
                 component="p"
               >
-                What to expect
+                What to Expect
               </Typography>
-              <Typography variant="overline" component="p">
-                <Typography
-                  sx={{
-                    fontFamily: "roboto",
-                    fontSize: "12px",
-                    textTransform: "capitalize",
-                  }}
-                  variant="overline"
-                  component="ul"
-                >
-                  {!!place.whatToExpect &&
-                    place.whatToExpect.map((except: any) => {
-                      return <li>{except.toLowerCase()}</li>;
-                    })}
-                </Typography>
+              <Typography
+                sx={{
+                  fontFamily: "roboto",
+                  fontSize: "12px",
+                  textTransform: "capitalize",
+                }}
+                variant="overline"
+                component="ul"
+              >
+                {place.whatToExpect?.map((expectation: any, index: any) => (
+                  <li key={index}>{expectation.toLowerCase()}</li>
+                ))}
               </Typography>
             </Box>
           </CardContent>
@@ -270,7 +254,7 @@ const Cards = ({ place }: { place: any }) => {
           sx={{
             bgcolor: "teal",
             flex: 1,
-            margin: "10px",
+            margin: { sx: "10px 0px", md: "0 0 10px 10px" },
             borderRadius: "10px",
             color: "white",
           }}
@@ -284,7 +268,7 @@ const Cards = ({ place }: { place: any }) => {
               variant="h5"
               component="h2"
             >
-              Location and contact
+              Location and Contact
             </Typography>
             <iframe
               src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc&q=${place.googleLocation.lat},${place.googleLocation.lng}`}
@@ -304,17 +288,24 @@ const Cards = ({ place }: { place: any }) => {
               {place.phoneNumber}
             </Typography>
             <Typography variant="body1" component="p">
-              <EmailIcon style={{ color: "black", marginTop: "20px" }} />{" "}
-              {place.email}{" "}
+              <EmailIcon style={{ color: "black", marginTop: "20px" }} />
+              {place.email}
             </Typography>
           </CardContent>
         </Card>
       </Box>
       <Box>
-        <Card sx={{ bgcolor: "teal", borderRadius: "10px", color: "white" }}>
+        <Card
+          sx={{
+            bgcolor: "teal",
+            borderRadius: "10px",
+            color: "white",
+            margin: "10px 0",
+          }}
+        >
           <CardContent>
             <Typography variant="h5" component="h2">
-              Characteristic
+              Actions
             </Typography>
             <Box>
               <Button
@@ -328,9 +319,12 @@ const Cards = ({ place }: { place: any }) => {
                   borderRadius: "50px",
                 }}
               >
-                Write review
+                Write Review
               </Button>
               <Button
+                onClick={() => {
+                  window.location.href = `/photo/${place._id}`;
+                }}
                 variant="contained"
                 style={{
                   backgroundColor: "sandybrown",
@@ -344,7 +338,7 @@ const Cards = ({ place }: { place: any }) => {
           </CardContent>
         </Card>
       </Box>
-    </div>
+    </Box>
   );
 };
 

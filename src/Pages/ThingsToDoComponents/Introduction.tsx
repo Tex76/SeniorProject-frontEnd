@@ -73,12 +73,12 @@ const Introduction = ({ place }: { place: any }) => {
       style={{
         width: "100%",
         marginTop: "120px",
-        padding: "20px",
+        padding: "10px",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
+      <Box display="flex" justifyContent="flex-end">
         {/* pop up */}
         <div>
           <Modal
@@ -216,42 +216,65 @@ const Introduction = ({ place }: { place: any }) => {
           </Modal>
         </div>
 
-        <Button
-          onClick={() => {
-            navigate(`/review/${place._id}`);
-          }}
-          style={{ marginRight: "10px", color: "black" }}
-        >
-          Review
-        </Button>
-        <Typography variant="h5" style={{ margin: "0 10px" }}>
-          |
-        </Typography>
-        <Button onClick={handleOpen} style={{ color: "black" }}>
-          Save
-        </Button>
+        <Box display="flex" justifyContent="flex-end" sx={{ margin: "10px" }}>
+          <Button
+            onClick={() => {
+              navigate(`/review/${place._id}`);
+            }}
+            style={{ marginRight: "10px", color: "black" }}
+          >
+            Review
+          </Button>
+          <Typography variant="h5" style={{ margin: "0 10px" }}>
+            |
+          </Typography>
+          <Button onClick={handleOpen} style={{ color: "black" }}>
+            Save
+          </Button>
+        </Box>
       </Box>
 
-      <Grid container spacing={2} sx={{ p: { xs: 2 } }}>
-        <Grid item xs={isMobile ? 12 : 6}>
-          <Typography variant="h4" component="div" sx={{ fontWeight: "bold" }}>
+      <Grid container spacing={2}>
+        <Grid
+          item
+          xs={isMobile ? 12 : 6}
+          sx={{
+            marginTop: "2%",
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ fontWeight: "bold", margin: "10px 0px" }}
+          >
             {place.name}
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            <LocationOnIcon /> {place.location}
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            sx={{ margin: "10px 0px" }}
+          >
+            <LocationOnIcon /> {" " + place.location}
           </Typography>
           <Typography
             variant="overline"
-            sx={{ marginTop: "20px", marginBottom: "20px" }}
+            sx={{ marginTop: "20px", marginBottom: "20px", margin: "10px 0px" }}
           >
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" sx={{ margin: "10px 0px" }}>
               <PinDropOutlinedIcon />
-              {place.type} | {place.rate}{" "}
+              {" " + place.type} | {" " + place.rate}{" "}
               <Rating name="place-rating" value={place.rate} readOnly />{" "}
-              {place.totalComments} reviews
+              {" " + place.totalComments} reviews
             </Box>
           </Typography>
-          <Typography variant="body1">{place.description}</Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              lineHeight: "2",
+            }}
+          >
+            {place.description}
+          </Typography>
         </Grid>
 
         <Grid item xs={isMobile ? 12 : 6}>

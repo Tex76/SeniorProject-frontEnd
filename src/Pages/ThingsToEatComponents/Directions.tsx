@@ -9,7 +9,12 @@ import { Place } from "../../../../api/SchemaDb";
 
 const Directions = ({ place }: { place: any }) => {
   return (
-    <div>
+    <Box
+      sx={{
+        width: "500px",
+        mb: { xs: 5, md: 0 },
+      }}
+    >
       <Typography variant="h6" component="div" sx={{ fontSize: "17px" }}>
         {place.rate} <Rating name="read-only" value={place.rate} readOnly />{" "}
         {place.totalComments - 1} reviews
@@ -109,7 +114,7 @@ const Directions = ({ place }: { place: any }) => {
           </Typography>
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 

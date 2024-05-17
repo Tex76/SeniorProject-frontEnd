@@ -36,15 +36,28 @@ const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
-    <div>
+    <Box
+      sx={{
+        width: "100%",
+        // padding: "20px",
+        display: "flex",
+        marginTop: "10px",
+        flexDirection: "column",
+      }}
+    >
       <Box
-        style={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}
+        sx={{
+          width: "100%",
+          display: "flex",
+          marginTop: "50px",
+        }}
       >
         <Card
           sx={{
+            width: "100%",
             bgcolor: "teal",
             flex: 1,
-            margin: "10px",
+
             borderRadius: "10px",
             color: "white",
             height: "Auto",
@@ -52,9 +65,10 @@ const Cards = ({ place }: { place: any }) => {
         >
           <Box
             sx={{
-              width: "90%",
+              width: "95%",
               height: "Auto",
               display: "flex",
+              padding: "10px",
               flexDirection: isMobile ? "column" : "row",
               gap: "10px",
             }}
@@ -102,7 +116,8 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
-                    <CleaningServicesOutlinedIcon style={{ color: "black" }} />{" "}
+                    <CleaningServicesOutlinedIcon style={{ color: "black" }} />
+                    {"  "}
                     location
                   </Typography>
                   <Rating
@@ -172,15 +187,15 @@ const Cards = ({ place }: { place: any }) => {
                   <LocationOnIcon
                     style={{ color: "black", marginTop: "20px" }}
                   />
-                  {place.location}
+                  {" " + place.location}
                 </Typography>
                 <Typography variant="body1" component="p">
                   <CallIcon style={{ color: "black", marginTop: "20px" }} />
-                  {place.phoneNumber}
+                  {" " + place.phoneNumber}
                 </Typography>
                 <Typography variant="body1" component="p">
                   <EmailIcon style={{ color: "black", marginTop: "20px" }} />
-                  {place.email}
+                  {" " + place.email}
                 </Typography>
               </CardContent>
             </Box>
@@ -300,8 +315,21 @@ const Cards = ({ place }: { place: any }) => {
         </Card>
       </Box>
 
-      <Box>
-        <Card sx={{ bgcolor: "teal", borderRadius: "10px", color: "white" }}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Card
+          sx={{
+            bgcolor: "teal",
+            borderRadius: "10px",
+            color: "white",
+            marginTop: "20px",
+          }}
+        >
           <CardContent>
             <Typography variant="h5" component="h2">
               Characteristic
@@ -334,7 +362,7 @@ const Cards = ({ place }: { place: any }) => {
           </CardContent>
         </Card>
       </Box>
-    </div>
+    </Box>
   );
 };
 

@@ -47,21 +47,6 @@ const ThingsToDo = ({ place }: { place: Place }) => {
           position: "relative",
         }}
       >
-        <Box
-          sx={{
-            backgroundImage: `url(${Background})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            position: "absolute",
-            zIndex: -1,
-            left: { md: -110, xs: 10 },
-            right: { md: 0 },
-            top: 350,
-            width: "250px",
-            height: "250px",
-          }}
-        ></Box>
-
         <Introduction place={place} />
 
         <Cards place={place} />
@@ -76,11 +61,30 @@ const ThingsToDo = ({ place }: { place: Place }) => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ padding: "25px", width: "40%" }}>
-            <Directions place={place} />
-          </Box>
-          <Box sx={{ padding: "25px", width: "80%" }}>
-            <TopReviews place={place} />
+          <Box
+            sx={{
+              padding: "25px",
+              width: "100%",
+              display: "flex",
+
+              flexDirection: { xs: "column", md: "row" },
+              justifyContent: { xs: "center", md: "space-between" },
+            }}
+          >
+            <Box
+              sx={{
+                width: { xs: "100%", md: "30%" },
+              }}
+            >
+              <Directions place={place} />
+            </Box>
+            <Box
+              sx={{
+                width: { xs: "100%", md: "68%" },
+              }}
+            >
+              <TopReviews place={place} />
+            </Box>
           </Box>
         </Box>
       </Box>

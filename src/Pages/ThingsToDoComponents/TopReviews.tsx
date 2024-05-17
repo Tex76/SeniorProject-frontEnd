@@ -91,7 +91,8 @@ const TopReviews = ({ place }: { place: Place }) => {
               return (
                 <Box
                   sx={{
-                    width: "100%",
+                    overflow: "hidden",
+                    width: "90%",
                   }}
                 >
                   <CardContent
@@ -110,6 +111,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                       sx={{
                         display: "flex",
                         width: "100%",
+                        height: "40px",
                         justifyContent: "end",
                       }}
                     >
@@ -119,7 +121,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                           display: "flex",
                           backgroundColor: "white",
                           width: "100px",
-                          height: "50px",
+                          height: "35px",
                           borderRadius: "50px",
                           border: "1px solid black",
                         }}
@@ -127,16 +129,30 @@ const TopReviews = ({ place }: { place: Place }) => {
                         <IconButton onClick={upvote} sx={{ flex: "1" }}>
                           <ArrowUpwardIcon />
                         </IconButton>
-                        <p style={{ flex: "1", fontWeight: "bold" }}>
+                        <Typography
+                          sx={{
+                            flex: "1",
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            fontSize: "20px",
+                            mt: "2px",
+                          }}
+                        >
                           {comment.score}
-                        </p>
+                        </Typography>
                         <IconButton onClick={downvote} sx={{ flex: "1" }}>
                           <ArrowDownwardIcon />
                         </IconButton>
                       </Box>
                       <Box>
                         <IconButton onClick={handleClick}>
-                          <MoreHorizIcon sx={{ fontSize: "50px" }} />
+                          <MoreHorizIcon
+                            sx={{
+                              fontSize: "30px",
+                              color: "black",
+                              padding: "10px",
+                            }}
+                          />
                         </IconButton>
                         <Menu
                           anchorEl={anchorEl}

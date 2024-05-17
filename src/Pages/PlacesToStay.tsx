@@ -70,11 +70,30 @@ const PlacesToStay = ({ place }: { place: Place }) => {
             marginTop: "20px",
           }}
         >
-          <Box sx={{ padding: "25px", width: "40%" }}>
-            <Directions place={place} />
-          </Box>
-          <Box sx={{ padding: "25px", width: "80%" }}>
-            <TopReviews place={place} />
+          <Box
+            sx={{
+              padding: "25px",
+              width: "100%",
+              display: "flex",
+
+              flexDirection: { xs: "column", md: "row" },
+              justifyContent: { xs: "center", md: "space-between" },
+            }}
+          >
+            <Box
+              sx={{
+                width: { xs: "100%", md: "30%" },
+              }}
+            >
+              <Directions place={place} />
+            </Box>
+            <Box
+              sx={{
+                width: { xs: "100%", md: "68%" },
+              }}
+            >
+              <TopReviews place={place} />
+            </Box>
           </Box>
         </Box>
       </Box>
