@@ -15,26 +15,26 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Place } from "../../../../api/SchemaDb";
 
-// This is the main Search component that wraps the search bar
-
+// Main Search component wrapping the search bar
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: "15px",
-  backgroundColor: "#C5C5C5", // base color
+  backgroundColor: "#E4E4E4", // Updated base color
   "&:hover": {
-    backgroundColor: lighten("#C5C5C5", 0.2), // lighter on hover
+    backgroundColor: lighten("#E4E4E4", 0.2), // Lighter on hover
   },
+  color: "#6D7D8B", // Updated text color
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
-  maxWidth: "600px", // prevent the Search component from stretching beyond 600px
+  maxWidth: "600px", // Prevent the Search component from stretching beyond 600px
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
   },
 }));
 
-// This is the wrapper for the search icon
+// Wrapper for the search icon
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
@@ -45,16 +45,16 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
-// This is the input field for the search bar
+// Input field for the search bar
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
+  color: "#6D7D8B", // Updated text color
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
-    fontWeight: "bold", // make the text bold
-    color: "#000", // make the text more black
+    fontWeight: "bold", // Make the text bold
+    color: "#000", // Make the text more black
     [theme.breakpoints.up("sm")]: {
       width: "20ch",
     },
@@ -70,7 +70,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// This is the main function that renders the search bar
+// Main function rendering the search bar
 export default function SearchBar() {
   const [showPlaceholder, setShowPlaceholder] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -105,9 +105,9 @@ export default function SearchBar() {
   // Helper function to format category names
   const formatCategoryName = (name: string) => {
     return name
-      .split(/(?=[A-Z])/) // split the string into words
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize the first letter of each word
-      .join(" "); // join the words back together with spaces in between
+      .split(/(?=[A-Z])/) // Split the string into words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+      .join(" "); // Join the words back together with spaces in between
   };
 
   return (
@@ -122,7 +122,7 @@ export default function SearchBar() {
         <SearchIcon sx={{ color: "#6D7D8B" }} />
       </SearchIconWrapper>
       <StyledInputBase
-        sx={{ color: "black" }}
+        sx={{ color: "#6D7D8B" }}
         placeholder={showPlaceholder ? "Search Places!" : ""}
         inputProps={{ "aria-label": "search" }}
         onMouseEnter={() => setShowPlaceholder(true)}
@@ -148,8 +148,9 @@ export default function SearchBar() {
             position: "absolute",
             width: "100%",
             zIndex: 1,
-            maxHeight: "700px",
+            maxHeight: "400px", // Adjusted max height
             overflow: "auto",
+            borderRadius: "15px", // Rounded corners for dropdown
           }}
         >
           {Object.entries(groupedData).map(([category, places], index) => (

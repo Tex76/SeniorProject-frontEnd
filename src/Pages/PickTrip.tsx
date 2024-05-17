@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CreateTripForm from "./CreateTripComponents/CreateTripForm";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -11,11 +11,11 @@ import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import CardMedia from "@mui/material/CardMedia";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
-
 import "@fontsource/roboto/700.css";
 import "@fontsource/ubuntu";
 import Icon1 from "../images/PickTrip/Icon1.png";
@@ -25,21 +25,42 @@ import Icon4 from "../images/PickTrip/Icon4.png";
 import Rectangle1 from "../images/PickTrip/Rectangle1.png";
 import Rectangle2 from "../images/PickTrip/Rectangle2.png";
 import Background from "../images/PickTrip/Background.png";
-import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
+import {
+  APIProvider,
+  Map,
+  Marker,
+  InfoWindow,
+} from "@vis.gl/react-google-maps";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import axios from "axios";
+
+const containerStyle = {
+  width: "100%",
+  height: "500px",
+  borderRadius: "15px",
+};
 
 const PickTrip = () => {
-  const { user } = React.useContext(UserContext); // Provide the correct type for the UserContext
-
+  const { user } = React.useContext(UserContext);
   const navigate = useNavigate();
   const matches = useMediaQuery("(max-width:600px)");
+  // const [mapCenter, setMapCenter] = useState({ lat: 26.0667, lng: 50.5577 });
+  const [mapZoom, setMapZoom] = useState(10);
+  const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
   const [blackBox, setBlackBox] = React.useState(false);
+  const [places, setPlaces] = React.useState([]);
+
+  useEffect(() => {
+    axios.get("/places").then((res) => {
+      setPlaces(res.data);
+    });
+  }, [navigate]);
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
       <Box
-        onClick={(e) => setBlackBox(false)}
+        onClick={() => setBlackBox(false)}
         sx={{
           width: "100%",
           height: "100%",
@@ -57,7 +78,6 @@ const PickTrip = () => {
         sx={{
           width: { md: "40%", sm: "60%", xs: "80%" },
           height: { md: "85%", sm: "85%", xs: "85gi%" },
-
           backgroundColor: "white",
           zIndex: 1000,
           opacity: 1,
@@ -170,7 +190,7 @@ const PickTrip = () => {
                 >
                   <Avatar src={Icon3} sx={{ width: 58, height: 58 }} />
                   <Typography sx={{ textAlign: "center", maxWidth: 130 }}>
-                    Discover different places reviwes to find you matches
+                    Discover different places reviews to find your matches
                   </Typography>
                 </Grid>
                 <Grid
@@ -184,7 +204,7 @@ const PickTrip = () => {
                 >
                   <Avatar src={Icon4} sx={{ width: 58, height: 58 }} />
                   <Typography sx={{ textAlign: "center", maxWidth: 130 }}>
-                    Save your trip start it, or create another!
+                    Save your trip, start it, or create another!
                   </Typography>
                 </Grid>
               </Grid>
@@ -320,13 +340,67 @@ const PickTrip = () => {
             </Box>
           </Container>
           <Box sx={{ mt: 15 }}>
-            <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
-              <GoogleMap
-                mapContainerStyle={{ width: "100%", height: "400px" }}
-                center={{ lat: 26.0667, lng: 50.5577 }}
-                zoom={8}
-              />
-            </LoadScriptNext>
+            <APIProvider apiKey={"AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc"}>
+              <Map
+                style={{
+                  ...containerStyle, // Ensure the container style is applied
+                  transition: "transform 0.5s ease-in-out", // Smooth transition for zoom
+                }}
+                defaultCenter={{ lat: 26.0667, lng: 50.5577 }}
+                defaultZoom={10}
+              >
+                {places.map((place: any) => (
+                  <React.Fragment key={place._id}>
+                    <Marker
+                      position={place.googleLocation}
+                      onClick={() => setSelectedMarker(place._id)}
+                    />
+                    {selectedMarker === place._id && (
+                      <InfoWindow
+                        position={place.googleLocation}
+                        onCloseClick={() => setSelectedMarker(null)}
+                      >
+                        <Card>
+                          <CardMedia
+                            component="img"
+                            height="140"
+                            image={`/systemImage/${place.imagePlace[0]}`}
+                            sx={{ objectFit: "cover" }}
+                            alt={place.name}
+                          />
+                          <CardContent>
+                            <Typography variant="h5" component="div">
+                              {place.name}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Rating: {place.rate}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Type: {place.type}
+                            </Typography>
+                          </CardContent>
+                          <Button
+                            onClick={() => {
+                              navigate(`/places/${place._id}`);
+                            }}
+                            sx={{
+                              borderRadius: "25px",
+                              color: "#fff",
+                              backgroundColor: "#205E60",
+                              "&:hover": { backgroundColor: "#16473C" },
+                              padding: "10px 20px",
+                              marginLeft: "7px",
+                            }}
+                          >
+                            Visit
+                          </Button>
+                        </Card>
+                      </InfoWindow>
+                    )}
+                  </React.Fragment>
+                ))}
+              </Map>
+            </APIProvider>
           </Box>
         </Box>
         <Footer />
@@ -334,4 +408,5 @@ const PickTrip = () => {
     </div>
   );
 };
+
 export default PickTrip;

@@ -1,8 +1,7 @@
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import {
   InputBase,
-  useMediaQuery,
   Box,
   Avatar,
   ListItem,

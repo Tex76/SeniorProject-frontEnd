@@ -345,6 +345,23 @@ const GenerateResult = () => {
                                         {activity.description}
                                       </Typography>
                                     </CardContent>
+                                    <Button
+                                      onClick={() => {
+                                        navigate(`/places/${activity.id}`);
+                                      }}
+                                      sx={{
+                                        borderRadius: "25px",
+                                        color: "#fff",
+                                        backgroundColor: "#205E60",
+                                        "&:hover": {
+                                          backgroundColor: "#16473C",
+                                        },
+                                        padding: "10px 20px",
+                                        marginLeft: "7px",
+                                      }}
+                                    >
+                                      Visit
+                                    </Button>
                                   </Card>
                                 </AccordionDetails>
                               </Accordion>
@@ -397,7 +414,7 @@ const GenerateResult = () => {
               </Box>
             </Grid>
             <Grid item xs={6} style={{ position: "sticky", top: 0 }}>
-              <APIProvider apiKey={process.env.REACT_APP_MAPS_API_KEY || ""}>
+              <APIProvider apiKey={"AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc"}>
                 <Map
                   style={{
                     width: "100%",
@@ -406,8 +423,8 @@ const GenerateResult = () => {
                     transition: "transform 0.5s ease-in-out", // Smooth transition for zoom
                   }}
                   className={zoomAnimation}
-                  center={mapCenter}
-                  zoom={mapZoom}
+                  defaultCenter={{ lat: 26.0667, lng: 50.5577 }}
+                  defaultZoom={10}
                 >
                   {itinerary.map((day) =>
                     day.activities.map((activity: any) => (
@@ -446,6 +463,21 @@ const GenerateResult = () => {
                                   Type: {activity.type}
                                 </Typography>
                               </CardContent>
+                              <Button
+                                onClick={() => {
+                                  navigate(`/places/${activity.id}`);
+                                }}
+                                sx={{
+                                  borderRadius: "25px",
+                                  color: "#fff",
+                                  backgroundColor: "#205E60",
+                                  "&:hover": { backgroundColor: "#16473C" },
+                                  padding: "10px 20px",
+                                  marginLeft: "7px",
+                                }}
+                              >
+                                Visit
+                              </Button>
                             </Card>
                           </InfoWindow>
                         )}
