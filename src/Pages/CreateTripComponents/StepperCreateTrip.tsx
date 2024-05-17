@@ -36,6 +36,9 @@ export default function VerticalLinearStepper({
   dayIndex,
   setCurrentDaysIndex,
   trip,
+  setSelectedMarker,
+  setMapCenter,
+  setMapZoom,
 }: any) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [steps, setSteps] = React.useState<any[]>([]);
@@ -46,16 +49,6 @@ export default function VerticalLinearStepper({
     setActiveStep(0); // Optionally reset the active step or set it based on some logic
   }, [Places]); // Dependency array includes Places to react to changes
 
-  const handleNext = (newStep: number) => {
-    setActiveStep(newStep);
-  };
-
-  const addStep = (dayIndex: any, Places: any) => {
-    // Implement adding a new step logic if needed
-    const newStep = Places[dayIndex];
-    setSteps([...steps, newStep]);
-    setActiveStep(steps.length);
-  };
   const deleteLastStep = () => {
     if (steps.length === 0) {
       console.log("No steps to delete");
@@ -104,7 +97,20 @@ export default function VerticalLinearStepper({
                   width: "150%",
                 }}
               >
-                <SteperCard place={place} />
+                <Box
+                  onMouseEnter={() => {
+                    setSelectedMarker(place._id);
+                    setMapCenter(place.googleLocation);
+                    setMapZoom(15);
+                  }}
+                  onMouseLeave={() => {
+                    setSelectedMarker(null);
+                    setMapCenter({ lat: 26.0667, lng: 50.5577 });
+                    setMapZoom(13);
+                  }}
+                >
+                  <SteperCard place={place} />
+                </Box>
               </StepContent>
             </Step>
           ))

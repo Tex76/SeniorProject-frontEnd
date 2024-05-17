@@ -345,23 +345,6 @@ const GenerateResult = () => {
                                         {activity.description}
                                       </Typography>
                                     </CardContent>
-                                    <Button
-                                      onClick={() => {
-                                        navigate(`/places/${activity.id}`);
-                                      }}
-                                      sx={{
-                                        borderRadius: "25px",
-                                        color: "#fff",
-                                        backgroundColor: "#205E60",
-                                        "&:hover": {
-                                          backgroundColor: "#16473C",
-                                        },
-                                        padding: "10px 20px",
-                                        marginLeft: "7px",
-                                      }}
-                                    >
-                                      Visit
-                                    </Button>
                                   </Card>
                                 </AccordionDetails>
                               </Accordion>
@@ -414,78 +397,88 @@ const GenerateResult = () => {
               </Box>
             </Grid>
             <Grid item xs={6} style={{ position: "sticky", top: 0 }}>
-              <APIProvider apiKey={"AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc"}>
-                <Map
-                  style={{
-                    width: "100%",
-                    height: accordionHeight,
-                    borderRadius: "15px",
-                    transition: "transform 0.5s ease-in-out", // Smooth transition for zoom
-                  }}
-                  className={zoomAnimation}
-                  defaultCenter={{ lat: 26.0667, lng: 50.5577 }}
-                  defaultZoom={10}
-                >
-                  {itinerary.map((day) =>
-                    day.activities.map((activity: any) => (
-                      <React.Fragment key={activity.id}>
-                        <Marker
-                          position={activity.position}
-                          onClick={() => setSelectedMarker(activity.id)}
-                        />
-                        {selectedMarker === activity.id && (
-                          <InfoWindow
+              <Box
+                sx={{
+                  width: "500px",
+                  height: "1000px", // Ensure this height fits within your layout
+                  display: { xs: "none", md: "flex" },
+                  position: "sticky",
+                  top: "0",
+                }}
+              >
+                <APIProvider apiKey={"AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc"}>
+                  <Map
+                    style={{
+                      width: "100%",
+                      height: accordionHeight,
+                      borderRadius: "15px",
+                      transition: "transform 0.5s ease-in-out", // Smooth transition for zoom
+                    }}
+                    className={zoomAnimation}
+                    defaultCenter={{ lat: 26.0667, lng: 50.5577 }}
+                    defaultZoom={10}
+                  >
+                    {itinerary.map((day) =>
+                      day.activities.map((activity: any) => (
+                        <React.Fragment key={activity.id}>
+                          <Marker
                             position={activity.position}
-                            onCloseClick={() => setSelectedMarker(null)}
-                          >
-                            <Card>
-                              <CardMedia
-                                component="img"
-                                height="140"
-                                image={`/systemImage/${activity.imagePlace}`}
-                                sx={{ objectFit: "cover" }}
-                                alt={activity.name}
-                              />
-                              <CardContent>
-                                <Typography variant="h5" component="div">
-                                  {activity.name}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  color="text.secondary"
+                            onClick={() => setSelectedMarker(activity.id)}
+                          />
+                          {selectedMarker === activity.id && (
+                            <InfoWindow
+                              position={activity.position}
+                              onCloseClick={() => setSelectedMarker(null)}
+                            >
+                              <Card>
+                                <CardMedia
+                                  component="img"
+                                  height="140"
+                                  image={`/systemImage/${activity.imagePlace}`}
+                                  sx={{ objectFit: "cover" }}
+                                  alt={activity.name}
+                                />
+                                <CardContent>
+                                  <Typography variant="h5" component="div">
+                                    {activity.name}
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    Rating: {activity.rate}
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    Type: {activity.type}
+                                  </Typography>
+                                </CardContent>
+                                <Button
+                                  onClick={() => {
+                                    navigate(`/places/${activity.id}`);
+                                  }}
+                                  sx={{
+                                    borderRadius: "25px",
+                                    color: "#fff",
+                                    backgroundColor: "#205E60",
+                                    "&:hover": { backgroundColor: "#16473C" },
+                                    padding: "10px 20px",
+                                    marginLeft: "7px",
+                                  }}
                                 >
-                                  Rating: {activity.rate}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  color="text.secondary"
-                                >
-                                  Type: {activity.type}
-                                </Typography>
-                              </CardContent>
-                              <Button
-                                onClick={() => {
-                                  navigate(`/places/${activity.id}`);
-                                }}
-                                sx={{
-                                  borderRadius: "25px",
-                                  color: "#fff",
-                                  backgroundColor: "#205E60",
-                                  "&:hover": { backgroundColor: "#16473C" },
-                                  padding: "10px 20px",
-                                  marginLeft: "7px",
-                                }}
-                              >
-                                Visit
-                              </Button>
-                            </Card>
-                          </InfoWindow>
-                        )}
-                      </React.Fragment>
-                    ))
-                  )}
-                </Map>
-              </APIProvider>
+                                  Visit
+                                </Button>
+                              </Card>
+                            </InfoWindow>
+                          )}
+                        </React.Fragment>
+                      ))
+                    )}
+                  </Map>
+                </APIProvider>
+              </Box>
             </Grid>
           </Grid>
         )}

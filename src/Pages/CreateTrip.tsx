@@ -1,16 +1,14 @@
-import { Box } from "@mui/material";
+import { Box, Card, CardContent, CardMedia } from "@mui/material";
 import Footer from "./SharedComponents/Footer";
 import NavBar from "./SharedComponents/NavBar";
 import { IconButton } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Typography } from "@mui/material";
-import background from "../images/CreateTrip/HeroImage.jpg";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import CreateTripPopUpContent from "./CreateTripComponents/CreateTripPopUpContent";
 import { TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import AddToDaysLikedElementForm from "./CreateTripComponents/AddToDaysLikedElementForm";
 
 import { useContext, useEffect } from "react";
 import "@fontsource/roboto/300.css";
@@ -19,8 +17,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import UpdateTripInfo from "./CreateTripComponents/UpdateCreateInfo";
 import { UserContext } from "../UserContext";
-import { GoogleMap, LoadScriptNext } from "@react-google-maps/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 // this component must contain the hero section of create trip page
 import { CircularProgress } from "@mui/material";
@@ -38,8 +35,18 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Co2Sharp } from "@mui/icons-material";
-import ThingsToEat from "./ThingsToEat";
+import {
+  APIProvider,
+  Map,
+  Marker,
+  InfoWindow,
+} from "@vis.gl/react-google-maps";
+import React from "react";
+const containerStyle = {
+  width: "100%",
+  height: "85%",
+  borderRadius: "15px",
+};
 
 axios.defaults.baseURL = "http://localhost:4000";
 interface TabPanelProps {
@@ -150,7 +157,10 @@ export default function CreateTrip() {
     imageTrip: "",
     _id: "",
   }); // [trip, setTrips]
-
+  const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
+  // [mapCenter, setMapCenter
+  // [mapZoom, setMapZoom]
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [blackBox, setBlackBox] = useState(false);
   const [blackBox2, setBlackBox2] = useState(false);
@@ -163,6 +173,8 @@ export default function CreateTrip() {
   const [searchQuery, setSearchQuery] = useState("");
   const [Days, setDays] = useState([[]]);
   const [currentDaysIndex, setCurrentDaysIndex] = useState(0);
+  const [mapZoom, setMapZoom] = useState(14);
+  const [mapCenter, setMapCenter] = useState({ lat: 26.0667, lng: 50.5577 });
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -172,6 +184,7 @@ export default function CreateTrip() {
         setTrip(res.data);
         setDays(res.data.days);
         setLikedPlaces(res.data.likedPlaces);
+        setMapCenter(res.data.likedPlaces[0].googleLocation);
 
         // Categorize places and update state
         const { thingsToDo, thingsToEat, placesToStay } =
@@ -633,12 +646,12 @@ export default function CreateTrip() {
                     </Button>
                   </Box>
                   <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-                    <Accordion
-                      value={`Things To Do (${thingsToDo.length})`}
-                      index={0}
-                    >
-                      {thingsToDo.map((place: any, index: any) => {
-                        return (
+                    <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
+                      <Accordion
+                        value={`Things To Do (${thingsToDo.length})`}
+                        index={0}
+                      >
+                        {thingsToDo.map((place: any, index: any) => (
                           <CreateTripCard
                             key={index}
                             catogry="things to do"
@@ -652,57 +665,77 @@ export default function CreateTrip() {
                             duration={place.duration}
                             googleLocation={place.googleLocation}
                           />
-                        );
-                      })}
-                    </Accordion>
-                  </Box>
-                  <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-                    <Accordion
-                      value={`Things To Eat (${thingsToEat.length})`}
-                      index={1}
-                    >
-                      {thingsToEat.map((place: any, index: any) => {
-                        return (
-                          <CreateTripCard
-                            key={index}
-                            catogry="things to eat"
-                            image={`/systemImage/${place.imagePlace[0]}`}
-                            placeName={place.name}
-                            rate={place.rate}
-                            location={place.region}
-                            type={place.type}
-                            description={place.description}
-                            price={place.priceRange}
-                            cuisine={place.cuisines[0]}
-                            googleLocation={place.googleLocation}
-                          />
-                        );
-                      })}
-                    </Accordion>
-                  </Box>{" "}
-                  <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-                    <Accordion
-                      value={`Places To Stay (${placesToStay.length})`}
-                      index={2}
-                    >
-                      {placesToStay.map((place: any, index: any) => {
-                        return (
-                          <CreateTripCard
-                            key={index}
-                            catogry="places to stay"
-                            image={`/systemImage/${place.imagePlace[0]}`}
-                            placeName={place.name}
-                            rate={place.rate}
-                            location={place.region}
-                            type={place.type}
-                            description={place.description}
-                            price={place.priceRange}
-                            stars={place.hotelClass}
-                            googleLocation={place.googleLocation}
-                          />
-                        );
-                      })}
-                    </Accordion>
+                        ))}
+                      </Accordion>
+                      <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
+                        <Accordion
+                          value={`Things To Eat (${thingsToEat.length})`}
+                          index={1}
+                        >
+                          {thingsToEat.map((place: any, index: any) => (
+                            <CreateTripCard
+                              key={index}
+                              catogry="things to eat"
+                              image={`/systemImage/${place.imagePlace[0]}`}
+                              placeName={place.name}
+                              rate={place.rate}
+                              location={place.region}
+                              type={place.type}
+                              description={place.description}
+                              price={place.priceRange}
+                              cuisine={place.cuisines[0]}
+                              googleLocation={place.googleLocation}
+                            />
+                          ))}
+                        </Accordion>
+                      </Box>
+                      <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
+                        <Accordion
+                          value={`Places To Stay (${placesToStay.length})`}
+                          index={2}
+                        >
+                          {placesToStay.map((place: any, index: any) => (
+                            <CreateTripCard
+                              key={index}
+                              catogry="places to stay"
+                              image={`/systemImage/${place.imagePlace[0]}`}
+                              placeName={place.name}
+                              rate={place.rate}
+                              location={place.region}
+                              type={place.type}
+                              description={place.description}
+                              price={place.priceRange}
+                              stars={place.hotelClass}
+                              googleLocation={place.googleLocation}
+                            />
+                          ))}
+                        </Accordion>
+                      </Box>
+                      <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
+                        <Accordion
+                          value={`Places To Stay (${placesToStay.length})`}
+                          index={2}
+                        >
+                          {placesToStay.map((place: any, index: any) => {
+                            return (
+                              <CreateTripCard
+                                key={index}
+                                catogry="places to stay"
+                                image={`/systemImage/${place.imagePlace[0]}`}
+                                placeName={place.name}
+                                rate={place.rate}
+                                location={place.region}
+                                type={place.type}
+                                description={place.description}
+                                price={place.priceRange}
+                                stars={place.hotelClass}
+                                googleLocation={place.googleLocation}
+                              />
+                            );
+                          })}
+                        </Accordion>
+                      </Box>
+                    </Box>
                   </Box>
                 </CustomTabPanel>
 
@@ -764,6 +797,9 @@ export default function CreateTrip() {
                                 setBlackBox3={setBlackBox3}
                                 setCurrentDaysIndex={setCurrentDaysIndex} // Assuming this prop is meant to handle some index logic
                                 dayIndex={DayIndex} // Correctly pass the day index
+                                setSelectedMarker={setSelectedMarker}
+                                setMapCenter={setMapCenter}
+                                setMapZoom={setMapZoom}
                               />
                             </Accordion>
                           </Box>
@@ -778,22 +814,74 @@ export default function CreateTrip() {
         {/* map box */}
         <Box
           sx={{
-            width: "48%",
-            height: "100%", // Ensure this height fits within your layout
+            width: "500px",
+            height: "1000px", // Ensure this height fits within your layout
             display: { xs: "none", md: "flex" },
+            position: "sticky",
+            top: "0",
           }}
         >
-          <LoadScriptNext googleMapsApiKey="AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc">
-            <GoogleMap
-              mapContainerStyle={{
-                width: "100%",
-                height: "85%",
-                borderRadius: "15px",
+          <APIProvider apiKey={"AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc"}>
+            <Map
+              style={{
+                ...containerStyle, // Ensure the container style is applied
+                transition: "transform 0.5s ease-in-out", // Smooth transition for zoom
               }}
-              center={{ lat: 26.0667, lng: 50.5577 }}
-              zoom={8}
-            />
-          </LoadScriptNext>
+              defaultCenter={mapCenter}
+              zoom={mapZoom}
+            >
+              {likedPlaces.map((place: any) => (
+                <React.Fragment key={place._id}>
+                  <Marker
+                    position={place.googleLocation}
+                    onClick={() => setSelectedMarker(place._id)}
+                  />
+                  {selectedMarker === place._id && (
+                    <InfoWindow
+                      position={place.googleLocation}
+                      onCloseClick={() => setSelectedMarker(null)}
+                    >
+                      <Card>
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          image={`/systemImage/${place.imagePlace[0]}`}
+                          sx={{ objectFit: "cover" }}
+                          alt={place.name}
+                        />
+                        <CardContent>
+                          <Typography variant="h5" component="div">
+                            {place.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Rating: {place.rate}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Type: {place.type}
+                          </Typography>
+                        </CardContent>
+                        <Button
+                          onClick={() => {
+                            navigate(`/places/${place._id}`);
+                          }}
+                          sx={{
+                            borderRadius: "25px",
+                            color: "#fff",
+                            backgroundColor: "#205E60",
+                            "&:hover": { backgroundColor: "#16473C" },
+                            padding: "10px 20px",
+                            marginLeft: "7px",
+                          }}
+                        >
+                          Visit
+                        </Button>
+                      </Card>
+                    </InfoWindow>
+                  )}
+                </React.Fragment>
+              ))}
+            </Map>
+          </APIProvider>
         </Box>
       </Box>
 

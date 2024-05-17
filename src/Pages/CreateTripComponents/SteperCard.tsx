@@ -13,7 +13,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import StarIcon from "@mui/icons-material/Star";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 // this might be modify when we deploy the actual database
-export default function SteperCard({ place }: { place: any }) {
+export default function SteperCard({ place }: any) {
   const [readMore, setReadMore] = useState(false);
 
   function countWords(text: string): number {
