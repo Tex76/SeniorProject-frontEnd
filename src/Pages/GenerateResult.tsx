@@ -16,6 +16,7 @@ import {
   CardContent,
   CardMedia,
   CircularProgress,
+  Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -37,6 +38,8 @@ import BudgetContext from "../BudgetContext";
 import TimePeriodContext from "../TimePeriodContext";
 import GroupSizeContext from "../GroupSizeContext";
 import FavouriteActivitiesContext from "../FavouriteActivitiesContext";
+import { UserContext } from "../UserContext";
+import { useNavigate } from "react-router-dom";
 
 interface Day {
   id: string;
@@ -45,11 +48,14 @@ interface Day {
 }
 
 const GenerateResult = () => {
+  const { user } = useContext(UserContext);
   const { selectedRegion } = useContext(RegionContext);
   const { budget } = useContext(BudgetContext);
   const { days } = useContext(TimePeriodContext);
   const { groupSize } = useContext(GroupSizeContext);
   const { favouriteActivities } = useContext(FavouriteActivitiesContext);
+  const [userContext, setUserContext] = useState(user);
+  const navigate = useNavigate();
 
   const [description, setDescription] = useState<string>("");
   const [itinerary, setItinerary] = useState<Day[]>([]);
@@ -57,6 +63,7 @@ const GenerateResult = () => {
   const [error, setError] = useState("");
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
   const [zoomAnimation, setZoomAnimation] = useState("");
+  const [Days, setDays] = useState(null);
 
   const handleZoomChange = (newZoom: any) => {
     if (newZoom > mapZoom) {
@@ -67,6 +74,9 @@ const GenerateResult = () => {
     setMapZoom(newZoom);
     setTimeout(() => setZoomAnimation(""), 500); // Clear animation class after animation duration
   };
+  useEffect(() => {
+    setUserContext(user);
+  }, [user]);
   useEffect(() => {
     const fetchData = () => {
       setLoading(true);
@@ -95,15 +105,16 @@ const GenerateResult = () => {
         .then((response) => {
           // Parse the response data
           const responseData = response.data;
-          console.log("Response Data:", responseData.trip);
+          console.log("RESPONSE:", response);
 
           // Validate the response structure
-          if (!responseData || !responseData.trip || !responseData.trip.days) {
-            setError("Invalid response from server");
-            setLoading(false);
-            return;
-          }
+          // if (!responseData || !responseData.trip || !responseData.trip.days) {
+          //   setError("Invalid response from server");
+          //   setLoading(false);
+          //   return;
+          // }
 
+          setDays(responseData.trip.days);
           setDescription(responseData.trip.description);
           console.log("Response of Generate Trip:", responseData.trip);
 
@@ -340,6 +351,46 @@ const GenerateResult = () => {
                   </AccordionDetails>
                 </Accordion>
               ))}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                {!loading ? (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#ff8c00",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#ff4500",
+                      },
+                    }}
+                    onClick={() => {
+                      axios
+                        .post("http://localhost:4000/api/add_trip", {
+                          selectedRegion,
+                          numberOfDays: days,
+                          description,
+                          Days,
+                          name: "AI-Generated Trip",
+                          userId: userContext._id,
+                        })
+                        .then((response) => {
+                          navigate("/createtrip/" + response.data.tripID);
+                        })
+                        .catch((error) => {
+                          console.error("Error posting trip", error);
+                        });
+                    }}
+                  >
+                    Save Trip
+                  </Button>
+                ) : null}
+              </Box>
             </Grid>
             <Grid item xs={6} style={{ position: "sticky", top: 0 }}>
               <APIProvider apiKey={process.env.REACT_APP_MAPS_API_KEY || ""}>
