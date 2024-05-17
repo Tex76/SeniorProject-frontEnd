@@ -29,23 +29,26 @@ const MyTrip = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sort, setSort] = useState("name");
-  function handleSortChange(event: React.ChangeEvent<{ value: unknown }>) {
+
+  const handleSortChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSort(event.target.value as string);
-  }
+  };
 
   useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(`/user/trips/${user.id}`)
-      .then((res) => {
-        setTrips(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching the trip data:", err);
-        setIsLoading(false);
-      });
-  }, [navigate]); // Only re-run the effect if `user` or `navigate` changes
+    if (user && user.id) {
+      setIsLoading(true);
+      axios
+        .get(`/user/trips/${user.id}`)
+        .then((res) => {
+          setTrips(res.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching the trip data:", err);
+          setIsLoading(false);
+        });
+    }
+  }, [user]);
 
   if (!user) {
     return <div>Please log in to view your trips.</div>;
@@ -90,7 +93,6 @@ const MyTrip = () => {
         alignItems="center"
         sx={{
           width: "100%",
-
           margin: "auto",
           backgroundImage: `url(${Background})`,
           backgroundRepeat: "no-repeat",
@@ -124,7 +126,7 @@ const MyTrip = () => {
               }}
               sx={{ flex: 1 }}
             >
-              <AddIcon /> Create you own trip
+              <AddIcon /> Create your own trip
             </Button>
             <Button
               onClick={() => {
@@ -146,7 +148,6 @@ const MyTrip = () => {
           <Box
             sx={{
               width: "100%",
-
               marginTop: "120px",
               padding: "20px",
               display: "flex",
@@ -175,6 +176,7 @@ const MyTrip = () => {
             {trips.map((trip: any) => {
               return (
                 <Card
+                  key={trip._id}
                   onClick={() => {
                     navigate(`/createtrip/${trip._id}`);
                   }}
@@ -192,7 +194,7 @@ const MyTrip = () => {
                     component="img"
                     height="140"
                     image={trip.imageTrip}
-                    alt="green iguana"
+                    alt="trip image"
                     sx={{ width: "30%", borderRadius: "10px", height: "100%" }}
                   />
                   <CardContent sx={{ flex: 1 }}>

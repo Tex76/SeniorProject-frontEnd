@@ -196,7 +196,11 @@ const GenerateResult = () => {
               height: "100vh", // Takes full viewport height
             }}
           >
-            <CircularProgress />
+            <img
+              style={{ width: "120px", height: "120px" }}
+              src="/second.gif"
+              alt=""
+            />
           </div>
         ) : error ? (
           <div
@@ -377,7 +381,7 @@ const GenerateResult = () => {
                           description,
                           Days,
                           name: "AI-Generated Trip",
-                          userId: userContext._id,
+                          userId: userContext.id,
                         })
                         .then((response) => {
                           navigate("/createtrip/" + response.data.tripID);

@@ -28,7 +28,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import { UserContext } from "../../UserContext";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -37,6 +36,7 @@ const Introduction = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [trips, setTrips] = React.useState([]); // [trip1, trip2, trip3, ...]
+  const navigate = useNavigate();
   React.useEffect(() => {
     if (!user) navigate("/login");
     axios
@@ -49,7 +49,7 @@ const Introduction = ({ place }: { place: any }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [user._id]);
+  }, [user, navigate]);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -67,8 +67,6 @@ const Introduction = ({ place }: { place: any }) => {
     p: 4,
     overflow: "auto",
   };
-
-  const navigate = useNavigate();
 
   return (
     <div
