@@ -24,7 +24,7 @@ import BudgetContext from "./BudgetContext";
 import TimePeriodContext from "./TimePeriodContext";
 import GroupSizeContext from "./GroupSizeContext";
 import FavouriteActivitiesContext from "./FavouriteActivitiesContext";
-
+import ReviewPhoto from "./Pages/reviewPhoto";
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
@@ -62,6 +62,7 @@ function App() {
                     <Route path="/reviews" element={<Reviews />} />
                     <Route path="/reviewplace" element={<ReviewPlace />} />
                     <Route path="/createtrip/:id" element={<CreateTrip />} />
+                    <Route path="/reviewPhoto/:id" element={<ReviewPhoto />} />
                     <Route
                       path="/generateresult"
                       element={<GenerateResult />}

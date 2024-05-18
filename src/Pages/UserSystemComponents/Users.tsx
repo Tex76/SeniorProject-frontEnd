@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import {
   Box,
   Typography,
@@ -13,12 +13,14 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { UserContext } from "../../UserContext";
 
 const Users = ({ user, userFromContext }: any) => {
   const [showForm, setShowForm] = useState(false);
+  const { refreshUser } = useContext(UserContext);
   // Default image if no avatarImage is provided
   const defaultAvatarUrl =
-    "https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg";
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/768px-Windows_10_Default_Profile_Picture.svg.png?20221210150350";
   const [name, setName] = useState(user.name || "");
   const [userName, setUserName] = useState(user.userName || "");
   const [description, setDescription] = useState(user.description || "");
@@ -74,6 +76,7 @@ const Users = ({ user, userFromContext }: any) => {
 
       if (response.ok) {
         console.log("User updated successfully");
+        refreshUser(); // Refresh user data in context
         handleClose();
         window.location.reload(); // Refresh the page on successful update
       } else {

@@ -90,9 +90,7 @@ const MyPosts = ({ user }: { user: any }) => {
                         />
                       </div>
                       <Box>
-                        <Typography variant="body1">
-                          @{user.userName}
-                        </Typography>
+                        <Typography variant="body1">{user.name}</Typography>
                         <Typography variant="body1">
                           {user.joinDate
                             ? format(parseISO(user.joinDate), "MMMM dd, yyyy")
@@ -199,28 +197,125 @@ const MyPosts = ({ user }: { user: any }) => {
                 marginBottom: "10px",
               }}
             >
-              {user.photos && user.photos.length > 0 ? (
-                user.photos.map((photo: any, index: number) => (
+              {user.photosReview && user.photosReview.length > 0 ? (
+                user.photosReview.map((photo: any, index: number) => (
                   <Box
                     key={index}
                     sx={{
-                      marginBottom: "10px",
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "center",
+                      alignItems: "flex-start",
+                      marginBottom: "10px",
+                      borderTop: "1px solid #000",
                     }}
                   >
-                    <img
-                      src={photo.url}
-                      alt={`photo-${index}`}
-                      style={{
-                        width: "100%",
-                        maxWidth: "300px",
-                        height: "auto",
-                        borderRadius: "10px",
-                        margin: "10px 0",
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "20px",
                       }}
-                    />
+                    >
+                      <div
+                        style={{
+                          width: "70px",
+                          height: "70px",
+                          borderRadius: "50%",
+                          overflow: "hidden",
+                          margin: "10px",
+                        }}
+                      >
+                        <img
+                          src={user.avatarImage}
+                          alt="profile"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                      <Box>
+                        <Typography variant="body1">{user.name}</Typography>
+                        <Typography variant="body1">
+                          {user.joinDate
+                            ? format(parseISO(user.joinDate), "MMMM dd, yyyy")
+                            : "Date not available"}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box>
+                      <img
+                        src={photo.image}
+                        alt={`photo-${index}`}
+                        style={{
+                          width: "90%",
+                          height: "300px",
+                          objectFit: "cover",
+                          borderRadius: "10px",
+                          margin: "10px 0",
+                        }}
+                      />
+                    </Box>
+                    <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      Date:{" "}
+                      {photo.dateOfTaken
+                        ? format(parseISO(photo.dateOfTaken), "MMMM dd, yyyy")
+                        : "Date not available"}
+                    </Typography>
+                    <Link
+                      to={`/places/${photo.placeID._id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Card
+                        sx={{
+                          width: "80%",
+                          height: "80%",
+                          margin: "10px",
+                          backgroundColor: "whitesmoke",
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        {photo.placeID.imagePlace &&
+                          photo.placeID.imagePlace.length > 0 && (
+                            <img
+                              src={`/systemImage/${photo.placeID.imagePlace[0]}`}
+                              alt={photo.placeID.name}
+                              style={{
+                                width: "40%",
+                                borderRadius: "10px",
+                                margin: "10px",
+                              }}
+                            />
+                          )}
+                        <Box>
+                          <Typography
+                            variant="h6"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            {photo.placeID.name}
+                          </Typography>
+                          <Typography
+                            variant="subtitle1"
+                            style={{ fontSize: "0.7rem" }}
+                          >
+                            {photo.placeID.region}
+                          </Typography>
+                          <Rating
+                            name="place-rating"
+                            value={photo.placeID.rate}
+                            readOnly
+                          />
+                          <Typography
+                            variant="subtitle1"
+                            style={{ fontSize: "0.7rem" }}
+                          >
+                            {photo.placeID.description}
+                          </Typography>
+                        </Box>
+                      </Card>
+                    </Link>
                   </Box>
                 ))
               ) : (

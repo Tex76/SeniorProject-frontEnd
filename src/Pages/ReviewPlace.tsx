@@ -75,7 +75,7 @@ export interface SimpleComment {
 }
 
 const ReviewPlace = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser, refreshUser } = useContext(UserContext);
   const [form, setForm] = useState({
     rating: 0,
     whenDate: new Date().toISOString().slice(0, 10),
@@ -146,11 +146,13 @@ const ReviewPlace = () => {
       if (commentValue) {
         axios
           .post("/setComment", commentValue)
-          .then(() => {
+          .then((response) => {
+            console.log("Comment submitted:", response.data);
+            refreshUser(); // Refresh user data after setting the comment
             navigate(`/places/${id}`);
           })
-          .catch((err) => {
-            console.error(err);
+          .catch((error) => {
+            console.error("Failed to submit comment:", error);
           });
       }
     } else if (place?.category === "thingsToEat") {
@@ -165,11 +167,13 @@ const ReviewPlace = () => {
       if (commentValue) {
         axios
           .post("/setComment", commentValue)
-          .then(() => {
+          .then((response) => {
+            console.log("Comment submitted:", response.data);
+            refreshUser(); // Refresh user data after setting the comment
             navigate(`/places/${id}`);
           })
-          .catch((err) => {
-            console.error(err);
+          .catch((error) => {
+            console.error("Failed to submit comment:", error);
           });
       }
     } else {
@@ -184,20 +188,16 @@ const ReviewPlace = () => {
       if (commentValue) {
         axios
           .post("/setComment", commentValue)
-          .then(() => {
+          .then((response) => {
+            console.log("Comment submitted:", response.data);
+            refreshUser(); // Refresh user data after setting the comment
             navigate(`/places/${id}`);
           })
-          .catch((err) => {
-            console.error(err);
+          .catch((error) => {
+            console.error("Failed to submit comment:", error);
           });
       }
     }
-
-    // here we need to setup session ID in order to know the who is submitting the review
-    // here must we done the logic of adding the review to the database
-    // adding to the place reviews array
-    // adding to the user reviews array
-    // adding to the review collection
   }
 
   useEffect(() => {
@@ -229,6 +229,8 @@ const ReviewPlace = () => {
     }
   }, [place]);
 
+  const type = false;
+
   return (
     <Box>
       <Box sx={{ maxWidth: "1280px", margin: "0 auto" }}>
@@ -248,7 +250,7 @@ const ReviewPlace = () => {
                 {isSubmitted ? (
                   <SuccessSubmit />
                 ) : place ? (
-                  <PlaceContent place={place} />
+                  <PlaceContent place={place} type={type} />
                 ) : (
                   <div>Loading...</div>
                 )}

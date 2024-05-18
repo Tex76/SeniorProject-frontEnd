@@ -1,7 +1,10 @@
-import { Typography, Card, CardContent } from "@mui/material";
+// eslint-disable-next-line react-hooks/rules-of-hooks
+import { Typography, Card, CardContent, useMediaQuery } from "@mui/material";
 import { Place } from "../../../../api/SchemaDb";
-const PlaceContent = ({ place }: { place: Place }) => {
-  if (!place) return <div>Loading...</div>;
+import { useTheme } from "@mui/material/styles";
+const PlaceContent = ({ place, type }: any) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -37,7 +40,7 @@ const PlaceContent = ({ place }: { place: Place }) => {
           alt="Contemplative Reptile"
           style={{
             height: "134px",
-            width: "163px",
+            width: isMobile ? "90%" : "163px",
             // background: `url(/systemImages/${place.imagePlace[0]})`,
             marginLeft: "16px",
             marginRight: "16px",
@@ -78,6 +81,39 @@ const PlaceContent = ({ place }: { place: Place }) => {
           </Typography>
         </CardContent>
       </Card>
+      {type ? (
+        <>
+          <Typography
+            sx={{
+              fontFamily: "Roboto",
+              fontStyle: "semi-bold",
+              fontWeight: 700,
+              fontSize: "14px",
+              color: "#000000",
+              marginTop: "40px",
+              px: { xs: "2rem", sm: "0" }, // Add this line
+            }}
+          >
+            Please Keep in mind for photos:
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontSize: "14px",
+              color: "#000000",
+              marginTop: "10px",
+              px: { xs: "2rem", sm: "0" }, // Add this line
+            }}
+          >
+            You may upload up to 50 photos simultaneously. Supported photo
+            formats include .jpg, .jpeg, .gif, and .png.
+          </Typography>{" "}
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

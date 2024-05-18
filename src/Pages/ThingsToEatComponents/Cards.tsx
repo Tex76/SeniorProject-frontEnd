@@ -271,7 +271,7 @@ const Cards = ({ place }: { place: any }) => {
               </Button>
               <Button
                 onClick={() => {
-                  window.location.href = `/photo/${place._id}`;
+                  window.location.href = `/reviewphoto/${place._id}`;
                 }}
                 variant="contained"
                 style={{

@@ -711,30 +711,6 @@ export default function CreateTrip() {
                           ))}
                         </Accordion>
                       </Box>
-                      <Box sx={{ width: "100%", mt: 2, mb: 2 }}>
-                        <Accordion
-                          value={`Places To Stay (${placesToStay.length})`}
-                          index={2}
-                        >
-                          {placesToStay.map((place: any, index: any) => {
-                            return (
-                              <CreateTripCard
-                                key={index}
-                                catogry="places to stay"
-                                image={`/systemImage/${place.imagePlace[0]}`}
-                                placeName={place.name}
-                                rate={place.rate}
-                                location={place.region}
-                                type={place.type}
-                                description={place.description}
-                                price={place.priceRange}
-                                stars={place.hotelClass}
-                                googleLocation={place.googleLocation}
-                              />
-                            );
-                          })}
-                        </Accordion>
-                      </Box>
                     </Box>
                   </Box>
                 </CustomTabPanel>

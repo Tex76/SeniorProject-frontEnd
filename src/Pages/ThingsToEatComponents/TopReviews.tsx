@@ -353,15 +353,21 @@ const TopReviews = ({ place }: { place: Place }) => {
         (place.photos.length === 0 ? (
           <h2 style={{ textAlign: "center" }}>No photos yet</h2>
         ) : (
-          place.photos.map((photo: Photo) => {
-            return (
-              <>
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: "bold", textAlign: "center" }}
-                >
-                  Top Photos
-                </Typography>
+          <>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: "bold", textAlign: "center" }}
+            >
+              Top Photos
+            </Typography>
+            {place.photos.map((photo: any) => (
+              <Box
+                key={photo._id}
+                sx={{
+                  overflow: "hidden",
+                  width: "90%",
+                }}
+              >
                 <CardContent
                   sx={{
                     position: "relative",
@@ -412,7 +418,13 @@ const TopReviews = ({ place }: { place: Place }) => {
                         onClose={handleClose}
                       >
                         <MenuItem onClick={handleClose}>Report</MenuItem>
-                        <MenuItem onClick={handleClose}>View Profile</MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            navigate(`/usersystem/${photo.userID}`);
+                          }}
+                        >
+                          View Profile
+                        </MenuItem>
                       </Menu>
                     </Box>
                   </Box>
@@ -425,21 +437,24 @@ const TopReviews = ({ place }: { place: Place }) => {
                     }}
                   >
                     <img
-                      src={profile}
+                      src={`${photo.avatarImage}`}
                       alt="profile"
                       style={{
-                        width: "70px",
-                        borderRadius: "50%",
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "100%",
+                        objectFit: "cover",
                         marginRight: "10px",
+                        objectPosition: "center",
                       }}
                     />
                     <Box>
                       <Typography variant="subtitle1">
-                        {photo.userName}
+                        {photo.username}
                       </Typography>
                       <Typography variant="caption">
                         <Box component="span" sx={{ fontWeight: "bold" }}>
-                          {photo.contributionNumber}
+                          {photo.contribution}
                         </Box>{" "}
                         contributions
                       </Typography>
@@ -454,7 +469,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                           {photo.rank}{" "}
                         </Typography>
                         <img
-                          src={Adventure}
+                          src={`/systemImage/${photo.rankImage}`}
                           alt="Adventure"
                           style={{
                             width: "20px",
@@ -469,23 +484,24 @@ const TopReviews = ({ place }: { place: Place }) => {
                     <img
                       src={photo.image}
                       alt="image"
-                      style={{ width: "100%" }}
+                      style={{
+                        width: "100%",
+                        height: "350px",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
                     />
                     <Typography variant="body1" sx={{ fontWeight: "bold" }}>
                       Date:{" "}
                       {photo.dateOfTaken
-                        ? photo.dateOfTaken.toLocaleDateString("en-US", {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric",
-                          })
+                        ? format(parseISO(photo.dateOfTaken), "MMMM dd, yyyy")
                         : "Date not available"}
                     </Typography>
                   </Box>
                 </CardContent>
-              </>
-            );
-          })
+              </Box>
+            ))}
+          </>
         ))}
     </div>
   );
