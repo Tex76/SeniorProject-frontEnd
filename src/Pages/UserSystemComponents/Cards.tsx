@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography, Card, CardContent } from "@mui/material";
-import Adventure from "../../images/RewardSystem/Adventure.png";
 
 import { MonetizationOn as MonetizationOnIcon } from "@mui/icons-material";
 import "@fontsource/roboto/300.css";
@@ -8,7 +7,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-const Cards = () => {
+const Cards = ({ user }: { user: any }) => {
   return (
     <div>
       <Box
@@ -35,8 +34,16 @@ const Cards = () => {
             }}
           >
             <Typography variant="h6">Rank</Typography>
-            <img src={Adventure} alt="Adventure" />
-            <Typography variant="body1">Adventure</Typography>
+            <img
+              src={`/systemImage/${user.rankImage}`}
+              alt="profile"
+              style={{
+                width: "25%",
+                height: "25%",
+                objectFit: "cover",
+              }}
+            />
+            <Typography variant="body1">{user.rank}</Typography>
           </CardContent>
         </Card>
         <Card
@@ -57,7 +64,7 @@ const Cards = () => {
           >
             <Typography variant="h6">Points</Typography>
             <MonetizationOnIcon sx={{ color: "gold", fontSize: 70 }} />
-            <Typography variant="body1">1000</Typography>
+            <Typography variant="body1">{user.points}</Typography>
           </CardContent>
         </Card>
       </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { Box } from "@mui/material";
 import Users from "./UserSystemComponents/Users";
 import About from "./UserSystemComponents/About";
@@ -10,10 +10,45 @@ import profileBack from "../images/Profile/profileBack.png";
 import background from "../images/Profile/background.png";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { User } from "../../../api/SchemaDb";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const UserSystem = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { id } = useParams();
+  // Initialize 'place' to null and define it to accept 'Place' or 'null'
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/UserSystem/${id}`);
+        setUser(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchPlaces();
+  }, [id]);
+
+  if (!user) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh", // Takes full viewport height
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+  else {
   return (
     <Box
       sx={{
@@ -49,10 +84,10 @@ const UserSystem = () => {
           sx={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}
         >
           <Box sx={{ flex: 1 }}>
-            <Users />
+            <Users user={user} />
           </Box>
           <Box sx={{ flex: 1 }}>
-            <Cards />
+            <Cards user={user}/>
           </Box>
         </Box>
 
@@ -60,10 +95,10 @@ const UserSystem = () => {
           sx={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}
         >
           <Box sx={{ flex: 1 }}>
-            <About />
+          <About user={user}/>;
           </Box>
           <Box sx={{ flex: 2 }}>
-            <MyPosts />
+            <MyPosts user={user} />
           </Box>
         </Box>
       </Box>
@@ -73,5 +108,5 @@ const UserSystem = () => {
     </Box>
   );
 };
-
+};
 export default UserSystem;
