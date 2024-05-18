@@ -1,5 +1,12 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Box, Typography, TextField, Button, Dialog, DialogContent } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Dialog,
+  DialogContent,
+} from "@mui/material";
 import person from "../../images/Profile/person.png";
 import { CalendarToday as CalendarTodayIcon } from "@mui/icons-material";
 import "@fontsource/roboto/300.css";
@@ -7,14 +14,17 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-const Users = ({ user }: { user: any }) => {
+const Users = ({ user, userFromContext }: any) => {
   const [showForm, setShowForm] = useState(false);
   // Default image if no avatarImage is provided
-  const defaultAvatarUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+  const defaultAvatarUrl =
+    "https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg";
   const [name, setName] = useState(user.name || "");
   const [userName, setUserName] = useState(user.userName || "");
   const [description, setDescription] = useState(user.description || "");
-  const [avatarImage, setAvatarImage] = useState(user.avatarImage || defaultAvatarUrl);
+  const [avatarImage, setAvatarImage] = useState(
+    user.avatarImage || defaultAvatarUrl
+  );
 
   const handleClickOpen = () => {
     setShowForm(true);
@@ -24,59 +34,73 @@ const Users = ({ user }: { user: any }) => {
     setShowForm(false);
   };
 
-  const handleChange = (field: string) => (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    switch (field) {
-      case "name":
-        setName(value);
-        break;
-      case "userName":
-        setUserName(value);
-        break;
-      case "description":
-        setDescription(value);
-        break;
-      case "avatarImage":
-        setAvatarImage(value || defaultAvatarUrl); // Use default URL if field is empty
-        break;
-      default:
-        break;
-    }
-  };
+  const handleChange =
+    (field: string) => (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      switch (field) {
+        case "name":
+          setName(value);
+          break;
+        case "userName":
+          setUserName(value);
+          break;
+        case "description":
+          setDescription(value);
+          break;
+        case "avatarImage":
+          setAvatarImage(value || defaultAvatarUrl); // Use default URL if field is empty
+          break;
+        default:
+          break;
+      }
+    };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const updatedAvatarImage = avatarImage || defaultAvatarUrl; // Ensure there's always an avatar image URL
     try {
       const response = await fetch(`/UserSystem/${user._id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, userName, description, avatarImage: updatedAvatarImage }),
+        body: JSON.stringify({
+          name,
+          userName,
+          description,
+          avatarImage: updatedAvatarImage,
+        }),
       });
 
       if (response.ok) {
-        console.log('User updated successfully');
+        console.log("User updated successfully");
         handleClose();
         window.location.reload(); // Refresh the page on successful update
       } else {
-        console.error('Failed to update user');
+        console.error("Failed to update user");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        marginTop: "-10%",
+      }}
+    >
       <Box sx={{ marginLeft: "100px" }}>
         <button
           style={{ backgroundColor: "transparent", border: "none" }}
-          onClick={handleClickOpen}
+          onClick={() => {
+            if (userFromContext.id === user._id) {
+              handleClickOpen();
+            }
+          }}
         >
-          <div
-            style={{
+          <Box
+            sx={{
               width: "150px",
               height: "150px",
               borderRadius: "50%",
@@ -92,7 +116,7 @@ const Users = ({ user }: { user: any }) => {
                 objectFit: "cover",
               }}
             />
-          </div>
+          </Box>
         </button>
 
         <Dialog open={showForm} onClose={handleClose}>
@@ -166,8 +190,20 @@ const Users = ({ user }: { user: any }) => {
             </form>
           </DialogContent>
         </Dialog>
-        <Typography variant="body1">@{user.userName}</Typography>
-        <Typography variant="body1">
+        <Typography
+          sx={{
+            marginTop: "5px",
+          }}
+          variant="body1"
+        >
+          @{user.userName}
+        </Typography>
+        <Typography
+          sx={{
+            marginTop: "5px",
+          }}
+          variant="body1"
+        >
           <CalendarTodayIcon sx={{ fontSize: 16, marginRight: "5px" }} />{" "}
           {new Date(user.joinDate).toISOString().split("T")[0]}
         </Typography>

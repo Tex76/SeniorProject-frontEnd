@@ -27,8 +27,10 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Comment, Photo, Place } from "../../../../api/SchemaDb";
 import { format, parseISO } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const TopReviews = ({ place }: { place: Place }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -73,7 +75,7 @@ const TopReviews = ({ place }: { place: Place }) => {
       <Tabs
         value={value}
         onChange={handleChange}
-        sx={{ justifyContent: "flex-start" }}
+        sx={{ justifyContent: "flex-start", width: "100%" }}
       >
         <Tab label="Reviews" />
         <Tab label="Photos" />
@@ -89,7 +91,8 @@ const TopReviews = ({ place }: { place: Place }) => {
               return (
                 <Box
                   sx={{
-                    width: "100%",
+                    overflow: "hidden",
+                    width: "90%",
                   }}
                 >
                   <CardContent
@@ -108,6 +111,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                       sx={{
                         display: "flex",
                         width: "100%",
+                        height: "40px",
                         justifyContent: "end",
                       }}
                     >
@@ -117,7 +121,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                           display: "flex",
                           backgroundColor: "white",
                           width: "100px",
-                          height: "50px",
+                          height: "35px",
                           borderRadius: "50px",
                           border: "1px solid black",
                         }}
@@ -125,16 +129,30 @@ const TopReviews = ({ place }: { place: Place }) => {
                         <IconButton onClick={upvote} sx={{ flex: "1" }}>
                           <ArrowUpwardIcon />
                         </IconButton>
-                        <p style={{ flex: "1", fontWeight: "bold" }}>
+                        <Typography
+                          sx={{
+                            flex: "1",
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            fontSize: "20px",
+                            mt: "2px",
+                          }}
+                        >
                           {comment.score}
-                        </p>
+                        </Typography>
                         <IconButton onClick={downvote} sx={{ flex: "1" }}>
                           <ArrowDownwardIcon />
                         </IconButton>
                       </Box>
                       <Box>
                         <IconButton onClick={handleClick}>
-                          <MoreHorizIcon sx={{ fontSize: "50px" }} />
+                          <MoreHorizIcon
+                            sx={{
+                              fontSize: "30px",
+                              color: "black",
+                              padding: "10px",
+                            }}
+                          />
                         </IconButton>
                         <Menu
                           anchorEl={anchorEl}
@@ -142,7 +160,11 @@ const TopReviews = ({ place }: { place: Place }) => {
                           onClose={handleClose}
                         >
                           <MenuItem onClick={handleClose}>Report</MenuItem>
-                          <MenuItem onClick={handleClose}>
+                          <MenuItem
+                            onClick={() => {
+                              navigate(`/usersystem/${comment.userID}`);
+                            }}
+                          >
                             View Profile
                           </MenuItem>
                         </Menu>
@@ -157,19 +179,21 @@ const TopReviews = ({ place }: { place: Place }) => {
                       }}
                     >
                       <img
-                        src={`/systemImage/${comment.avatarImage}`}
+                        src={`${comment.avatarImage}`}
                         alt="profile"
                         style={{
-                          width: "70px",
-                          height: "70px",
+                          width: "50px",
+                          height: "50px",
                           borderRadius: "100%",
                           objectFit: "cover",
                           marginRight: "10px",
+                          objectPosition: "center",
                         }}
                       />
+
                       <Box>
                         <Typography variant="subtitle1">
-                          {comment.userName}
+                          {comment.username}
                         </Typography>
                         <Typography variant="caption">
                           <Box component="span" sx={{ fontWeight: "bold" }}>
@@ -213,7 +237,13 @@ const TopReviews = ({ place }: { place: Place }) => {
                         {comment.title}
                       </Typography>
                       <Box display="flex" alignItems="center" mt={1} mb={2}>
-                        <Typography variant="overline">
+                        <Typography
+                          sx={{
+                            fontWeight: "bold",
+                            marginRight: "10px",
+                          }}
+                          variant="body1"
+                        >
                           Written{" "}
                           {comment.writtenDate
                             ? format(
@@ -225,7 +255,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                         <CircleIcon
                           sx={{ marginLeft: "10px", marginRight: "10px" }}
                         />
-                        <Typography variant="overline">
+                        <Typography variant="body1">
                           {" "}
                           {comment.withWhom}
                         </Typography>
@@ -249,58 +279,64 @@ const TopReviews = ({ place }: { place: Place }) => {
                         flexDirection="column"
                         sx={{ marginTop: "20px" }}
                       >
-                        <Box display="flex" justifyContent="space-between">
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              Service
-                            </Typography>
-                            <Rating
-                              name="location-rating"
-                              value={comment.service}
-                              readOnly
-                            />
+                        <Box
+                          display="flex"
+                          flexDirection="column"
+                          sx={{ marginTop: "20px" }}
+                        >
+                          <Box display="flex" justifyContent="space-between">
+                            <Box>
+                              <Typography variant="body2" component="p">
+                                Service
+                              </Typography>
+                              <Rating
+                                name="location-rating"
+                                value={comment.service}
+                                readOnly
+                              />
+                            </Box>
+                            <Box>
+                              <Typography variant="body2" component="p">
+                                Food Quality
+                              </Typography>
+                              <Rating
+                                name="food-quality-rating"
+                                value={comment.foodQuality}
+                                readOnly
+                              />
+                            </Box>
                           </Box>
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              Room Quality
-                            </Typography>
-                            <Rating
-                              name="food-quality-rating"
-                              value={comment.foodQuality}
-                              readOnly
-                            />
-                          </Box>
-                        </Box>
-                        <Box display="flex" justifyContent="space-between">
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              value for money
-                            </Typography>
-                            <Rating
-                              name="service-rating"
-                              value={comment.valueForMoney}
-                              readOnly
-                            />
-                          </Box>
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              menu variety
-                            </Typography>
-                            <Rating
-                              name="menu-variety-rating"
-                              value={comment.menuVariety}
-                              readOnly
-                            />
-                          </Box>
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              Ambiance
-                            </Typography>
-                            <Rating
-                              name="ambience-rating"
-                              value={comment.ambiance}
-                              readOnly
-                            />
+                          <Box display="flex" justifyContent="space-between">
+                            <Box>
+                              <Typography variant="body2" component="p">
+                                value for money
+                              </Typography>
+                              <Rating
+                                name="service-rating"
+                                value={comment.valueForMoney}
+                                readOnly
+                              />
+                            </Box>
+                            <Box>
+                              <Typography variant="body2" component="p">
+                                menu variety
+                              </Typography>
+                              <Rating
+                                name="menu-variety-rating"
+                                value={comment.menuVariety}
+                                readOnly
+                              />
+                            </Box>
+                            <Box>
+                              <Typography variant="body2" component="p">
+                                Ambiance
+                              </Typography>
+                              <Rating
+                                name="ambience-rating"
+                                value={comment.ambiance}
+                                readOnly
+                              />
+                            </Box>
                           </Box>
                         </Box>
                       </Box>
@@ -436,7 +472,14 @@ const TopReviews = ({ place }: { place: Place }) => {
                       style={{ width: "100%" }}
                     />
                     <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                      Date: {photo.dateOfTaken.toLocaleDateString()}
+                      Date:{" "}
+                      {photo.dateOfTaken
+                        ? photo.dateOfTaken.toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "Date not available"}
                     </Typography>
                   </Box>
                 </CardContent>

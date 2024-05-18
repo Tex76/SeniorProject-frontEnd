@@ -53,7 +53,7 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/trips" element={<Trips />} />
                     <Route path="/picktrip" element={<PickTrip />} />
-                    <Route path="/usersystem" element={<UserSystem />} />
+                    <Route path="/usersystem/:id" element={<UserSystem />} />
                     <Route path="/mytrip" element={<MyTrip />} />
                     <Route path="/generatetrip" element={<GenerateTrip />} />
                     <Route path="/review/:id" element={<ReviewPlace />} />

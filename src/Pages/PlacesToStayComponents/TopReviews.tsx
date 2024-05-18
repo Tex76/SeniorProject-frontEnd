@@ -17,6 +17,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { format, parseISO } from "date-fns";
 
 import profile from "../../images/Profile/profile.png";
 import Adventure from "../../images/RewardSystem/Adventure.png";
@@ -26,19 +27,22 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Comment, Photo, Place } from "../../../../api/SchemaDb";
-import { format, parseISO } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
-const TopReviews = ({ place }: { place: any }) => {
+const TopReviews = ({ place }: { place: Place }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState(0);
+  console.log(place);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
-  const [, setVotes] = useState(0);
+  const [votes, setVotes] = useState(0);
   const [voteType, setVoteType] = useState<"upvote" | "downvote" | null>(null);
 
   const upvote = () => {
+    // change the logic in order to send update on the comment server side
     if (voteType === "upvote") {
       setVotes(0);
       setVoteType(null);
@@ -73,7 +77,7 @@ const TopReviews = ({ place }: { place: any }) => {
       <Tabs
         value={value}
         onChange={handleChange}
-        sx={{ justifyContent: "flex-start" }}
+        sx={{ justifyContent: "flex-start", width: "100%" }}
       >
         <Tab label="Reviews" />
         <Tab label="Photos" />
@@ -87,7 +91,12 @@ const TopReviews = ({ place }: { place: any }) => {
           ) : (
             place.comments.map((comment: any) => {
               return (
-                <>
+                <Box
+                  sx={{
+                    overflow: "hidden",
+                    width: "90%",
+                  }}
+                >
                   <CardContent
                     sx={{
                       position: "relative",
@@ -104,6 +113,7 @@ const TopReviews = ({ place }: { place: any }) => {
                       sx={{
                         display: "flex",
                         width: "100%",
+                        height: "40px",
                         justifyContent: "end",
                       }}
                     >
@@ -113,7 +123,7 @@ const TopReviews = ({ place }: { place: any }) => {
                           display: "flex",
                           backgroundColor: "white",
                           width: "100px",
-                          height: "50px",
+                          height: "35px",
                           borderRadius: "50px",
                           border: "1px solid black",
                         }}
@@ -121,16 +131,30 @@ const TopReviews = ({ place }: { place: any }) => {
                         <IconButton onClick={upvote} sx={{ flex: "1" }}>
                           <ArrowUpwardIcon />
                         </IconButton>
-                        <p style={{ flex: "1", fontWeight: "bold" }}>
+                        <Typography
+                          sx={{
+                            flex: "1",
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            fontSize: "20px",
+                            mt: "2px",
+                          }}
+                        >
                           {comment.score}
-                        </p>
+                        </Typography>
                         <IconButton onClick={downvote} sx={{ flex: "1" }}>
                           <ArrowDownwardIcon />
                         </IconButton>
                       </Box>
                       <Box>
                         <IconButton onClick={handleClick}>
-                          <MoreHorizIcon sx={{ fontSize: "50px" }} />
+                          <MoreHorizIcon
+                            sx={{
+                              fontSize: "30px",
+                              color: "black",
+                              padding: "10px",
+                            }}
+                          />
                         </IconButton>
                         <Menu
                           anchorEl={anchorEl}
@@ -138,7 +162,11 @@ const TopReviews = ({ place }: { place: any }) => {
                           onClose={handleClose}
                         >
                           <MenuItem onClick={handleClose}>Report</MenuItem>
-                          <MenuItem onClick={handleClose}>
+                          <MenuItem
+                            onClick={() => {
+                              navigate(`/usersystem/${comment.userID}`);
+                            }}
+                          >
                             View Profile
                           </MenuItem>
                         </Menu>
@@ -153,16 +181,18 @@ const TopReviews = ({ place }: { place: any }) => {
                       }}
                     >
                       <img
-                        src={`/systemImage/${comment.avatarImage}`}
+                        src={`${comment.avatarImage}`}
                         alt="profile"
                         style={{
-                          width: "70px",
-                          height: "70px",
+                          width: "50px",
+                          height: "50px",
                           borderRadius: "100%",
                           objectFit: "cover",
                           marginRight: "10px",
+                          objectPosition: "center",
                         }}
                       />
+
                       <Box>
                         <Typography variant="subtitle1">
                           {comment.username}
@@ -209,7 +239,13 @@ const TopReviews = ({ place }: { place: any }) => {
                         {comment.title}
                       </Typography>
                       <Box display="flex" alignItems="center" mt={1} mb={2}>
-                        <Typography variant="overline">
+                        <Typography
+                          sx={{
+                            fontWeight: "bold",
+                            marginRight: "10px",
+                          }}
+                          variant="body1"
+                        >
                           Written{" "}
                           {comment.writtenDate
                             ? format(
@@ -221,7 +257,8 @@ const TopReviews = ({ place }: { place: any }) => {
                         <CircleIcon
                           sx={{ marginLeft: "10px", marginRight: "10px" }}
                         />
-                        <Typography variant="overline">
+                        <Typography variant="body1">
+                          {" "}
                           {comment.withWhom}
                         </Typography>
                       </Box>
@@ -230,7 +267,7 @@ const TopReviews = ({ place }: { place: any }) => {
                       </Typography>
                       <Box mt={2}>
                         <Typography variant="body1">
-                          <strong>Date visited: </strong>
+                          <strong>Date visited:</strong>
                           {comment.dateVisit
                             ? format(
                                 parseISO(comment.dateVisit),
@@ -311,7 +348,7 @@ const TopReviews = ({ place }: { place: any }) => {
                       </Box>
                     </Box>
                   </CardContent>
-                </>
+                </Box>
               );
             }, [])
           )}
@@ -381,7 +418,7 @@ const TopReviews = ({ place }: { place: any }) => {
                         onClose={handleClose}
                       >
                         <MenuItem onClick={handleClose}>Report</MenuItem>
-                        <MenuItem onClick={handleClose}>View Profile</MenuItem>
+                        <MenuItem>View Profile</MenuItem>
                       </Menu>
                     </Box>
                   </Box>
@@ -441,7 +478,14 @@ const TopReviews = ({ place }: { place: any }) => {
                       style={{ width: "100%" }}
                     />
                     <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                      Date: {photo.dateOfTaken.toLocaleDateString()}
+                      Date:{" "}
+                      {photo.dateOfTaken
+                        ? photo.dateOfTaken.toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "Date not available"}
                     </Typography>
                   </Box>
                 </CardContent>

@@ -24,11 +24,13 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Place } from "../../../../api/SchemaDb";
 
 const Cards = ({ place }: { place: any }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const iconColor = "black"; // Change this to your desired color
+
   return (
     <Box
       sx={{
@@ -49,7 +51,7 @@ const Cards = ({ place }: { place: any }) => {
             margin: "0 10px 10px 0",
             borderRadius: "10px",
             color: "white",
-            height: "Auto",
+            height: "auto",
           }}
         >
           <CardContent>
@@ -86,7 +88,7 @@ const Cards = ({ place }: { place: any }) => {
                   name="place-rating"
                   value={place.rate}
                   readOnly
-                />{" "}
+                />
               </Box>
               <Box
                 sx={{
@@ -94,7 +96,7 @@ const Cards = ({ place }: { place: any }) => {
                   marginLeft: "10px",
                 }}
               >
-                <Typography>{place.totalComments + " "} reviews</Typography>
+                <Typography>{place.totalComments} reviews</Typography>
               </Box>
             </Box>
             <hr />
@@ -103,59 +105,46 @@ const Cards = ({ place }: { place: any }) => {
               component="p"
               sx={{ marginTop: "50px", marginBottom: "10px" }}
             >
-              RATINGS{" "}
+              Ratings
             </Typography>
-            <Box display="flex" justifyContent="space-between"></Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <DinnerDiningIcon style={{ color: "black" }} /> Food Quality
-              </Typography>
-              <Rating
-                name="food-quality-rating"
-                value={place.subRatings.foodQuality}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <LocalAtmIcon style={{ color: "black" }} /> Money
-              </Typography>
-              <Rating
-                name="money-rating"
-                value={place.subRatings.valueForMoney}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <VolunteerActivismIcon style={{ color: "black" }} /> Service
-              </Typography>
-              <Rating
-                name="service-rating"
-                value={place.subRatings.service}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <MenuBookIcon style={{ color: "black" }} /> Menu Variety
-              </Typography>
-              <Rating
-                name="menu-variety-rating"
-                value={place.subRatings.menuVariety}
-                readOnly
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="body2" component="p">
-                <TableRestaurantIcon style={{ color: "black" }} /> Ambience
-              </Typography>
-              <Rating
-                name="ambience-rating"
-                value={place.subRatings.ambiance}
-                readOnly
-              />
-            </Box>
+            {[
+              {
+                label: "Food Quality",
+                icon: <DinnerDiningIcon sx={{ color: iconColor }} />,
+                rate: place.subRatings.foodQuality,
+              },
+              {
+                label: "Money",
+                icon: <LocalAtmIcon sx={{ color: iconColor }} />,
+                rate: place.subRatings.valueForMoney,
+              },
+              {
+                label: "Service",
+                icon: <VolunteerActivismIcon sx={{ color: iconColor }} />,
+                rate: place.subRatings.service,
+              },
+              {
+                label: "Menu Variety",
+                icon: <MenuBookIcon sx={{ color: iconColor }} />,
+                rate: place.subRatings.menuVariety,
+              },
+              {
+                label: "Ambience",
+                icon: <TableRestaurantIcon sx={{ color: iconColor }} />,
+                rate: place.subRatings.ambiance,
+              },
+            ].map((item, index) => (
+              <Box key={index} display="flex" justifyContent="space-between">
+                <Typography variant="body2" component="p">
+                  {item.icon} {item.label}
+                </Typography>
+                <Rating
+                  name={`${item.label.toLowerCase().replace(" ", "-")}-rating`}
+                  value={item.rate}
+                  readOnly
+                />
+              </Box>
+            ))}
           </CardContent>
         </Card>
         <Card
@@ -185,11 +174,7 @@ const Cards = ({ place }: { place: any }) => {
               </Typography>
               <Typography variant="overline" component="p">
                 {!!place.cuisines &&
-                  place.cuisines
-                    .map((cuisines: any) => {
-                      return cuisines;
-                    })
-                    .join(", ")}
+                  place.cuisines.map((cuisines: any) => cuisines).join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
@@ -198,11 +183,7 @@ const Cards = ({ place }: { place: any }) => {
               </Typography>
               <Typography variant="overline" component="p">
                 {!!place.meals &&
-                  place.meals
-                    .map((meals: any) => {
-                      return meals;
-                    })
-                    .join(", ")}
+                  place.meals.map((meals: any) => meals).join(", ")}
               </Typography>
             </Box>
             <Box mt={3}>
@@ -212,9 +193,7 @@ const Cards = ({ place }: { place: any }) => {
               <Typography variant="overline" component="p">
                 {!!place.featuresList &&
                   place.featuresList
-                    .map((featuresList: any) => {
-                      return featuresList;
-                    })
+                    .map((featuresList: any) => featuresList)
                     .join(", ")}
               </Typography>
             </Box>
@@ -238,7 +217,7 @@ const Cards = ({ place }: { place: any }) => {
               variant="h5"
               component="h2"
             >
-              Location and contact
+              Location and Contact
             </Typography>
             <iframe
               src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc&q=${place.googleLocation.lat},${place.googleLocation.lng}`}
@@ -274,7 +253,7 @@ const Cards = ({ place }: { place: any }) => {
         >
           <CardContent>
             <Typography variant="h5" component="h2">
-              Characteristic
+              Actions
             </Typography>
             <Box>
               <Button
@@ -288,9 +267,12 @@ const Cards = ({ place }: { place: any }) => {
                   borderRadius: "50px",
                 }}
               >
-                Write review
+                Write Review
               </Button>
               <Button
+                onClick={() => {
+                  window.location.href = `/photo/${place._id}`;
+                }}
                 variant="contained"
                 style={{
                   backgroundColor: "sandybrown",

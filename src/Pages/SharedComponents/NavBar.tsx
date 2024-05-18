@@ -31,7 +31,7 @@ const pages = {
   Review: "Reviews",
   Reward: "RewardSystem",
 };
-const settings = ["Login", "Signup", "MyTrip", "Logout"];
+const settings = ["Login", "Signup", "MyTrip", "Profile", "Logout"];
 
 interface Props {
   textColor?: string;
@@ -48,6 +48,7 @@ function NavBar({ textColor }: Props) {
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up(1100));
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -65,7 +66,11 @@ function NavBar({ textColor }: Props) {
     setAnchorElUser(null);
   };
 
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up(1100));
+  const handleLogout = () => {
+    axios.post("/logout").then(() => {
+      window.location.href = "/";
+    });
+  };
 
   return (
     <AppBar
@@ -108,7 +113,7 @@ function NavBar({ textColor }: Props) {
                 color: "white",
                 display: "block",
                 "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.2)", // Change this to the color you want on hover
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
                 },
               }}
             >
@@ -171,7 +176,7 @@ function NavBar({ textColor }: Props) {
               <Button
                 sx={{
                   "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.2)", // Change this to the color you want on hover
+                    backgroundColor: "rgba(0, 0, 0, 0.2)",
                   },
                 }}
               >
@@ -202,7 +207,7 @@ function NavBar({ textColor }: Props) {
             <Box sx={{ flexGrow: 0, ml: 2 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar src="/broken-image.jpg" />
+                  <Avatar src={user ? user.avatarImage : "broken-image.jpg"} />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -213,7 +218,7 @@ function NavBar({ textColor }: Props) {
             <Button
               sx={{
                 "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.2)", // Change this to the color you want on hover
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
                 },
               }}
             >
@@ -243,11 +248,7 @@ function NavBar({ textColor }: Props) {
           </Box>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 2 }}>
-              {user ? (
-                <Avatar src={`/systemImage/${user.avatarImage}`} />
-              ) : (
-                <Avatar src="broken-image.jpg" />
-              )}
+              <Avatar src={user ? user.avatarImage : "broken-image.jpg"} />
             </IconButton>
           </Tooltip>
           <Menu
@@ -263,38 +264,31 @@ function NavBar({ textColor }: Props) {
             {settings.map((setting) => (
               <MenuItem key={setting} onClick={handleCloseUserMenu}>
                 {setting === "Logout" && !!user ? (
-                  // Render as a button with red text and no navigation link
                   <Typography
                     textAlign="center"
                     style={{ color: "red", cursor: "pointer" }}
-                    onClick={() => {
-                      axios.post("/logout").then(() => {
-                        window.location.href = "/";
-                      });
-                    }}
+                    onClick={handleLogout}
                   >
                     {setting}
                   </Typography>
-                ) : (
-                  // Render other settings as links
+                ) : setting === "Profile" && !!user ? (
                   <Link
-                    to={`/${
-                      setting === "Login" ||
-                      setting === "Signup" ||
-                      setting === "MyTrip"
-                        ? setting
-                        : "#"
-                    }`}
+                    to={`/usersystem/${user.id}`}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    {setting === "Login" ||
-                    setting === "Signup" ||
-                    setting === "MyTrip" ? (
-                      <Typography textAlign="center">{setting}</Typography>
-                    ) : (
-                      ""
-                    )}
+                    <Typography textAlign="center">{setting}</Typography>
                   </Link>
+                ) : (
+                  (setting === "Login" ||
+                    setting === "Signup" ||
+                    setting === "MyTrip") && (
+                    <Link
+                      to={`/${setting}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </Link>
+                  )
                 )}
               </MenuItem>
             ))}

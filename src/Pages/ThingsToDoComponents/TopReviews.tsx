@@ -27,8 +27,10 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Comment, Photo, Place } from "../../../../api/SchemaDb";
+import { useNavigate } from "react-router-dom";
 
 const TopReviews = ({ place }: { place: Place }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState(0);
   console.log(place);
 
@@ -160,7 +162,11 @@ const TopReviews = ({ place }: { place: Place }) => {
                           onClose={handleClose}
                         >
                           <MenuItem onClick={handleClose}>Report</MenuItem>
-                          <MenuItem onClick={handleClose}>
+                          <MenuItem
+                            onClick={() => {
+                              navigate(`/usersystem/${comment.userID}`);
+                            }}
+                          >
                             View Profile
                           </MenuItem>
                         </Menu>
@@ -175,16 +181,18 @@ const TopReviews = ({ place }: { place: Place }) => {
                       }}
                     >
                       <img
-                        src={`/systemImage/${comment.avatarImage}`}
+                        src={`${comment.avatarImage}`}
                         alt="profile"
                         style={{
-                          width: "70px",
-                          height: "70px",
+                          width: "50px",
+                          height: "50px",
                           borderRadius: "100%",
                           objectFit: "cover",
                           marginRight: "10px",
+                          objectPosition: "center",
                         }}
                       />
+
                       <Box>
                         <Typography variant="subtitle1">
                           {comment.username}
@@ -400,7 +408,7 @@ const TopReviews = ({ place }: { place: Place }) => {
                         onClose={handleClose}
                       >
                         <MenuItem onClick={handleClose}>Report</MenuItem>
-                        <MenuItem onClick={handleClose}>View Profile</MenuItem>
+                        <MenuItem>View Profile</MenuItem>
                       </Menu>
                     </Box>
                   </Box>
