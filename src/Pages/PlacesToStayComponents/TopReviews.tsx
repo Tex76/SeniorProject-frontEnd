@@ -32,13 +32,12 @@ import { useNavigate } from "react-router-dom";
 const TopReviews = ({ place }: { place: Place }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
-  console.log(place);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
-  const [votes, setVotes] = useState(0);
+  const [, setVotes] = useState(0);
   const [voteType, setVoteType] = useState<"upvote" | "downvote" | null>(null);
 
   const upvote = () => {
@@ -62,14 +61,39 @@ const TopReviews = ({ place }: { place: Place }) => {
     }
   };
 
-  const [anchorEl, setAnchorEl] = useState<null | Element>(null);
+  const [commentAnchorEls, setCommentAnchorEls] = useState<
+    Record<string, HTMLElement | null>
+  >({});
+  const [photoAnchorEls, setPhotoAnchorEls] = useState<
+    Record<string, HTMLElement | null>
+  >({});
 
-  const handleClick = (event: React.MouseEvent<Element, MouseEvent>) => {
-    setAnchorEl(event.currentTarget);
+  const handleCommentClick = (
+    event: React.MouseEvent<Element, MouseEvent>,
+    commentId: string
+  ) => {
+    setCommentAnchorEls((prev: any) => ({
+      ...prev,
+      [commentId]: event.currentTarget,
+    }));
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleCommentClose = (commentId: string) => {
+    setCommentAnchorEls((prev: any) => ({ ...prev, [commentId]: null }));
+  };
+
+  const handlePhotoClick = (
+    event: React.MouseEvent<Element, MouseEvent>,
+    photoId: string
+  ) => {
+    setPhotoAnchorEls((prev: any) => ({
+      ...prev,
+      [photoId]: event.currentTarget,
+    }));
+  };
+
+  const handlePhotoClose = (photoId: string) => {
+    setPhotoAnchorEls((prev: any) => ({ ...prev, [photoId]: null }));
   };
 
   return (
@@ -89,268 +113,256 @@ const TopReviews = ({ place }: { place: Place }) => {
           Object.keys(place.comments[0]).length === 0 ? (
             <h2 style={{ textAlign: "center" }}>No reviews yet</h2>
           ) : (
-            place.comments.map((comment: any) => {
-              return (
-                <Box
+            place.comments.map((comment: any) => (
+              <Box key={comment._id} sx={{ overflow: "hidden", width: "90%" }}>
+                <CardContent
                   sx={{
-                    overflow: "hidden",
-                    width: "90%",
+                    position: "relative",
+                    borderTop: "2px solid black",
+                    borderBlockColor: "gainsboro",
+                    margin: "30px",
+                    backgroundColor: "oldlace",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
                   }}
                 >
-                  <CardContent
+                  <Box
                     sx={{
-                      position: "relative",
-                      borderTop: "2px solid black",
-                      borderBlockColor: "gainsboro",
-                      margin: "30px",
-                      backgroundColor: "oldlace",
                       display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
+                      width: "100%",
+                      height: "40px",
+                      justifyContent: "end",
                     }}
                   >
                     <Box
                       sx={{
+                        margin: "10px",
                         display: "flex",
-                        width: "100%",
-                        height: "40px",
-                        justifyContent: "end",
+                        backgroundColor: "white",
+                        width: "100px",
+                        height: "35px",
+                        borderRadius: "50px",
+                        border: "1px solid black",
                       }}
                     >
-                      <Box
+                      <IconButton onClick={upvote} sx={{ flex: "1" }}>
+                        <ArrowUpwardIcon />
+                      </IconButton>
+                      <Typography
                         sx={{
-                          margin: "10px",
-                          display: "flex",
-                          backgroundColor: "white",
-                          width: "100px",
-                          height: "35px",
-                          borderRadius: "50px",
-                          border: "1px solid black",
+                          flex: "1",
+                          fontWeight: "bold",
+                          textAlign: "center",
+                          fontSize: "20px",
+                          mt: "2px",
                         }}
                       >
-                        <IconButton onClick={upvote} sx={{ flex: "1" }}>
-                          <ArrowUpwardIcon />
-                        </IconButton>
-                        <Typography
-                          sx={{
-                            flex: "1",
-                            fontWeight: "bold",
-                            textAlign: "center",
-                            fontSize: "20px",
-                            mt: "2px",
-                          }}
-                        >
-                          {comment.score}
-                        </Typography>
-                        <IconButton onClick={downvote} sx={{ flex: "1" }}>
-                          <ArrowDownwardIcon />
-                        </IconButton>
-                      </Box>
-                      <Box>
-                        <IconButton onClick={handleClick}>
-                          <MoreHorizIcon
-                            sx={{
-                              fontSize: "30px",
-                              color: "black",
-                              padding: "10px",
-                            }}
-                          />
-                        </IconButton>
-                        <Menu
-                          anchorEl={anchorEl}
-                          open={Boolean(anchorEl)}
-                          onClose={handleClose}
-                        >
-                          <MenuItem onClick={handleClose}>Report</MenuItem>
-                          <MenuItem
-                            onClick={() => {
-                              navigate(`/usersystem/${comment.userID}`);
-                            }}
-                          >
-                            View Profile
-                          </MenuItem>
-                        </Menu>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      <img
-                        src={`${comment.avatarImage}`}
-                        alt="profile"
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          borderRadius: "100%",
-                          objectFit: "cover",
-                          marginRight: "10px",
-                          objectPosition: "center",
-                        }}
-                      />
-
-                      <Box>
-                        <Typography variant="subtitle1">
-                          {comment.username}
-                        </Typography>
-                        <Typography variant="caption">
-                          <Box component="span" sx={{ fontWeight: "bold" }}>
-                            {comment.contribution}
-                          </Box>{" "}
-                          contributions
-                        </Typography>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Typography variant="subtitle1">
-                            {comment.rank}{" "}
-                          </Typography>
-                          <img
-                            src={`/systemImage/${comment.rankImage}`}
-                            alt="Adventure"
-                            style={{
-                              width: "20px",
-                              height: "auto",
-                              marginLeft: "10px",
-                            }}
-                          />
-                        </div>
-                      </Box>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      <Rating name="read-only" value={comment.rate} readOnly />
+                        {comment.score}
+                      </Typography>
+                      <IconButton onClick={downvote} sx={{ flex: "1" }}>
+                        <ArrowDownwardIcon />
+                      </IconButton>
                     </Box>
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                        {comment.title}
-                      </Typography>
-                      <Box display="flex" alignItems="center" mt={1} mb={2}>
-                        <Typography
-                          sx={{
-                            fontWeight: "bold",
-                            marginRight: "10px",
-                          }}
-                          variant="body1"
-                        >
-                          Written{" "}
-                          {comment.writtenDate
-                            ? format(
-                                parseISO(comment.writtenDate),
-                                "MMMM dd, yyyy"
-                              )
-                            : "Date not available"}
-                        </Typography>
-                        <CircleIcon
-                          sx={{ marginLeft: "10px", marginRight: "10px" }}
-                        />
-                        <Typography variant="body1">
-                          {" "}
-                          {comment.withWhom}
-                        </Typography>
-                      </Box>
-                      <Typography variant="body2">
-                        {comment.commentBody}
-                      </Typography>
-                      <Box mt={2}>
-                        <Typography variant="body1">
-                          <strong>Date visited:</strong>
-                          {comment.dateVisit
-                            ? format(
-                                parseISO(comment.dateVisit),
-                                "MMMM dd, yyyy"
-                              )
-                            : "Date not available"}
-                        </Typography>
-                      </Box>
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        sx={{ marginTop: "20px" }}
+                      <IconButton
+                        onClick={(event) =>
+                          handleCommentClick(event, comment._id)
+                        }
                       >
-                        <Box display="flex" justifyContent="space-between">
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              Service
-                            </Typography>
-                            <Rating
-                              name="location-rating"
-                              value={comment.service}
-                              readOnly
-                            />
-                          </Box>
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              Room Quality
-                            </Typography>
-                            <Rating
-                              name="food-quality-rating"
-                              value={comment.roomQuality}
-                              readOnly
-                            />
-                          </Box>
-                          {/* <Box>
-                            <Typography variant="body2" component="p">
-                              Facilities
-                            </Typography>
-                            <Rating
-                              name="money-rating"
-                              value={comment.facilities}
-                              readOnly
-                            />
-                          </Box> */}
+                        <MoreHorizIcon
+                          sx={{
+                            fontSize: "30px",
+                            color: "black",
+                            padding: "10px",
+                          }}
+                        />
+                      </IconButton>
+                      <Menu
+                        anchorEl={commentAnchorEls[comment._id] || null}
+                        open={Boolean(commentAnchorEls[comment._id])}
+                        onClose={() => handleCommentClose(comment._id)}
+                      >
+                        <MenuItem
+                          onClick={() => handleCommentClose(comment._id)}
+                        >
+                          Report
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            navigate(`/usersystem/${comment.userID}`);
+                          }}
+                        >
+                          View Profile
+                        </MenuItem>
+                      </Menu>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <img
+                      src={`${comment.avatarImage}`}
+                      alt="profile"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "100%",
+                        objectFit: "cover",
+                        marginRight: "10px",
+                        objectPosition: "center",
+                      }}
+                    />
+
+                    <Box>
+                      <Typography variant="subtitle1">
+                        {comment.username}
+                      </Typography>
+                      <Typography variant="caption">
+                        <Box component="span" sx={{ fontWeight: "bold" }}>
+                          {comment.contribution}
+                        </Box>{" "}
+                        contributions
+                      </Typography>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography variant="subtitle1">
+                          {comment.rank}{" "}
+                        </Typography>
+                        <img
+                          src={`/systemImage/${comment.rankImage}`}
+                          alt="Adventure"
+                          style={{
+                            width: "20px",
+                            height: "auto",
+                            marginLeft: "10px",
+                          }}
+                        />
+                      </div>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <Rating name="read-only" value={comment.rate} readOnly />
+                  </Box>
+                  <Box>
+                    <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                      {comment.title}
+                    </Typography>
+                    <Box display="flex" alignItems="center" mt={1} mb={2}>
+                      <Typography
+                        sx={{
+                          fontWeight: "bold",
+                          marginRight: "10px",
+                        }}
+                        variant="body1"
+                      >
+                        Written{" "}
+                        {comment.writtenDate
+                          ? format(
+                              parseISO(comment.writtenDate),
+                              "MMMM dd, yyyy"
+                            )
+                          : "Date not available"}
+                      </Typography>
+                      <CircleIcon
+                        sx={{ marginLeft: "10px", marginRight: "10px" }}
+                      />
+                      <Typography variant="body1">
+                        {" "}
+                        {comment.withWhom}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2">
+                      {comment.commentBody}
+                    </Typography>
+                    <Box mt={2}>
+                      <Typography variant="body1">
+                        <strong>Date visited:</strong>
+                        {comment.dateVisit
+                          ? format(parseISO(comment.dateVisit), "MMMM dd, yyyy")
+                          : "Date not available"}
+                      </Typography>
+                    </Box>
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      sx={{ marginTop: "20px" }}
+                    >
+                      <Box display="flex" justifyContent="space-between">
+                        <Box>
+                          <Typography variant="body2" component="p">
+                            Service
+                          </Typography>
+                          <Rating
+                            name="location-rating"
+                            value={comment.service}
+                            readOnly
+                          />
                         </Box>
-                        <Box display="flex" justifyContent="space-between">
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              Location
-                            </Typography>
-                            <Rating
-                              name="service-rating"
-                              value={comment.location}
-                              readOnly
-                            />
-                          </Box>
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              Cleanliness
-                            </Typography>
-                            <Rating
-                              name="menu-variety-rating"
-                              value={comment.cleanliness}
-                              readOnly
-                            />
-                          </Box>
-                          <Box>
-                            <Typography variant="body2" component="p">
-                              facilities
-                            </Typography>
-                            <Rating
-                              name="menu-variety-rating"
-                              value={comment.facilities}
-                              readOnly
-                            />
-                          </Box>
+                        <Box>
+                          <Typography variant="body2" component="p">
+                            Room Quality
+                          </Typography>
+                          <Rating
+                            name="food-quality-rating"
+                            value={comment.roomQuality}
+                            readOnly
+                          />
+                        </Box>
+                      </Box>
+                      <Box display="flex" justifyContent="space-between">
+                        <Box>
+                          <Typography variant="body2" component="p">
+                            Location
+                          </Typography>
+                          <Rating
+                            name="service-rating"
+                            value={comment.location}
+                            readOnly
+                          />
+                        </Box>
+                        <Box>
+                          <Typography variant="body2" component="p">
+                            Cleanliness
+                          </Typography>
+                          <Rating
+                            name="menu-variety-rating"
+                            value={comment.cleanliness}
+                            readOnly
+                          />
+                        </Box>
+                        <Box>
+                          <Typography variant="body2" component="p">
+                            Facilities
+                          </Typography>
+                          <Rating
+                            name="menu-variety-rating"
+                            value={comment.facilities}
+                            readOnly
+                          />
                         </Box>
                       </Box>
                     </Box>
-                  </CardContent>
-                </Box>
-              );
-            }, [])
+                  </Box>
+                </CardContent>
+              </Box>
+            ))
           )}
         </>
       )}
@@ -367,13 +379,7 @@ const TopReviews = ({ place }: { place: Place }) => {
               Top Photos
             </Typography>
             {place.photos.map((photo: any) => (
-              <Box
-                key={photo._id}
-                sx={{
-                  overflow: "hidden",
-                  width: "90%",
-                }}
-              >
+              <Box key={photo._id} sx={{ overflow: "hidden", width: "90%" }}>
                 <CardContent
                   sx={{
                     position: "relative",
@@ -415,15 +421,19 @@ const TopReviews = ({ place }: { place: Place }) => {
                       </IconButton>
                     </Box>
                     <Box>
-                      <IconButton onClick={handleClick}>
+                      <IconButton
+                        onClick={(event) => handlePhotoClick(event, photo._id)}
+                      >
                         <MoreHorizIcon sx={{ fontSize: "50px" }} />
                       </IconButton>
                       <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
+                        anchorEl={photoAnchorEls[photo._id] || null}
+                        open={Boolean(photoAnchorEls[photo._id])}
+                        onClose={() => handlePhotoClose(photo._id)}
                       >
-                        <MenuItem onClick={handleClose}>Report</MenuItem>
+                        <MenuItem onClick={() => handlePhotoClose(photo._id)}>
+                          Report
+                        </MenuItem>
                         <MenuItem
                           onClick={() => {
                             navigate(`/usersystem/${photo.userID}`);

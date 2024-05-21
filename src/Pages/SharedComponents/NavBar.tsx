@@ -17,12 +17,11 @@ import {
   Menu as MenuIcon,
   TravelExplore as TravelExploreIcon,
 } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "@fontsource/roboto";
 import SearchBar from "./SearchBar";
 import Coin from "../../images/NavBar/coin.png";
 import { UserContext } from "../../UserContext";
-import { useContext } from "react";
 import axios from "axios";
 
 const pages = {
@@ -38,7 +37,7 @@ interface Props {
 }
 
 function NavBar({ textColor }: Props) {
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -46,6 +45,7 @@ function NavBar({ textColor }: Props) {
     null
   );
 
+  const navigate = useNavigate();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeScreen = useMediaQuery(theme.breakpoints.up(1100));
@@ -70,6 +70,11 @@ function NavBar({ textColor }: Props) {
     axios.post("/logout").then(() => {
       window.location.href = "/";
     });
+  };
+
+  const handleCoinClick = () => {
+    console.log("Coin clicked"); // Debugging step
+    navigate("/pointsstore");
   };
 
   return (
@@ -174,6 +179,7 @@ function NavBar({ textColor }: Props) {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
               <Button
+                onClick={handleCoinClick} // Updated onClick handler
                 sx={{
                   "&:hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.2)",
@@ -216,6 +222,7 @@ function NavBar({ textColor }: Props) {
         <Box sx={{ display: { xs: "none", md: "flex" }, flexGrow: 0, ml: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
             <Button
+              onClick={handleCoinClick} // Updated onClick handler
               sx={{
                 "&:hover": {
                   backgroundColor: "rgba(0, 0, 0, 0.2)",

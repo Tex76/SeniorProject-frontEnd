@@ -7,11 +7,25 @@ import RoadMap from "./Pages/HomeComponents/Roadmap";
 import Footer from "./Pages/SharedComponents/Footer";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import FABComponent from "./FBComponent";
+import { UserContext } from "./UserContext";
+import { useContext, useEffect } from "react";
+import { useState } from "react";
 
 function App() {
+  const { user } = useContext(UserContext);
+  const [fabVisible, setFabVisible] = useState(false);
+
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("lg"));
   // const [session, setSession] = useState(null);
+  useEffect(() => {
+    if (user && user.runningTrip !== "No active trip") {
+      setFabVisible(true);
+    } else {
+      setFabVisible(false);
+    }
+  }, [setFabVisible, user]);
 
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
@@ -19,6 +33,7 @@ function App() {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
+      {fabVisible ? <FABComponent /> : null}
       <Box
         style={{
           background: `linear-gradient(145deg, rgba(35,44,67,1) 35%, rgba(109,132,151,1) 100%)`,
@@ -37,7 +52,7 @@ function App() {
             width: "100%",
             height: "auto",
             margin: "auto",
-            paddingBottom: "5%"
+            paddingBottom: "5%",
           }}
         >
           <Box sx={{ mb: 20, maxWidth: 1280, margin: "auto" }}>

@@ -25,6 +25,7 @@ import TimePeriodContext from "./TimePeriodContext";
 import GroupSizeContext from "./GroupSizeContext";
 import FavouriteActivitiesContext from "./FavouriteActivitiesContext";
 import ReviewPhoto from "./Pages/reviewPhoto";
+import FABComponent from "./FBComponent";
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
@@ -51,7 +52,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/trips" element={<Trips />} />
+                    <Route path="/currentTrip/:id" element={<Trips />} />
                     <Route path="/picktrip" element={<PickTrip />} />
                     <Route path="/usersystem/:id" element={<UserSystem />} />
                     <Route path="/mytrip" element={<MyTrip />} />

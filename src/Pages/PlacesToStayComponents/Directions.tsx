@@ -11,7 +11,7 @@ const Directions = ({ place }: { place: any }) => {
     <div>
       <Typography variant="h6" component="div" sx={{ fontSize: "17px" }}>
         {place.rate} <Rating name="read-only" value={5} readOnly />{" "}
-        {place.totalComments - 1} reviews
+        {place.totalComments} reviews
       </Typography>
       <Box
         display="flex"

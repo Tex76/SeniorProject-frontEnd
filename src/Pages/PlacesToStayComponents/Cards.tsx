@@ -25,7 +25,7 @@ import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import CleaningServicesOutlinedIcon from "@mui/icons-material/CleaningServicesOutlined";
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
-
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -116,7 +116,7 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
-                    <CleaningServicesOutlinedIcon style={{ color: "black" }} />
+                    <PinDropOutlinedIcon sx={{ color: "#252E46" }} />
                     {"  "}
                     location
                   </Typography>
@@ -128,7 +128,20 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
-                    <HowToRegOutlinedIcon style={{ color: "black" }} /> Service
+                    <CorporateFareIcon sx={{ color: "#252E46" }} />
+                    {"  "}
+                    facilities
+                  </Typography>
+                  <Rating
+                    name="service-rating"
+                    value={place.subRatings.facilities}
+                    readOnly
+                  />
+                </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body2" component="p">
+                    <HowToRegOutlinedIcon style={{ color: "#252E46" }} />{" "}
+                    Service
                   </Typography>
                   <Rating
                     name="food-quality-rating"
@@ -138,7 +151,8 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
-                    <BedOutlinedIcon style={{ color: "black" }} /> Room Quality
+                    <BedOutlinedIcon style={{ color: "#252E46" }} /> Room
+                    Quality
                   </Typography>
                   <Rating
                     name="money-rating"
@@ -148,7 +162,9 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box display="flex" justifyContent="space-between">
                   <Typography variant="body2" component="p">
-                    <CleaningServicesOutlinedIcon style={{ color: "black" }} />{" "}
+                    <CleaningServicesOutlinedIcon
+                      style={{ color: "#252E46" }}
+                    />{" "}
                     Cleanliness
                   </Typography>
                   <Rating
@@ -185,16 +201,16 @@ const Cards = ({ place }: { place: any }) => {
                 ></iframe>
                 <Typography variant="body1" component="p">
                   <LocationOnIcon
-                    style={{ color: "black", marginTop: "20px" }}
+                    style={{ color: "#252E46", marginTop: "20px" }}
                   />
                   {" " + place.location}
                 </Typography>
                 <Typography variant="body1" component="p">
-                  <CallIcon style={{ color: "black", marginTop: "20px" }} />
+                  <CallIcon style={{ color: "#252E46", marginTop: "20px" }} />
                   {" " + place.phoneNumber}
                 </Typography>
                 <Typography variant="body1" component="p">
-                  <EmailIcon style={{ color: "black", marginTop: "20px" }} />
+                  <EmailIcon style={{ color: "#252E46", marginTop: "20px" }} />
                   {" " + place.email}
                 </Typography>
               </CardContent>
@@ -215,7 +231,7 @@ const Cards = ({ place }: { place: any }) => {
                 </Typography>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <ApartmentOutlinedIcon sx={{ color: "black" }} />{" "}
+                    <ApartmentOutlinedIcon sx={{ color: "#252E46" }} />{" "}
                     ACCOMMODATION TYPE
                   </Typography>
                   <Typography variant="overline" component="p">
@@ -229,7 +245,7 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <ChairOutlinedIcon sx={{ color: "black" }} /> Amenities
+                    <ChairOutlinedIcon sx={{ color: "#252E46" }} /> Amenities
                   </Typography>
                   <Typography variant="overline" component="p">
                     {!!place.amenities &&
@@ -242,7 +258,7 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <BedroomParentOutlinedIcon sx={{ color: "black" }} /> ROOM
+                    <BedroomParentOutlinedIcon sx={{ color: "#252E46" }} /> ROOM
                     TYPE
                   </Typography>
                   <Typography variant="overline" component="p">
@@ -256,7 +272,7 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <PinDropOutlinedIcon sx={{ color: "black" }} /> Location
+                    <PinDropOutlinedIcon sx={{ color: "#252E46" }} /> Location
                     Type
                   </Typography>
                   <Typography variant="overline" component="p">
@@ -265,7 +281,7 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <SupportAgentOutlinedIcon sx={{ color: "black" }} />{" "}
+                    <SupportAgentOutlinedIcon sx={{ color: "#252E46" }} />{" "}
                     Additional Services
                   </Typography>
                   <Typography variant="overline" component="p">
@@ -279,8 +295,8 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <GTranslateOutlinedIcon sx={{ color: "black" }} /> LANGUAGE
-                    SPOKEN
+                    <GTranslateOutlinedIcon sx={{ color: "#252E46" }} />{" "}
+                    LANGUAGE SPOKEN
                   </Typography>
                   <Typography variant="overline" component="p">
                     {!!place.languagesSpoken &&
@@ -293,7 +309,8 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <LocalAtmOutlinedIcon sx={{ color: "black" }} /> PRICE RANGE
+                    <LocalAtmOutlinedIcon sx={{ color: "#252E46" }} /> PRICE
+                    RANGE
                   </Typography>
                   <Typography variant="overline" component="p">
                     {place.priceRange}
@@ -301,7 +318,7 @@ const Cards = ({ place }: { place: any }) => {
                 </Box>
                 <Box mt={3}>
                   <Typography variant="subtitle1" component="p">
-                    <StarsOutlinedIcon sx={{ color: "black" }} /> Hotel Class
+                    <StarsOutlinedIcon sx={{ color: "#252E46" }} /> Hotel Class
                   </Typography>
                   <Rating
                     name="location-rating"
@@ -337,7 +354,7 @@ const Cards = ({ place }: { place: any }) => {
             <Box>
               <Button
                 onClick={() => {
-                  window.location.href = `/reviewphoto/${place._id}`;
+                  window.location.href = `/review/${place._id}`;
                 }}
                 variant="contained"
                 style={{
@@ -349,6 +366,9 @@ const Cards = ({ place }: { place: any }) => {
                 Write review
               </Button>
               <Button
+                onClick={() => {
+                  window.location.href = `/reviewPhoto/${place._id}`;
+                }}
                 variant="contained"
                 style={{
                   backgroundColor: "sandybrown",

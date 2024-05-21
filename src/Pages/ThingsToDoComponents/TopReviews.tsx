@@ -61,14 +61,39 @@ const TopReviews = ({ place }: { place: Place }) => {
     }
   };
 
-  const [anchorEl, setAnchorEl] = useState<null | Element>(null);
+  const [commentAnchorEls, setCommentAnchorEls] = useState<
+    Record<string, HTMLElement | null>
+  >({});
+  const [photoAnchorEls, setPhotoAnchorEls] = useState<
+    Record<string, HTMLElement | null>
+  >({});
 
-  const handleClick = (event: React.MouseEvent<Element, MouseEvent>) => {
-    setAnchorEl(event.currentTarget);
+  const handleCommentClick = (
+    event: React.MouseEvent<Element, MouseEvent>,
+    commentId: string
+  ) => {
+    setCommentAnchorEls((prev: any) => ({
+      ...prev,
+      [commentId]: event.currentTarget,
+    }));
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleCommentClose = (commentId: string) => {
+    setCommentAnchorEls((prev) => ({ ...prev, [commentId]: null }));
+  };
+
+  const handlePhotoClick = (
+    event: React.MouseEvent<Element, MouseEvent>,
+    photoId: string
+  ) => {
+    setPhotoAnchorEls((prev: any) => ({
+      ...prev,
+      [photoId]: event.currentTarget,
+    }));
+  };
+
+  const handlePhotoClose = (photoId: string) => {
+    setPhotoAnchorEls((prev) => ({ ...prev, [photoId]: null }));
   };
 
   return (
@@ -89,13 +114,7 @@ const TopReviews = ({ place }: { place: Place }) => {
             <h2 style={{ textAlign: "center" }}>No reviews yet</h2>
           ) : (
             place.comments.map((comment: any) => (
-              <Box
-                key={comment._id}
-                sx={{
-                  overflow: "hidden",
-                  width: "90%",
-                }}
-              >
+              <Box key={comment._id} sx={{ overflow: "hidden", width: "90%" }}>
                 <CardContent
                   sx={{
                     position: "relative",
@@ -146,21 +165,29 @@ const TopReviews = ({ place }: { place: Place }) => {
                       </IconButton>
                     </Box>
                     <Box>
-                      <IconButton onClick={handleClick}>
+                      <IconButton
+                        onClick={(event) =>
+                          handleCommentClick(event, comment._id)
+                        }
+                      >
                         <MoreHorizIcon
                           sx={{
-                            fontSize: "30px",
+                            fontSize: "20px",
                             color: "black",
-                            padding: "10px",
+                            padding: "5px",
                           }}
                         />
                       </IconButton>
                       <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
+                        anchorEl={commentAnchorEls[comment._id] || null}
+                        open={Boolean(commentAnchorEls[comment._id])}
+                        onClose={() => handleCommentClose(comment._id)}
                       >
-                        <MenuItem onClick={handleClose}>Report</MenuItem>
+                        <MenuItem
+                          onClick={() => handleCommentClose(comment._id)}
+                        >
+                          Report
+                        </MenuItem>
                         <MenuItem
                           onClick={() => {
                             navigate(`/usersystem/${comment.userID}`);
@@ -352,13 +379,7 @@ const TopReviews = ({ place }: { place: Place }) => {
               Top Photos
             </Typography>
             {place.photos.map((photo: any) => (
-              <Box
-                key={photo._id}
-                sx={{
-                  overflow: "hidden",
-                  width: "90%",
-                }}
-              >
+              <Box key={photo._id} sx={{ overflow: "hidden", width: "90%" }}>
                 <CardContent
                   sx={{
                     position: "relative",
@@ -400,15 +421,19 @@ const TopReviews = ({ place }: { place: Place }) => {
                       </IconButton>
                     </Box>
                     <Box>
-                      <IconButton onClick={handleClick}>
+                      <IconButton
+                        onClick={(event) => handlePhotoClick(event, photo._id)}
+                      >
                         <MoreHorizIcon sx={{ fontSize: "50px" }} />
                       </IconButton>
                       <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
+                        anchorEl={photoAnchorEls[photo._id] || null}
+                        open={Boolean(photoAnchorEls[photo._id])}
+                        onClose={() => handlePhotoClose(photo._id)}
                       >
-                        <MenuItem onClick={handleClose}>Report</MenuItem>
+                        <MenuItem onClick={() => handlePhotoClose(photo._id)}>
+                          Report
+                        </MenuItem>
                         <MenuItem
                           onClick={() => {
                             navigate(`/usersystem/${photo.userID}`);

@@ -63,7 +63,7 @@ export default function CreateTripForm({ passFunction }: CreateTripFormProps) {
         })
         .then((res) => {
           console.log("Trip created response from createTripForm", res.data);
-          navigator("/createtrip/" + res.data.trip._id);
+          navigator("/createtrip/" + res.data.tripID);
         })
         .catch((err) => console.error("Error creating trip", err));
     } else {

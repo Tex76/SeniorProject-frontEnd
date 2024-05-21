@@ -37,7 +37,7 @@ const ResponsiveBox = styled(Box)(({ theme }) => ({
 }));
 
 const ReviewPlace = () => {
-  const { user, setUser, refreshUser } = useContext(UserContext);
+  const { user, refreshUser } = useContext(UserContext);
 
   const [imageUrl, setImageUrl] = React.useState("");
   const [model, setModel] = React.useState(false);

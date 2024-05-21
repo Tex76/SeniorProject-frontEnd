@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CreateTripForm from "./CreateTripComponents/CreateTripForm";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -28,7 +28,8 @@ import Background from "../images/PickTrip/Background.png";
 import {
   APIProvider,
   Map,
-  Marker,
+  AdvancedMarker,
+  Pin,
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import { useNavigate } from "react-router-dom";
@@ -348,13 +349,21 @@ const PickTrip = () => {
                 }}
                 defaultCenter={{ lat: 26.0667, lng: 50.5577 }}
                 defaultZoom={10}
+                mapId={"1dda829dfee4886e"}
+                disableDefaultUI={true}
               >
                 {places.map((place: any) => (
                   <React.Fragment key={place._id}>
-                    <Marker
+                    <AdvancedMarker
                       position={place.googleLocation}
                       onClick={() => setSelectedMarker(place._id)}
-                    />
+                    >
+                      <Pin
+                        background={"#465F8C"}
+                        borderColor={"#252E46"}
+                        glyphColor={"white"}
+                      />
+                    </AdvancedMarker>
                     {selectedMarker === place._id && (
                       <InfoWindow
                         position={place.googleLocation}
@@ -386,7 +395,7 @@ const PickTrip = () => {
                             sx={{
                               borderRadius: "25px",
                               color: "#fff",
-                              backgroundColor: "#205E60",
+                              backgroundColor: "#465F8C",
                               "&:hover": { backgroundColor: "#16473C" },
                               padding: "10px 20px",
                               marginLeft: "7px",

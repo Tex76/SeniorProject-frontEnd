@@ -13,6 +13,7 @@ import {
   CardMedia,
   Select,
   MenuItem,
+  Menu,
 } from "@mui/material";
 import Background from "../images/MyTrip/Background.png";
 import NavBar from "./SharedComponents/NavBar";
@@ -24,11 +25,25 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const MyTrip = () => {
-  const { user } = useContext(UserContext);
+  const { user, refreshUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sort, setSort] = useState("name");
+  const [menuAnchors, setMenuAnchors] = useState<
+    Record<string, HTMLElement | null>
+  >({});
+
+  const handleClick = (
+    event: React.MouseEvent<Element, MouseEvent>,
+    cardId: string
+  ) => {
+    setMenuAnchors((prev: any) => ({ ...prev, [cardId]: event.currentTarget }));
+  };
+
+  const handleClose = (cardId: string) => {
+    setMenuAnchors((prev: any) => ({ ...prev, [cardId]: null }));
+  };
 
   const handleSortChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSort(event.target.value as string);
@@ -49,6 +64,20 @@ const MyTrip = () => {
         });
     }
   }, [user]);
+
+  useEffect(() => {
+    const sortedTrips = [...trips];
+    if (sort === "name") {
+      sortedTrips.sort((a: any, b: any) =>
+        a.tripName.localeCompare(b.tripName)
+      );
+    } else if (sort === "places") {
+      sortedTrips.sort(
+        (a: any, b: any) => b.likedPlaces.length - a.likedPlaces.length
+      );
+    }
+    setTrips(sortedTrips);
+  }, [sort]);
 
   if (!user) {
     return <div>Please log in to view your trips.</div>;
@@ -169,79 +198,163 @@ const MyTrip = () => {
                 variant="standard"
               >
                 <MenuItem value={"name"}>Name</MenuItem>
-                <MenuItem value={"date"}>Created date</MenuItem>
-                {/* Add more sorting options here */}
+                <MenuItem value={"places"}>Number of places</MenuItem>
               </Select>
             </Box>
-            {trips.map((trip: any) => {
-              return (
-                <Card
-                  key={trip._id}
-                  onClick={() => {
-                    navigate(`/createtrip/${trip._id}`);
-                  }}
-                  sx={{
-                    display: "flex",
-                    backgroundColor: "rgba(255, 211, 52, 0.58)",
-                    height: "200px",
-                    mt: 2,
-                    p: 2,
-                    transition: "transform 0.3s",
-                    "&:hover": { transform: "scale(1.05)" },
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={trip.imageTrip}
-                    alt="trip image"
-                    sx={{ width: "30%", borderRadius: "10px", height: "100%" }}
-                  />
-                  <CardContent sx={{ flex: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                      {trip.tripName}
-                    </Typography>
-                    <Typography variant="body1">{trip.description}</Typography>
-                    <Box
+            {trips.length ? (
+              trips.map((trip: any) => {
+                return (
+                  <Card
+                    key={trip._id}
+                    sx={{
+                      display: "flex",
+                      backgroundColor: "rgba(255, 211, 52, 0.58)",
+                      height: "200px",
+                      mt: 2,
+                      p: 2,
+                      transition: "transform 0.3s",
+                      "&:hover": { transform: "scale(1.05)" },
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={trip.imageTrip}
+                      alt="trip image"
                       sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        marginTop: "10px",
+                        width: "30%",
+                        borderRadius: "10px",
+                        height: "100%",
                       }}
-                    >
+                    />
+                    <CardContent sx={{ flex: 1 }}>
+                      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                        {trip.tripName}
+                      </Typography>
+                      <Typography variant="body1">
+                        {trip.description}
+                      </Typography>
                       <Box
                         sx={{
                           display: "flex",
                           flexDirection: "row",
-                          alignItems: "center",
+                          justifyContent: "space-between",
+                          marginTop: "10px",
                         }}
                       >
-                        <PlaceIcon />
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>
-                          {trip.likedPlaces.length} places
-                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <PlaceIcon />
+                          <Typography
+                            variant="body2"
+                            sx={{ marginLeft: "5px" }}
+                          >
+                            {trip.likedPlaces.length} places
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <DateRangeIcon />
+                          <Typography
+                            variant="body2"
+                            sx={{ marginLeft: "5px" }}
+                          >
+                            {trip.totalDays} days
+                          </Typography>
+                        </Box>
+                        <IconButton
+                          onClick={(event) => handleClick(event, trip._id)}
+                        >
+                          <MoreHorizIcon />
+                        </IconButton>
+                        <Menu
+                          anchorEl={menuAnchors[trip._id] || null}
+                          open={Boolean(menuAnchors[trip._id])}
+                          onClose={() => handleClose(trip._id)}
+                        >
+                          <MenuItem
+                            onClick={() => {
+                              axios
+                                .post(`/trip/delete/${trip._id}`, {
+                                  userId: user.id,
+                                })
+                                .then(() => {
+                                  alert("Trip deleted successfully");
+                                  refreshUser();
+                                  window.location.reload();
+                                })
+                                .catch((err) => {
+                                  console.error(
+                                    "Error deleting the trip:",
+                                    err
+                                  );
+                                });
+                            }}
+                          >
+                            Delete Trip
+                          </MenuItem>
+                        </Menu>
                       </Box>
                       <Box
                         sx={{
                           display: "flex",
                           flexDirection: "row",
-                          alignItems: "center",
+                          justifyContent: "flex-end",
+                          marginTop: "25px",
                         }}
                       >
-                        <DateRangeIcon />
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>
-                          {trip.totalDays} days
-                        </Typography>
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: "#007B80",
+                            padding: "5px 20px",
+                            borderRadius: "20px",
+                            marginRight: "10px",
+                          }}
+                          onClick={() => {
+                            navigate(`/createtrip/${trip._id}`);
+                          }}
+                        >
+                          View Trip
+                        </Button>
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: "#007B80",
+                            padding: "5px 20px",
+                            borderRadius: "20px",
+                          }}
+                          onClick={() => {
+                            if (user.runningTrip !== "No active trip") {
+                              alert(
+                                "You are currently on a trip. Please complete it before starting a new one."
+                              );
+                              return;
+                            } else {
+                              navigate(`/currentTrip/${trip._id}`);
+                            }
+                          }}
+                        >
+                          Start Trip
+                        </Button>
                       </Box>
-                      <IconButton>
-                        <MoreHorizIcon />
-                      </IconButton>
-                    </Box>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                    </CardContent>
+                  </Card>
+                );
+              })
+            ) : (
+              <Typography variant="h6">No trips found</Typography>
+            )}
           </Box>
         </Box>
 

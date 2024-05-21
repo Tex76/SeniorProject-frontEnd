@@ -38,7 +38,8 @@ import "@fontsource/roboto/700.css";
 import {
   APIProvider,
   Map,
-  Marker,
+  AdvancedMarker,
+  Pin,
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import React from "react";
@@ -661,7 +662,7 @@ export default function CreateTrip() {
                             location={place.region}
                             type={place.type}
                             description={place.description}
-                            price={place.price}
+                            price={place.priceRange}
                             duration={place.duration}
                             googleLocation={place.googleLocation}
                           />
@@ -803,15 +804,23 @@ export default function CreateTrip() {
                 ...containerStyle, // Ensure the container style is applied
                 transition: "transform 0.5s ease-in-out", // Smooth transition for zoom
               }}
-              defaultCenter={mapCenter}
-              zoom={mapZoom}
+              defaultCenter={{ lat: 26.0667, lng: 50.5577 }}
+              defaultZoom={11}
+              mapId={"1dda829dfee4886e"}
+              disableDefaultUI={true}
             >
               {likedPlaces.map((place: any) => (
                 <React.Fragment key={place._id}>
-                  <Marker
+                  <AdvancedMarker
                     position={place.googleLocation}
                     onClick={() => setSelectedMarker(place._id)}
-                  />
+                  >
+                    <Pin
+                      background={"#465F8C"}
+                      borderColor={"#252E46"}
+                      glyphColor={"white"}
+                    />
+                  </AdvancedMarker>
                   {selectedMarker === place._id && (
                     <InfoWindow
                       position={place.googleLocation}
@@ -843,7 +852,7 @@ export default function CreateTrip() {
                           sx={{
                             borderRadius: "25px",
                             color: "#fff",
-                            backgroundColor: "#205E60",
+                            backgroundColor: "#465F8C",
                             "&:hover": { backgroundColor: "#16473C" },
                             padding: "10px 20px",
                             marginLeft: "7px",

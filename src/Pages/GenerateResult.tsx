@@ -15,7 +15,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CircularProgress,
   Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -27,9 +26,10 @@ import LandscapeIcon from "@mui/icons-material/Landscape";
 import HotelIcon from "@mui/icons-material/Hotel";
 import {
   APIProvider,
-  Map,
-  Marker,
   InfoWindow,
+  AdvancedMarker,
+  Map,
+  Pin,
 } from "@vis.gl/react-google-maps";
 import NavBar from "./SharedComponents/NavBar";
 import axios from "axios";
@@ -47,6 +47,11 @@ interface Day {
   activities: any[];
 }
 
+const containerStyle = {
+  width: "100%",
+  height: "85%",
+  borderRadius: "15px",
+};
 const GenerateResult = () => {
   const { user } = useContext(UserContext);
   const { selectedRegion } = useContext(RegionContext);
@@ -409,22 +414,27 @@ const GenerateResult = () => {
                 <APIProvider apiKey={"AIzaSyBwl3lX-lX7dO4bXGfLzTj-LwtcdtnV-Tc"}>
                   <Map
                     style={{
-                      width: "100%",
-                      height: accordionHeight,
-                      borderRadius: "15px",
+                      ...containerStyle, // Ensure the container style is applied
                       transition: "transform 0.5s ease-in-out", // Smooth transition for zoom
                     }}
-                    className={zoomAnimation}
                     defaultCenter={{ lat: 26.0667, lng: 50.5577 }}
-                    defaultZoom={10}
+                    defaultZoom={11}
+                    mapId={"1dda829dfee4886e"}
+                    disableDefaultUI={true}
                   >
                     {itinerary.map((day) =>
                       day.activities.map((activity: any) => (
                         <React.Fragment key={activity.id}>
-                          <Marker
+                          <AdvancedMarker
                             position={activity.position}
                             onClick={() => setSelectedMarker(activity.id)}
-                          />
+                          >
+                            <Pin
+                              background={"#465F8C"}
+                              borderColor={"#252E46"}
+                              glyphColor={"white"}
+                            />
+                          </AdvancedMarker>
                           {selectedMarker === activity.id && (
                             <InfoWindow
                               position={activity.position}
@@ -462,7 +472,7 @@ const GenerateResult = () => {
                                   sx={{
                                     borderRadius: "25px",
                                     color: "#fff",
-                                    backgroundColor: "#205E60",
+                                    backgroundColor: "#465F8C",
                                     "&:hover": { backgroundColor: "#16473C" },
                                     padding: "10px 20px",
                                     marginLeft: "7px",

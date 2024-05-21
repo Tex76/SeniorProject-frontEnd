@@ -152,7 +152,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 fontWeight: "regular",
               }}
             >
-              ${price}
+              $ {price}
             </Typography>
           </Box>
         )}
@@ -183,7 +183,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 fontWeight: "regular",
               }}
             >
-              {duration} hours
+              {duration}
             </Typography>
             <Box sx={{ width: "2px", height: "20px", margin: "0 5px" }}></Box>
             <MonetizationOnIcon fontSize="small" />
@@ -196,7 +196,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 fontWeight: "regular",
               }}
             >
-              ${price} per adult
+              $ {price} per adult
             </Typography>
           </Box>
         )}
@@ -226,7 +226,7 @@ export default function CreateTripCard(Props: CreateTripCardProps) {
                 fontWeight: "regular",
               }}
             >
-              ${price} per night
+              $ {price} per night
             </Typography>
           </Box>
         )}

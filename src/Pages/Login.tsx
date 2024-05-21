@@ -42,7 +42,7 @@ export default function Login() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigation = useNavigate();
-  const { setUser } = React.useContext(UserContext);
+  const { refreshUser } = React.useContext(UserContext);
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -78,8 +78,8 @@ export default function Login() {
 
           if (res.status === 200) {
             setAlert("success");
-            if (setUser) {
-              setUser(res.data);
+            if (refreshUser) {
+              refreshUser();
             }
             setTimeout(() => navigation("/"), 1200);
             setWrong(false);
